@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="in_range">#28B959</color>
+    <color name="in_range_selected">#166631</color>
+    <color name="out_of_range">#94713C</color>
+    <color name="out_of_range_selected">#402B0C</color>
+    <color name="complete">#4B3E57</color>
+    <color name="complete_selected">#27212E</color>
+    
+    //test colors
+    <color name="text_test_background">#815287</color>
+
+</resources>
