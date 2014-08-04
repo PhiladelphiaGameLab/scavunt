@@ -100,12 +100,12 @@ public class MyActivity extends Activity implements
 
             listFragment = ListFragment.newInstance();
 
-            textFragment1 = TextFragment.newInstance();
-            imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.fragment_image);
+            textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
+            imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
 
             getFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container_1, textFragment1, "textFragment1" )
+                    .add(R.id.container_1, textFragment1, "textFragment1")
                     .detach(textFragment1)
                     .add(R.id.container_1,imageFragment1, "imageFragment1")
                     .detach(imageFragment1)

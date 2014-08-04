@@ -15,14 +15,16 @@ public class Task {
 
     private String title;
     private Type type;
+    private int layoutID;
     private int resourceID;
     private long delay;
     private boolean visible;
     private boolean complete;
 
-    public Task (String titleIn, Type typeIn, int resourceIDIn, long delayIn, boolean completeIn) {
+    public Task (String titleIn, Type typeIn, int resourceIDIn, int layoutIDIn, long delayIn, boolean completeIn) {
         this.title = titleIn;
         this.type = typeIn;
+        this.layoutID = layoutIDIn;
         this.resourceID = resourceIDIn;
         this.complete = completeIn;
         this.delay = delayIn;
@@ -34,9 +36,10 @@ public class Task {
         }
     }
 
-    public Task (String titleIn, Type typeIn, int resourceIDIn, long delayIn) {
+    public Task (String titleIn, Type typeIn, int resourceIDIn, int layoutIDIn, long delayIn) {
         this.title = titleIn;
         this.type = typeIn;
+        this.layoutID = layoutIDIn;
         this.resourceID = resourceIDIn;
         this.complete = true;
         this.delay = delayIn;
@@ -79,6 +82,8 @@ public class Task {
     public Type getType() {
         return type;
     }
+
+    public int getLayoutID() { return  layoutID; }
 
     public int getResourceID() {
         return resourceID;

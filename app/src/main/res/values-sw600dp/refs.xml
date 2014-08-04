@@ -1,5 +1,5 @@
 <resources>
 
-    <item name="fragment_list" type="layout">@layout/fragment_list_list</item>
+    <item name="fragment_list" type="layout">@layout/list_fragment</item>
 
 </resources>

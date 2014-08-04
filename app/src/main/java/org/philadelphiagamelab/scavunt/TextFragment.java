@@ -13,15 +13,29 @@ import android.widget.TextView;
  */
 public class TextFragment extends Fragment {
 
+    private static final String ARG_PRAM1 = "stringResourceID";
+    private static final String ARG_PRAM2 = "layoutResourceID";
+
     private Task toRepresent;
+    private int stringResourceID;
+    private int layoutResourceID;
+
 
     private OnFragmentInteractionListener mListener;
 
     /**
      * Factory method
+     *
+     * @param stringResourceIDIn
+     * @param layoutResourceIDIn
+     * @return
      */
-    public static TextFragment newInstance () {
+    public static TextFragment newInstance (int stringResourceIDIn, int layoutResourceIDIn) {
         TextFragment fragment = new TextFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PRAM1, stringResourceIDIn);
+        args.putInt(ARG_PRAM2, layoutResourceIDIn);
+        fragment.setArguments(args);
         return fragment;
     }
     //Required empty public constructor
@@ -30,13 +44,23 @@ public class TextFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            stringResourceID = savedInstanceState.getInt(ARG_PRAM1);
+            layoutResourceID = savedInstanceState.getInt(ARG_PRAM2);
+        }
+        else if(getArguments() != null) {
+            stringResourceID = getArguments().getInt(ARG_PRAM1);
+            layoutResourceID = getArguments().getInt(ARG_PRAM2);
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        View view = inflater.inflate(toRepresent.getResourceID(), container, false);
+        View view = inflater.inflate(layoutResourceID, container, false);
+        TextView text = (TextView) view.findViewById(R.id.textView);
+        text.setText(stringResourceID);
 
         return view;
     }
@@ -58,8 +82,18 @@ public class TextFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_PRAM1, stringResourceID);
+        outState.putInt(ARG_PRAM2, layoutResourceID);
+
+        super.onSaveInstanceState(outState);
+    }
+
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
+        layoutResourceID = toRepresent.getLayoutID();
+        stringResourceID = toRepresent.getResourceID();
     }
 
     //currently not used
