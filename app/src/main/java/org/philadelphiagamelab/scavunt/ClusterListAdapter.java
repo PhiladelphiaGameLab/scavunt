@@ -35,7 +35,7 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int eventIndex, int taskIndex) {
-        return ClusterManager.getVisibleEvent(eventIndex).getTask(taskIndex);
+        return ClusterManager.getVisibleEvent(eventIndex).getVisibleTask(taskIndex);
     }
 
     @Override

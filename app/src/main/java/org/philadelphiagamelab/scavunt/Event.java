@@ -104,8 +104,14 @@ public class Event {
 
         return taskVisibleCount;
     }
-    public Task getTask(int index) {
-        return childrenTasks.get(index);
+    public Task getVisibleTask(int index) {
+        ArrayList<Task> vissibleTasks = new ArrayList<Task>();
+        for(int i = 0; i < childrenTasks.size(); i++) {
+            if(childrenTasks.get(i).isVisible()) {
+                vissibleTasks.add(childrenTasks.get(i));
+            }
+        }
+        return vissibleTasks.get(index);
     }
 
     public boolean updateInRange(Location userLocation) {

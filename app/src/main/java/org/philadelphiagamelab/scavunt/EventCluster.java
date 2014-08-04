@@ -70,4 +70,8 @@ public class EventCluster {
         }
         return events;
     }
+
+    public EventCluster getToActivate() {
+        return toActivate;
+    }
 }

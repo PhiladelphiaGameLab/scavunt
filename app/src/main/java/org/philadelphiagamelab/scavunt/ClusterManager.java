@@ -20,6 +20,13 @@ public final class ClusterManager {
         visibleEvents = currentCluster.makeEventsVisible();
     }
 
+    public static void checkProgression() {
+        if (currentCluster.isComplete()) {
+            //currentCluster = currentCluster.getToActivate();
+
+        }
+    }
+
     public static int getNumberOfEventsVisible() {
         return visibleEvents.size();
     }

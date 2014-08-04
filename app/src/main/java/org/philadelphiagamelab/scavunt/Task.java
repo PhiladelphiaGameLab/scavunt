@@ -91,6 +91,7 @@ public class Task {
 
     public void setComplete (Boolean completeStatus) {
         this.complete = completeStatus;
+        ClusterManager.checkProgression();
     }
 
     public boolean isComplete() { return complete; }
