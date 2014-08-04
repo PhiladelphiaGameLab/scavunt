@@ -15,7 +15,7 @@ public class StoryBuilder {
 
         clusters = new ArrayList<EventCluster>();
 
-        Task event1Video = new Task("video", Task.Type.RECEIVE_VIDEO, R.raw.test_video, 0);
+        Task event1Video = new Task("video", Task.Type.RECEIVE_VIDEO, R.raw.test_video, 10000);
         Task event1Text = new Task("text", Task.Type.RECEIVE_TEXT, R.string.testString, 0);
         Task event1Image = new Task("image", Task.Type.RECEIVE_IMAGE, R.drawable.test_image, 0);
         ArrayList<Task> event1Tasks = new ArrayList<Task>();

@@ -25,7 +25,7 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int eventIndex) {
-        return ClusterManager.getVisibleEvent(eventIndex).getAmountOfTasks();
+        return ClusterManager.getVisibleEvent(eventIndex).getNumberOfTasksVisible();
     }
 
     @Override

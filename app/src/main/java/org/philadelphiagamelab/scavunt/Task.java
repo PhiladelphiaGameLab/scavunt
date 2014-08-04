@@ -91,5 +91,7 @@ public class Task {
 
     public boolean getComplete() { return complete; }
 
+    public boolean isVisible() { return visible; }
+
 
 }

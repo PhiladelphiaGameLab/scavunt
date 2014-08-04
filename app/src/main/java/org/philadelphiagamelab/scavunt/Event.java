@@ -93,13 +93,16 @@ public class Event {
         return range;
     }
 
-    public int getAmountOfTasks() {
-        if (childrenTasks != null) {
-            return childrenTasks.size();
+    public int getNumberOfTasksVisible() {
+        int taskVisibleCount = 0;
+
+        for( int i = 0; i < childrenTasks.size(); i++) {
+            if( childrenTasks.get(i).isVisible() ) {
+                taskVisibleCount++;
+            }
         }
-        else {
-            return 0;
-        }
+
+        return taskVisibleCount;
     }
     public Task getTask(int index) {
         return childrenTasks.get(index);
