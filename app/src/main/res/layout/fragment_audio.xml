@@ -12,5 +12,5 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_gravity="center"
-        android:src="@drawable/test_audioFrg_image" />
+        android:src="@drawable/test_audio_fragment_image" />
 </FrameLayout>

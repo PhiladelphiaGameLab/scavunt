@@ -58,9 +58,14 @@ public class TextFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(layoutResourceID, container, false);
         TextView text = (TextView) view.findViewById(R.id.textView);
         text.setText(stringResourceID);
+
+        if(toRepresent != null && !toRepresent.isComplete()) {
+            toRepresent.setComplete(true);
+        }
 
         return view;
     }
