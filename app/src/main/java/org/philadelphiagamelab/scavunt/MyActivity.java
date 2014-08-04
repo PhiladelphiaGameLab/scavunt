@@ -49,8 +49,9 @@ public class MyActivity extends Activity implements
     MyMapFragment mapFragment;
     ListFragment listFragment;
     TextFragment textFragment1;
+    ImageFragment imageFragment1;
 
-    //test TextView
+    //test TextView for displaying closest location
     private TextView testDisplay;
 
     /*
@@ -100,11 +101,14 @@ public class MyActivity extends Activity implements
             listFragment = ListFragment.newInstance();
 
             textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.textfrag_layout1);
+            imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.textfrag_layout1);
 
             getFragmentManager()
                     .beginTransaction()
                     .add(R.id.container_1, textFragment1, "textFragment1" )
                     .detach(textFragment1)
+                    .add(R.id.container_1,imageFragment1, "imageFragment1")
+                    .detach(imageFragment1)
                     .add(R.id.container_1, listFragment, "listFragment1")
                     .detach(listFragment)
                     .add(R.id.container_1, mapFragment, "mapFragment1")
@@ -132,6 +136,10 @@ public class MyActivity extends Activity implements
                 }
                 else if(textFragment1.isVisible()) {
                     fragmentTransaction.detach(textFragment1).attach(listFragment);
+                    button1.setText(R.string.swap_to_map);
+                }
+                else if(imageFragment1.isVisible()){
+                    fragmentTransaction.detach(imageFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
                 fragmentTransaction.commit();
@@ -462,6 +470,16 @@ public class MyActivity extends Activity implements
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+
+        //TEST CODE -- IMAGEVIEW
+
+        if(task.getType() == Task.Type.RECEIVE_IMAGE){
+            swapButton.setText(R.string.swap_to_list);
+            fragmentTransaction.detach(listFragment).attach(imageFragment1);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+
         //END TEST CODE
     }
 
