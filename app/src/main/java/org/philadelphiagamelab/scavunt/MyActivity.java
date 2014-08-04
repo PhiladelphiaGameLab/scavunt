@@ -29,6 +29,7 @@ public class MyActivity extends Activity implements
         ListFragment.OnFragmentInteractionListener,
         TextFragment.OnFragmentInteractionListener,
         ImageFragment.OnFragmentInteractionListener,
+        AudioFragment.OnFragmentInteractionListener,
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
@@ -50,6 +51,7 @@ public class MyActivity extends Activity implements
     ListFragment listFragment;
     TextFragment textFragment1;
     ImageFragment imageFragment1;
+    AudioFragment audioFragment1;
 
     //test TextView for displaying closest location
     private TextView testDisplay;
@@ -102,6 +104,7 @@ public class MyActivity extends Activity implements
 
             textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
+            audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.fragment_audio_default)
 
             getFragmentManager()
                     .beginTransaction()
@@ -109,6 +112,8 @@ public class MyActivity extends Activity implements
                     .detach(textFragment1)
                     .add(R.id.container_1,imageFragment1, "imageFragment1")
                     .detach(imageFragment1)
+                    .add(R.id.container_1, audioFragment1, "audioFragment1")
+                    .detach(audioFragment1)
                     .add(R.id.container_1, listFragment, "listFragment1")
                     .detach(listFragment)
                     .add(R.id.container_1, mapFragment, "mapFragment1")
@@ -140,6 +145,10 @@ public class MyActivity extends Activity implements
                 }
                 else if(imageFragment1.isVisible()){
                     fragmentTransaction.detach(imageFragment1).attach(listFragment);
+                    button1.setText(R.string.swap_to_map);
+                }
+                else if(audioFragment1.isVisible()){
+                    fragmentTransaction.detach(audioFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
                 fragmentTransaction.commit();
