@@ -79,7 +79,7 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
         final Task task = (Task) getChild(eventIndex, taskIndex);
 
         TextView text = (TextView) convertView.findViewById(R.id.textView1);
-        text.setText(task.getTitle());
+        text.setText(task.getTitle() + " Complete:" + Boolean.toString(task.isComplete()));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

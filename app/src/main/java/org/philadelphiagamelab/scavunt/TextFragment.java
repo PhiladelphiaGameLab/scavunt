@@ -13,27 +13,15 @@ import android.widget.TextView;
  */
 public class TextFragment extends Fragment {
 
-    private static final String ARG_PRAM1 = "stringResourceID";
-    private static final String ARG_PRAM2 = "layoutResourceID";
-
-    private int stringResourceID;
-    private int layoutResourceID;
+    private Task toRepresent;
 
     private OnFragmentInteractionListener mListener;
 
     /**
      * Factory method
-     *
-     * @param stringResourceIDIn
-     * @param layoutResourceIDIn
-     * @return
      */
-    public static TextFragment newInstance (int stringResourceIDIn, int layoutResourceIDIn) {
+    public static TextFragment newInstance () {
         TextFragment fragment = new TextFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_PRAM1, stringResourceIDIn);
-        args.putInt(ARG_PRAM2, layoutResourceIDIn);
-        fragment.setArguments(args);
         return fragment;
     }
     //Required empty public constructor
@@ -42,18 +30,13 @@ public class TextFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getArguments() != null) {
-            stringResourceID = getArguments().getInt(ARG_PRAM1);
-            layoutResourceID = getArguments().getInt(ARG_PRAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(layoutResourceID, container, false);
-        TextView text = (TextView) view.findViewById(R.id.textView);
-        text.setText(stringResourceID);
+
+        View view = inflater.inflate(toRepresent.getResourceID(), container, false);
 
         return view;
     }
@@ -75,6 +58,11 @@ public class TextFragment extends Fragment {
         mListener = null;
     }
 
+    public void updateTask(Task toRepresentIn) {
+        toRepresent = toRepresentIn;
+    }
+
+    //currently not used
     public interface OnFragmentInteractionListener {
         public void onFragmentInteraction(String id);
     }

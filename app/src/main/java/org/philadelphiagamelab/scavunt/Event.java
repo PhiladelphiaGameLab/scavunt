@@ -134,7 +134,7 @@ public class Event {
     public boolean isComplete() {
         if (tasksToComplete != null) {
             for(int i = 0; i < tasksToComplete.size(); i++) {
-                if (!tasksToComplete.get(i).getComplete()) {
+                if (!tasksToComplete.get(i).isComplete()) {
                     return false;
                 }
             }

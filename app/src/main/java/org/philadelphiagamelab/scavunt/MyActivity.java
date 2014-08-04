@@ -100,7 +100,7 @@ public class MyActivity extends Activity implements
 
             listFragment = ListFragment.newInstance();
 
-            textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.textfrag_layout1);
+            textFragment1 = TextFragment.newInstance();
             imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.fragment_image);
 
             getFragmentManager()
@@ -466,6 +466,7 @@ public class MyActivity extends Activity implements
 
         if(task.getType() == Task.Type.RECEIVE_TEXT) {
             swapButton.setText(R.string.swap_to_list);
+            textFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(textFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -473,7 +474,7 @@ public class MyActivity extends Activity implements
 
         //TEST CODE -- IMAGEVIEW
 
-        if(task.getType() == Task.Type.RECEIVE_IMAGE){
+        else if(task.getType() == Task.Type.RECEIVE_IMAGE){
             swapButton.setText(R.string.swap_to_list);
             fragmentTransaction.detach(listFragment).attach(imageFragment1);
             fragmentTransaction.addToBackStack(null);

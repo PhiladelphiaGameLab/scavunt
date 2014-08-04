@@ -20,8 +20,7 @@ public class Task {
     private boolean visible;
     private boolean complete;
 
-    public Task (String titleIn, Type typeIn, int resourceIDIn, long delayIn,
-                 boolean completeIn) {
+    public Task (String titleIn, Type typeIn, int resourceIDIn, long delayIn, boolean completeIn) {
         this.title = titleIn;
         this.type = typeIn;
         this.resourceID = resourceIDIn;
@@ -89,7 +88,7 @@ public class Task {
         this.complete = completeStatus;
     }
 
-    public boolean getComplete() { return complete; }
+    public boolean isComplete() { return complete; }
 
     public boolean isVisible() { return visible; }
 
