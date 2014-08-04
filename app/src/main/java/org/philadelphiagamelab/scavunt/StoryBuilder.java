@@ -27,9 +27,9 @@ public class StoryBuilder {
         event1.getLocation().setLatitude(39.952472);
         event1.getLocation().setLongitude(-75.165297);
 
-        //Task event2Audio = new Task("audio", Task.Type.RECEIVE_AUDIO, R.raw.space_cruise, 0);
+        Task event2Audio = new Task("audio", Task.Type.RECEIVE_AUDIO, R.raw.space_cruise, R.layout.fragment_audio_default, 0);
         ArrayList<Task> event2Tasks = new ArrayList<Task>();
-        //event2Tasks.add(event2Audio);
+        event2Tasks.add(event2Audio);
         ArrayList<Task> event2TasksToComplete = event2Tasks;
         Event event2 = new Event("16th & Market", new Location("Dummy"), event2Tasks, event1TasksToComplete);
         event2.getLocation().setLatitude(39.952730);

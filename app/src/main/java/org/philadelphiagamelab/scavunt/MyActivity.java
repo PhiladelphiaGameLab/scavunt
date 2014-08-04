@@ -104,7 +104,7 @@ public class MyActivity extends Activity implements
 
             textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
-            audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.fragment_audio_default)
+            audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.fragment_audio_default);
 
             getFragmentManager()
                     .beginTransaction()
