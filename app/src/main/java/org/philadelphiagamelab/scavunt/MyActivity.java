@@ -30,6 +30,7 @@ public class MyActivity extends Activity implements
         TextFragment.OnFragmentInteractionListener,
         ImageFragment.OnFragmentInteractionListener,
         AudioFragment.OnFragmentInteractionListener,
+        VideoFragment.OnFragmentInteractionListener,
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
@@ -52,6 +53,7 @@ public class MyActivity extends Activity implements
     TextFragment textFragment1;
     ImageFragment imageFragment1;
     AudioFragment audioFragment1;
+    VideoFragment videoFragment1;
 
     //test TextView for displaying closest location
     private TextView testDisplay;
@@ -105,6 +107,7 @@ public class MyActivity extends Activity implements
             textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
             audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.fragment_audio_default);
+            videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.fragment_video_default);
 
             getFragmentManager()
                     .beginTransaction()
@@ -114,6 +117,8 @@ public class MyActivity extends Activity implements
                     .detach(imageFragment1)
                     .add(R.id.container_1, audioFragment1, "audioFragment1")
                     .detach(audioFragment1)
+                    .add(R.id.container_1,videoFragment1,"videoFragment1")
+                    .detach(videoFragment1)
                     .add(R.id.container_1, listFragment, "listFragment1")
                     .detach(listFragment)
                     .add(R.id.container_1, mapFragment, "mapFragment1")
@@ -149,6 +154,10 @@ public class MyActivity extends Activity implements
                 }
                 else if(audioFragment1 != null && audioFragment1.isVisible()){
                     fragmentTransaction.detach(audioFragment1).attach(listFragment);
+                    button1.setText(R.string.swap_to_map);
+                }
+                else if(videoFragment1 != null && videoFragment1.isVisible()){
+                    fragmentTransaction.detach(videoFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
                 fragmentTransaction.commit();
@@ -495,6 +504,15 @@ public class MyActivity extends Activity implements
         else if(task.getType() == Task.Type.RECEIVE_AUDIO){
             swapButton.setText(R.string.swap_to_list);
             fragmentTransaction.detach(listFragment).attach(audioFragment1);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+
+        //TEST CODE -- VIDEOVIEW
+
+        else if(task.getType() == Task.Type.RECEIVE_VIDEO){
+            swapButton.setText(R.string.swap_to_list);
+            fragmentTransaction.detach(listFragment).attach(videoFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }

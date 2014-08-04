@@ -63,7 +63,7 @@ public class VideoFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_video_default, container, false);
         mVideoView = (VideoView)view.findViewById(R.id.videoView_fragVideoDefault);
-        mVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + R.raw.test_video));
+        mVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + videoResourceID));
         mVideoView.setMediaController(new MediaController(getActivity()));
         mVideoView.requestFocus();
         mVideoView.start();
