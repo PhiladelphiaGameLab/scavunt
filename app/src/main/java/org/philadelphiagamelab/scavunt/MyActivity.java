@@ -490,6 +490,15 @@ public class MyActivity extends Activity implements
             fragmentTransaction.commit();
         }
 
+        //TEST CODE -- AUDIOVIEW
+
+        else if(task.getType() == Task.Type.RECEIVE_AUDIO){
+            swapButton.setText(R.string.swap_to_list);
+            fragmentTransaction.detach(listFragment).attach(audioFragment1);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
+
         //END TEST CODE
     }
 
