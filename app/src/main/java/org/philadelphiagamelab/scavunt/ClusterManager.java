@@ -14,9 +14,10 @@ public final class ClusterManager {
     //Run at start of game, gets story from story builder and sets events in first cluster visible
     public static void startUp() {
         clusters = StoryBuilder.getClusters();
+        currentCluster = clusters.get(0);
 
         //Sets first cluster of events visible and assigns them to visibleEvents
-        visibleEvents = clusters.get(0).makeEventsVisible();
+        visibleEvents = currentCluster.makeEventsVisible();
     }
 
     public static int getNumberOfEventsVisible() {

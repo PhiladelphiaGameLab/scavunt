@@ -130,24 +130,24 @@ public class MyActivity extends Activity implements
             public void onClick(View v) {
 
                 FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                if(mapFragment.isVisible()) {
+                if(mapFragment != null && mapFragment.isVisible()) {
                     fragmentTransaction.detach(mapFragment).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
-                else if(listFragment.isVisible()) {
+                else if(listFragment != null && listFragment.isVisible()) {
                     fragmentTransaction.detach(listFragment).attach(mapFragment);
                     button1.setText(R.string.swap_to_list);
 
                 }
-                else if(textFragment1.isVisible()) {
+                else if(textFragment1 != null && textFragment1.isVisible()) {
                     fragmentTransaction.detach(textFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
-                else if(imageFragment1.isVisible()){
+                else if(imageFragment1 != null && imageFragment1.isVisible()){
                     fragmentTransaction.detach(imageFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
-                else if(audioFragment1.isVisible()){
+                else if(audioFragment1 != null && audioFragment1.isVisible()){
                     fragmentTransaction.detach(audioFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
