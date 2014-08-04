@@ -28,6 +28,7 @@ import java.util.ArrayList;
 public class MyActivity extends Activity implements
         ListFragment.OnFragmentInteractionListener,
         TextFragment.OnFragmentInteractionListener,
+        ImageFragment.OnFragmentInteractionListener,
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {

@@ -7,7 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.ImageView;
 
 
 /**
@@ -22,12 +22,12 @@ import android.view.ViewGroup;
 public class ImageFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "imageResourceID";
+    private static final String ARG_PARAM2 = "layoutResourceID";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int imageResourceID;
+    private int layoutResourceID;
 
     private OnFragmentInteractionListener mListener;
 
@@ -35,29 +35,27 @@ public class ImageFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param imageResourceIDIn id for the image.
+     * @param layoutResourceIDIn id for the layout.
      * @return A new instance of fragment ImageFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ImageFragment newInstance(String param1, String param2) {
+    public static ImageFragment newInstance(int imageResourceIDIn, int layoutResourceIDIn) {
         ImageFragment fragment = new ImageFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, imageResourceIDIn);
+        args.putInt(ARG_PARAM2, layoutResourceIDIn);
         fragment.setArguments(args);
         return fragment;
     }
-    public ImageFragment() {
-        // Required empty public constructor
-    }
+    public ImageFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            imageResourceID = getArguments().getInt(ARG_PARAM1);
+            layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }
     }
 
@@ -65,15 +63,13 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_image, container, false);
+        View view = inflater.inflate(layoutResourceID, container, false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.imageView_imageFrag);
+        imageView.setImageResource(imageResourceID);
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(String id) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(id);
-        }
-    }
 
     @Override
     public void onAttach(Activity activity) {
