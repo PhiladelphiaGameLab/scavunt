@@ -71,6 +71,11 @@ public class ImageFragment extends Fragment {
         ImageView imageView = (ImageView) view.findViewById(R.id.imageView_imageFrag);
         imageView.setImageResource(imageResourceID);
 
+        //Sets Task to complete once viewed once
+        if(toRepresent != null && !toRepresent.isComplete()) {
+            toRepresent.setComplete(true);
+        }
+
         return view;
     }
 

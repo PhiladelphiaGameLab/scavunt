@@ -8,6 +8,7 @@ import java.util.ArrayList;
 public final class ClusterManager {
 
     private static ArrayList<EventCluster> clusters;
+    private static EventCluster currentCluster;
     private static ArrayList<Event> visibleEvents;
 
     //Run at start of game, gets story from story builder and sets events in first cluster visible

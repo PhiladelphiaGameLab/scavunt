@@ -10,12 +10,13 @@ public class EventCluster {
     private String title;
     private ArrayList<Event> events;
     private ArrayList<Event> eventsToComplete;
-    private ArrayList<EventCluster> toActivate;
+    private EventCluster toActivate;
+    private ArrayList<EventCluster> visibleClusters;
 
 
     public EventCluster (String titleIn, ArrayList<Event> eventsIn,
                          ArrayList<Event> eventsToCompleteIn,
-                         ArrayList<EventCluster> toActivateIn) {
+                         EventCluster toActivateIn) {
 
         this.title = titleIn;
         this.events = eventsIn;

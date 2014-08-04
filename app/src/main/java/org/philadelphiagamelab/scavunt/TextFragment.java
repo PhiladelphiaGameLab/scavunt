@@ -63,6 +63,7 @@ public class TextFragment extends Fragment {
         TextView text = (TextView) view.findViewById(R.id.textView);
         text.setText(stringResourceID);
 
+        //Sets Task to complete once viewed once
         if(toRepresent != null && !toRepresent.isComplete()) {
             toRepresent.setComplete(true);
         }

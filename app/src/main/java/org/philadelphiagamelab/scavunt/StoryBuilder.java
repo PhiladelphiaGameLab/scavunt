@@ -61,9 +61,7 @@ public class StoryBuilder {
         ArrayList<Event> events1 = new ArrayList<Event>();
         events1.add(event1);
         events1.add(event2);
-        ArrayList<EventCluster> toActivate = new ArrayList<EventCluster>();
-        toActivate.add(cluster2);
-        EventCluster cluster1 = new EventCluster("cluster1", events1, events1, toActivate);
+        EventCluster cluster1 = new EventCluster("cluster1", events1, events1, cluster2);
 
         clusters.add(cluster1);
         clusters.add(cluster2);
