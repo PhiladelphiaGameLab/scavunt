@@ -101,7 +101,7 @@ public class MyActivity extends Activity implements
             listFragment = ListFragment.newInstance();
 
             textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.textfrag_layout1);
-            imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.textfrag_layout1);
+            imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.fragment_image);
 
             getFragmentManager()
                     .beginTransaction()

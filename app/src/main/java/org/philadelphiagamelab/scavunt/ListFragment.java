@@ -97,7 +97,6 @@ public class ListFragment extends Fragment {
      * Interface to allow for task fragments to open based on clicks
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onFragmentInteraction(Task taskClicked);
     }
 

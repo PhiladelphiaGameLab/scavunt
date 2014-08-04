@@ -17,9 +17,11 @@ public class StoryBuilder {
 
         Task event1Video = new Task("video", Task.Type.RECEIVE_VIDEO, R.raw.test_video, 0);
         Task event1Text = new Task("text", Task.Type.RECEIVE_TEXT, R.string.testString, 0);
+        Task event1Image = new Task("image", Task.Type.RECEIVE_IMAGE, R.drawable.test_image, 0);
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
         event1Tasks.add(event1Text);
+        event1Tasks.add(event1Image);
         ArrayList<Task> event1TasksToComplete = event1Tasks;
         Event event1 = new Event("15th st. Station", new Location("Dummy"), event1Tasks, event1TasksToComplete);
         event1.getLocation().setLatitude(39.952472);

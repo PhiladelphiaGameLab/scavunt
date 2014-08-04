@@ -1,6 +1,8 @@
 package org.philadelphiagamelab.scavunt;
 
 
+import java.util.logging.Handler;
+
 /**
  * Created by aaronmsegal on 7/28/14.
  */
@@ -29,8 +31,7 @@ public class Task {
             this.visible = true;
         }
         else {
-            this.visible = false;
-            // TODO: implement visibility delay
+            delayVisibility();
         }
     }
 
@@ -44,9 +45,23 @@ public class Task {
             this.visible = true;
         }
         else {
-            this.visible = false;
-            // TODO: implement visibility delay
+            delayVisibility();
         }
+    }
+
+    private void delayVisibility() {
+        this.visible = false;
+
+        android.os.Handler handler = new android.os.Handler();
+
+        Runnable makeVisible = new Runnable() {
+            @Override
+            public void run() {
+                visible = true;
+            }
+        };
+
+        handler.postDelayed(makeVisible, delay);
     }
 
     public Task (String titleIn, Type typeIn, int resourceIDIn) {
