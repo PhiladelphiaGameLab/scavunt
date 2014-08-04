@@ -2,7 +2,6 @@ package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ public class AudioFragment extends Fragment {
     private static final String ARG_PARAM1 = "audioResourceID";
     private static final String ARG_PARAM2 = "layoutResourceID";
 
+    private Task toRepresent;
     private int audioResourceID;
     private int layoutResourceID;
 
@@ -36,18 +36,25 @@ public class AudioFragment extends Fragment {
      * this fragment using the provided parameters.
      * @return A new instance of fragment AudioFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static AudioFragment newInstance() {
+
+    public static AudioFragment newInstance(int audioResourceIDIn, int layoutResourceIDIn) {
         AudioFragment fragment = new AudioFragment();
+        Bundle args = new Bundle();
+        args.putInt(ARG_PARAM1, audioResourceIDIn);
+        args.putInt(ARG_PARAM2, layoutResourceIDIn);
+        fragment.setArguments(args);
         return fragment;
     }
-    public AudioFragment() {
-        // Required empty public constructor
-    }
+    public AudioFragment() {} // Required empty public constructor
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if(savedInstanceState != null) {
+            audioResourceID = savedInstanceState.getInt(ARG_PARAM1);
+            layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
+        }
         if (getArguments() != null) {
             audioResourceID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
@@ -58,14 +65,13 @@ public class AudioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_audio, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_audio_default, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        mPlayer = MediaPlayer.create(getActivity(), audioResourceID);
+        //currentSong = audioResourceID;
+        mPlayer.start();
+
+        return view;
     }
 
     @Override
@@ -80,10 +86,32 @@ public class AudioFragment extends Fragment {
     }
 
     @Override
+    public void onPause(){
+        super.onPause();
+        mPlayer.pause();
+    }
+
+    @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        mPlayer.pause();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_PARAM1, audioResourceID);
+        outState.putInt(ARG_PARAM2, layoutResourceID);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    public void updateTask(Task toRepresentIn) {
+        toRepresent = toRepresentIn;
+        layoutResourceID = toRepresent.getLayoutID();
+        audioResourceID = toRepresent.getResourceID();
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -96,8 +124,7 @@ public class AudioFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(String id);
     }
 
 }
