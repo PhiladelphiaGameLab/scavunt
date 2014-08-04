@@ -68,7 +68,6 @@ public class AudioFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_audio_default, container, false);
 
         mPlayer = MediaPlayer.create(getActivity(), audioResourceID);
-        //currentSong = audioResourceID;
         mPlayer.start();
 
         return view;
@@ -94,8 +93,12 @@ public class AudioFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
-        mPlayer.pause();
+        if (mListener != null) {
+            mListener = null;
+        }
+        if (mPlayer != null) {
+            mPlayer.pause();
+        }
     }
 
     @Override
