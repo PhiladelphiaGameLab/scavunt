@@ -22,8 +22,12 @@ public final class ClusterManager {
 
     public static void checkProgression() {
         if (currentCluster.isComplete()) {
-            //currentCluster = currentCluster.getToActivate();
-
+            currentCluster = currentCluster.getToActivate();
+            ArrayList<Event> temp = currentCluster.makeEventsVisible();
+            for(int i = 0; i < visibleEvents.size(); i++) {
+                temp.add(visibleEvents.get(i));
+            }
+            visibleEvents = temp;
         }
     }
 
