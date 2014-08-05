@@ -53,10 +53,10 @@ public class MyMapFragment extends MapFragment {
         View v = super.onCreateView(inflater, container, savedState);
 
         if(savedState!= null) {
-            lattitude = savedState.getDouble("Lat", LocationsManager.defaultLatitude);
-            longitude = savedState.getDouble("Lng", LocationsManager.defaultLongitude);
-            zoom = savedState.getFloat("Zoom", LocationsManager.defaultZoom);
-            mapType = LocationsManager.defaultMapType;
+            lattitude = savedState.getDouble("Lat", LocationUtils.defaultLatitude);
+            longitude = savedState.getDouble("Lng", LocationUtils.defaultLongitude);
+            zoom = savedState.getFloat("Zoom", LocationUtils.defaultZoom);
+            mapType = LocationUtils.defaultMapType;
         }
 
         initilizeMap();

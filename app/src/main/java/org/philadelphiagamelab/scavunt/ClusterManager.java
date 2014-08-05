@@ -1,5 +1,9 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.app.Activity;
+import android.content.Context;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
 /**
@@ -21,13 +25,16 @@ public final class ClusterManager {
     }
 
     public static void checkProgression() {
-        if (currentCluster.isComplete()) {
+        if (currentCluster.isComplete() && currentCluster.getToActivate() != null) {
             currentCluster = currentCluster.getToActivate();
             ArrayList<Event> temp = currentCluster.makeEventsVisible();
             for(int i = 0; i < visibleEvents.size(); i++) {
                 temp.add(visibleEvents.get(i));
             }
             visibleEvents = temp;
+        }
+        else {
+            //story over
         }
     }
 

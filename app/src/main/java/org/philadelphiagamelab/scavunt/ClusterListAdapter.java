@@ -61,7 +61,7 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
         }
 
         Event event = (Event) getGroup(eventIndex);
-        ((CheckedTextView) convertView).setText(event.getTitle() + " : "
+        ((CheckedTextView) convertView).setText(event.getTitle() + "\nIn Range: "
                 + Boolean.toString(event.isInRange()));
         ((CheckedTextView) convertView).setChecked(isExpanded);
 
@@ -71,6 +71,8 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int eventIndex, int taskIndex, boolean isLastTask, View convertView,
                              ViewGroup parent) {
+
+        Event event = (Event) getGroup(eventIndex);
 
         if(convertView == null) {
             convertView = inflater.inflate(R.layout.list_task, null);
@@ -87,6 +89,8 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
                 ListFragment.onTaskClicked(task);
             }
         });
+
+
         return convertView;
     }
 

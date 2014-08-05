@@ -96,10 +96,10 @@ public class MyActivity extends Activity implements
             ClusterManager.startUp();
 
             mapFragment = MyMapFragment.newInstanace(
-                    LocationsManager.defaultLatitude,
-                    LocationsManager.defaultLongitude,
-                    LocationsManager.defaultZoom,
-                    LocationsManager.defaultMapType,
+                    LocationUtils.defaultLatitude,
+                    LocationUtils.defaultLongitude,
+                    LocationUtils.defaultZoom,
+                    LocationUtils.defaultMapType,
                     ClusterManager.getVisibleEventsWithLocations());
 
             listFragment = ListFragment.newInstance();
@@ -113,7 +113,7 @@ public class MyActivity extends Activity implements
                     .beginTransaction()
                     .add(R.id.container_1, textFragment1, "textFragment1")
                     .detach(textFragment1)
-                    .add(R.id.container_1,imageFragment1, "imageFragment1")
+                    .add(R.id.container_1, imageFragment1, "imageFragment1")
                     .detach(imageFragment1)
                     .add(R.id.container_1, audioFragment1, "audioFragment1")
                     .detach(audioFragment1)
@@ -482,7 +482,7 @@ public class MyActivity extends Activity implements
 
         Button swapButton = (Button) findViewById(R.id.button_swap);
 
-        if(task.getType() == Task.Type.RECEIVE_TEXT) {
+        if(task.getActivityType() == Task.ActivityType.RECEIVE_TEXT) {
             swapButton.setText(R.string.swap_to_list);
             textFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(textFragment1);
@@ -492,7 +492,7 @@ public class MyActivity extends Activity implements
 
         //TEST CODE -- IMAGEVIEW
 
-        else if(task.getType() == Task.Type.RECEIVE_IMAGE){
+        else if(task.getActivityType() == Task.ActivityType.RECEIVE_IMAGE){
             swapButton.setText(R.string.swap_to_list);
             fragmentTransaction.detach(listFragment).attach(imageFragment1);
             fragmentTransaction.addToBackStack(null);
@@ -501,7 +501,7 @@ public class MyActivity extends Activity implements
 
         //TEST CODE -- AUDIOVIEW
 
-        else if(task.getType() == Task.Type.RECEIVE_AUDIO){
+        else if(task.getActivityType() == Task.ActivityType.RECEIVE_AUDIO){
             swapButton.setText(R.string.swap_to_list);
             fragmentTransaction.detach(listFragment).attach(audioFragment1);
             fragmentTransaction.addToBackStack(null);
@@ -510,7 +510,7 @@ public class MyActivity extends Activity implements
 
         //TEST CODE -- VIDEOVIEW
 
-        else if(task.getType() == Task.Type.RECEIVE_VIDEO){
+        else if(task.getActivityType() == Task.ActivityType.RECEIVE_VIDEO){
             swapButton.setText(R.string.swap_to_list);
             fragmentTransaction.detach(listFragment).attach(videoFragment1);
             fragmentTransaction.addToBackStack(null);

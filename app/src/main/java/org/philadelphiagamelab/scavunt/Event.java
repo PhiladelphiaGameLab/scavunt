@@ -17,7 +17,7 @@ public class Event {
     private boolean visible;
 
     //in meters
-    public static final float defaultRange = LocationsManager.activationRangeNormal;
+    public static final float defaultRange = LocationUtils.activationRangeNormal;
 
     public Event (String titleIn, Location locationIn, float defaultRangeIn,
                   ArrayList<Task> childrenTasksIn, ArrayList<Task> tasksToCompleteIn) {
@@ -118,12 +118,26 @@ public class Event {
         // If event has no location or is in range set inRange to true
         // first check protects against null reference in second check
         if(location == null || location.distanceTo(userLocation) < range) {
-            inRange = true;
+            //update if not already in range
+            if( !inRange ) {
+                inRange = true;
+                updateTasks();
+            }
         }
         else {
-            inRange = false;
+            //update if previously in range
+            if( inRange ) {
+                inRange = true;
+                updateTasks();
+            }
         }
         return inRange;
+    }
+
+    public void updateTasks() {
+        for(int i = 0; i < childrenTasks.size(); i++) {
+            childrenTasks.get(i).updateVisibility(inRange);
+        }
     }
 
     public boolean isInRange() {

@@ -15,9 +15,25 @@ public class StoryBuilder {
 
         clusters = new ArrayList<EventCluster>();
 
-        Task event1Video = new Task("video", Task.Type.RECEIVE_VIDEO, R.raw.test_video, R.layout.fragment_video_default, 10000);
-        Task event1Text = new Task("text", Task.Type.RECEIVE_TEXT, R.string.testString, R.layout.text_fragment_default, 0, false);
-        Task event1Image = new Task("image", Task.Type.RECEIVE_IMAGE, R.drawable.test_image, R.layout.image_fragment_default, 0);
+        Task event1Video = new Task("video",
+                Task.ActivityType.RECEIVE_VIDEO,
+                Task.ActivationType.INSTANT,
+                R.raw.test_video,
+                R.layout.fragment_video_default,
+                10000);
+        Task event1Text = new Task("text",
+                Task.ActivityType.RECEIVE_TEXT,
+                Task.ActivationType.IN_RANGE_ONCE,
+                R.string.testString,
+                R.layout.text_fragment_default,
+                0,
+                false);
+        Task event1Image = new Task("image",
+                Task.ActivityType.RECEIVE_IMAGE,
+                Task.ActivationType.IN_RANGE_ONLY,
+                R.drawable.test_image,
+                R.layout.image_fragment_default,
+                0);
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
         event1Tasks.add(event1Text);
@@ -27,7 +43,12 @@ public class StoryBuilder {
         event1.getLocation().setLatitude(39.952472);
         event1.getLocation().setLongitude(-75.165297);
 
-        Task event2Audio = new Task("audio", Task.Type.RECEIVE_AUDIO, R.raw.space_cruise, R.layout.fragment_audio_default, 0);
+        Task event2Audio = new Task("audio",
+                Task.ActivityType.RECEIVE_AUDIO,
+                Task.ActivationType.INSTANT,
+                R.raw.space_cruise,
+                R.layout.fragment_audio_default,
+                0);
         ArrayList<Task> event2Tasks = new ArrayList<Task>();
         event2Tasks.add(event2Audio);
         ArrayList<Task> event2TasksToComplete = event2Tasks;
@@ -35,7 +56,13 @@ public class StoryBuilder {
         event2.getLocation().setLatitude(39.952730);
         event2.getLocation().setLongitude(-75.166932);
 
-        Task event3Text = new Task("text", Task.Type.RECEIVE_TEXT, R.string.testString, R.layout.text_fragment_default, 0, false);
+        Task event3Text = new Task("text",
+                Task.ActivityType.RECEIVE_TEXT,
+                Task.ActivationType.INSTANT,
+                R.string.testString,
+                R.layout.text_fragment_default,
+                0,
+                false);
         ArrayList<Task> event3Tasks = new ArrayList<Task>();
         event3Tasks.add(event3Text);
         ArrayList<Task> event3TasksToComplete = event3Tasks;
@@ -43,8 +70,18 @@ public class StoryBuilder {
         event3.getLocation().setLatitude(39.951329);
         event3.getLocation().setLongitude(-75.167129);
 
-        Task event4Image1 = new Task("image", Task.Type.RECEIVE_IMAGE, R.drawable.test_image, R.layout.image_fragment_default, 0);
-        Task event4Image2 = new Task("image", Task.Type.RECEIVE_IMAGE, R.drawable.test_image, R.layout.image_fragment_default, 0);
+        Task event4Image1 = new Task("image",
+                Task.ActivityType.RECEIVE_IMAGE,
+                Task.ActivationType.INSTANT,
+                R.drawable.test_image,
+                R.layout.image_fragment_default,
+                0);
+        Task event4Image2 = new Task("image",
+                Task.ActivityType.RECEIVE_IMAGE,
+                Task.ActivationType.INSTANT,
+                R.drawable.test_image,
+                R.layout.image_fragment_default,
+                0);
         ArrayList<Task> event4Tasks = new ArrayList<Task>();
         event4Tasks.add(event4Image1);
         event4Tasks.add(event4Image2);

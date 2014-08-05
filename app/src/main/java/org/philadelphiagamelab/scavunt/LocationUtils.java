@@ -3,10 +3,21 @@ package org.philadelphiagamelab.scavunt;
 import android.content.Context;
 import android.location.Location;
 
+import com.google.android.gms.maps.GoogleMap;
+
 /**
  * Defines app-wide constants and utilities
  */
 public final class LocationUtils {
+
+
+    public static final Double defaultLatitude = 39.9514285d;
+    public static final Double defaultLongitude = -75.1629362d;
+    public static final Float defaultZoom = 12.5f;
+    public static final int defaultMapType = GoogleMap.MAP_TYPE_HYBRID;
+
+    //in meters
+    public static final Float activationRangeNormal = 40.0f;
 
     // Debugging tag for the application
     public static final String APPTAG = "LocationSample";
