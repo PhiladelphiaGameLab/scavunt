@@ -73,13 +73,13 @@ public class TakePictureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.take_picture_default_fragment, container, false);
+        View view = inflater.inflate(layoutResourceID, container, false);
         FrameLayout fragmentLayout = (FrameLayout) view;
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
         );
-        layoutParams.setMargins(48, 48, 48, 48);
+        layoutParams.setMargins(68, 68, 68, 68);
         //imgFavorite = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
 
 
@@ -167,6 +167,14 @@ public class TakePictureFragment extends Fragment {
         super.onDetach();
         mListener = null;
         thisImageView.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putInt(ARG_PARAM1, imageViewID);
+        outState.putInt(ARG_PARAM2, layoutResourceID);
+
+        super.onSaveInstanceState(outState);
     }
 
 
