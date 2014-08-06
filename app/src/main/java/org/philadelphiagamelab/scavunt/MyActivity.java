@@ -110,7 +110,7 @@ public class MyActivity extends Activity implements
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
             audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
             videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
-            takePictureFragment1 = TakePictureFragment.newInstance("s1", "s2");
+            takePictureFragment1 = TakePictureFragment.newInstance(R.id.take_picture_fragment_1,R.layout.take_picture_default_fragment);
 
             getFragmentManager()
                     .beginTransaction()
@@ -505,6 +505,7 @@ public class MyActivity extends Activity implements
 
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_IMAGE){
             swapButton.setText(R.string.swap_to_list);
+            imageFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(imageFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
@@ -524,15 +525,17 @@ public class MyActivity extends Activity implements
 
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_VIDEO){
             swapButton.setText(R.string.swap_to_list);
+            videoFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(videoFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
-        //TEST CODE -- VIDEOVIEW
+        //TEST CODE -- TAKE PICTURE
 
         else if(task.getActivityType() == Task.ActivityType.TAKE_PICTURE){
             swapButton.setText(R.string.swap_to_list);
+            takePictureFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(takePictureFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();

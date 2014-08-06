@@ -1,6 +1,9 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.location.Location;
+import android.view.View;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -47,8 +50,17 @@ public class StoryBuilder {
                 0);
         //event 1: take picture task 1
         Map<String, Integer> event1PictureResources = new HashMap<String, Integer>();
-        event1PictureResources.put("picture", R.drawable.test_image);
+        event1PictureResources.put("imageView", R.id.take_picture_fragment_1);
         Task event1TakePicture = new Task("Take a picture",
+                Task.ActivityType.TAKE_PICTURE,
+                Task.ActivationType.IN_RANGE_ONLY,
+                event1PictureResources,
+                R.layout.take_picture_default_fragment,
+                0);
+        //event 1: take picture task 2
+        Map<String, Integer> event1PictureResources2 = new HashMap<String, Integer>();
+        event1PictureResources.put("imageView", R.id.take_picture_fragment_2);
+        Task event1TakePicture2 = new Task("Take a picture",
                 Task.ActivityType.TAKE_PICTURE,
                 Task.ActivationType.IN_RANGE_ONLY,
                 event1PictureResources,
@@ -60,6 +72,7 @@ public class StoryBuilder {
         event1Tasks.add(event1Text);
         event1Tasks.add(event1Image);
         event1Tasks.add(event1TakePicture);
+        event1Tasks.add(event1TakePicture2);
         ArrayList<Task> event1TasksToComplete = event1Tasks;
         Event event1 = new Event("15th st. Station", new Location("Dummy"), event1Tasks, event1TasksToComplete);
         event1.getLocation().setLatitude(39.952472);

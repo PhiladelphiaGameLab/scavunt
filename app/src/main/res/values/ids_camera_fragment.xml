@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="take_picture_fragment_1" type="id"/>
+    <item name="take_picture_fragment_2" type="id"/>
+</resources>

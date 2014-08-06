@@ -6,11 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 
 /**
@@ -23,33 +26,31 @@ import android.widget.ImageView;
  *
  */
 public class TakePictureFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM1 = "imageViewID";
+    private static final String ARG_PARAM2 = "layoutResourceID";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Integer imageViewID;
+    private int layoutResourceID;
 
     private OnFragmentInteractionListener mListener;
     ImageView imgFavorite;
     Boolean coloredPicture = true;
+    Task toRepresent = null;
+    ImageView thisImageView;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param imageViewIDIn Parameter 1.
+     * @param layoutResourceIDIn Parameter 2.
      * @return A new instance of fragment TakePhotoFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static TakePictureFragment newInstance(String param1, String param2) {
+    public static TakePictureFragment newInstance(int imageViewIDIn, int layoutResourceIDIn) {
         TakePictureFragment fragment = new TakePictureFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_PARAM1, imageViewIDIn);
+        args.putInt(ARG_PARAM2, layoutResourceIDIn);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,18 +59,46 @@ public class TakePictureFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState != null){
+            imageViewID = savedInstanceState.getInt(ARG_PARAM1);
+            layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
+        }
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            imageViewID = getArguments().getInt(ARG_PARAM1);
+            layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.take_picture_default_fragment, container, false);
-        imgFavorite = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
+        FrameLayout fragmentLayout = (FrameLayout) view;
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT
+        );
+        layoutParams.setMargins(48, 48, 48, 48);
+        //imgFavorite = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
+
+
+
+        // If a ImageView with ID has been created, just find it and make it visible
+        if (view.findViewById(imageViewID) != null) {
+            thisImageView = (ImageView) view.findViewById(imageViewID);
+            thisImageView.setVisibility(View.VISIBLE);
+        }
+        else {
+        // If the ID hasn't already associate with a ImageView, make a new one
+            thisImageView = new ImageView(view.getContext());
+            thisImageView.setId(imageViewID);
+            fragmentLayout.addView(thisImageView,layoutParams);
+            thisImageView.setVisibility(View.VISIBLE);
+        }
+
+
+
         Button takeColoredPicture = (Button) view.findViewById(R.id.button_takeColorPicture);
         Button takeGreyPicture = (Button) view.findViewById(R.id.button_takeGreyPicture);
 
@@ -91,6 +120,11 @@ public class TakePictureFragment extends Fragment {
             }
         });
 
+        //Sets Task to complete once viewed once
+        if(toRepresent != null && !toRepresent.isComplete()) {
+            toRepresent.setComplete(true);
+        }
+
         return view;
     }
 
@@ -110,10 +144,10 @@ public class TakePictureFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bp = (Bitmap) data.getExtras().get("data");
         if(!coloredPicture) {
-            imgFavorite.setImageBitmap(bitmapGrayOut(bp));
+            thisImageView.setImageBitmap(bitmapGrayOut(bp));
         }
         else {
-            imgFavorite.setImageBitmap(bp);
+            thisImageView.setImageBitmap(bp);
         }
     }
 
@@ -132,9 +166,15 @@ public class TakePictureFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+        thisImageView.setVisibility(View.INVISIBLE);
     }
 
 
+    public void updateTask(Task toRepresentIn) {
+        toRepresent = toRepresentIn;
+        layoutResourceID = toRepresent.getLayoutID();
+        imageViewID = toRepresent.getResourceID("imageView");
+    }
 
     /**
      * This interface must be implemented by activities that contain this
