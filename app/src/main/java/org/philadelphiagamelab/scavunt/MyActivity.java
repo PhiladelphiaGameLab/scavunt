@@ -110,7 +110,7 @@ public class MyActivity extends Activity implements
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
             audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
             videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
-            takePictureFragment1 = TakePictureFragment.newInstance(R.id.take_picture_fragment_1,R.layout.take_picture_default_fragment);
+            takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
 
             getFragmentManager()
                     .beginTransaction()

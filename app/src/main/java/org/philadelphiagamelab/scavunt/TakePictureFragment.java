@@ -55,7 +55,7 @@ public class TakePictureFragment extends Fragment {
      * @param layoutResourceIDIn Parameter 2.
      * @return A new instance of fragment TakePhotoFragment.
      */
-    public static TakePictureFragment newInstance(int bitmapKeyIDIn, int layoutResourceIDIn) {
+    public static TakePictureFragment newInstance(Integer bitmapKeyIDIn, int layoutResourceIDIn) {
         TakePictureFragment fragment = new TakePictureFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PARAM1, bitmapKeyIDIn);
@@ -82,9 +82,16 @@ public class TakePictureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        if(savedInstanceState !=null) {
+            bitmapKeyID = savedInstanceState.getInt(ARG_PARAM1);
+            layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
+        }
+
         view = inflater.inflate(layoutResourceID, container, false);
         thisImageView = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
-        if (getImageBitmap(view.getContext()) !=null){
+
+        if (getImageBitmap(view.getContext()) !=null) {
             userTokenPicture = getImageBitmap(view.getContext());
             thisImageView.setImageBitmap(userTokenPicture);
         }
@@ -197,7 +204,7 @@ public class TakePictureFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        bitmapKeyID = toRepresent.getResourceID("imageView");
+        bitmapKeyID = toRepresent.getResourceID("imageKey");
     }
 
     /**
@@ -277,7 +284,7 @@ public class TakePictureFragment extends Fragment {
 
         String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
 
-        editor.putString("FacebookImage", encodedImage);
+        editor.putString(bitmapKeyID.toString(), encodedImage);
         return editor.commit();
     }
 }
