@@ -9,6 +9,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 
@@ -33,6 +34,7 @@ public class TakePictureFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     ImageView imgFavorite;
+    Boolean coloredPicture = true;
 
     /**
      * Use this factory method to create a new instance of
@@ -68,18 +70,28 @@ public class TakePictureFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.take_picture_default_fragment, container, false);
         imgFavorite = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
-        imgFavorite.setOnClickListener(new View.OnClickListener() {
+        Button takeColoredPicture = (Button) view.findViewById(R.id.button_takeColorPicture);
+        Button takeGreyPicture = (Button) view.findViewById(R.id.button_takeGreyPicture);
+
+        takeColoredPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                open();
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                coloredPicture = true;
+                startActivityForResult(intent, 0);
             }
         });
-        return view;
-    }
 
-    public void open(){
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 0);
+        takeGreyPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                coloredPicture = false;
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        return view;
     }
 
 /*
@@ -97,7 +109,12 @@ public class TakePictureFragment extends Fragment {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bp = (Bitmap) data.getExtras().get("data");
-        imgFavorite.setImageBitmap(bitmapGrayOut(bp));
+        if(!coloredPicture) {
+            imgFavorite.setImageBitmap(bitmapGrayOut(bp));
+        }
+        else {
+            imgFavorite.setImageBitmap(bp);
+        }
     }
 
     @Override

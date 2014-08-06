@@ -5,17 +5,26 @@
     tools:context="org.philadelphiagamelab.scavunt.TakePictureFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Tap on the screen to take a picture"
-        android:textAlignment="center"/>
 
     <ImageView
-        android:layout_margin="32dp"
+        android:layout_margin="48dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imageView_takePictureFragment"
         android:layout_gravity="center" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take a color picture"
+        android:id="@+id/button_takeColorPicture"
+        android:layout_gravity="left|bottom" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Take a grey picture"
+        android:id="@+id/button_takeGreyPicture"
+        android:layout_gravity="right|bottom" />
 
 </FrameLayout>
