@@ -19,7 +19,7 @@ public class StoryBuilder {
                 Task.ActivityType.RECEIVE_VIDEO,
                 Task.ActivationType.INSTANT,
                 R.raw.test_video,
-                R.layout.fragment_video_default,
+                R.layout.video_default_fragment,
                 10000);
         Task event1Text = new Task("text",
                 Task.ActivityType.RECEIVE_TEXT,
@@ -34,10 +34,18 @@ public class StoryBuilder {
                 R.drawable.test_image,
                 R.layout.image_fragment_default,
                 0);
+        Task event1TakePicture = new Task("Take a picture",
+                Task.ActivityType.TAKE_PICTURE,
+                Task.ActivationType.IN_RANGE_ONLY,
+                R.drawable.test_image,
+                R.layout.take_picture_default_fragment,
+                0);
+
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
         event1Tasks.add(event1Text);
         event1Tasks.add(event1Image);
+        event1Tasks.add(event1TakePicture);
         ArrayList<Task> event1TasksToComplete = event1Tasks;
         Event event1 = new Event("15th st. Station", new Location("Dummy"), event1Tasks, event1TasksToComplete);
         event1.getLocation().setLatitude(39.952472);
@@ -47,7 +55,7 @@ public class StoryBuilder {
                 Task.ActivityType.RECEIVE_AUDIO,
                 Task.ActivationType.INSTANT,
                 R.raw.space_cruise,
-                R.layout.fragment_audio_default,
+                R.layout.audio_default_fragment,
                 0);
         ArrayList<Task> event2Tasks = new ArrayList<Task>();
         event2Tasks.add(event2Audio);
