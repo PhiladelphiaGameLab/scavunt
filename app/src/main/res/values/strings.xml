@@ -65,5 +65,4 @@
     <!-- Strings for textFragment -->
     <string name="testString">This is a test</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
 </resources>

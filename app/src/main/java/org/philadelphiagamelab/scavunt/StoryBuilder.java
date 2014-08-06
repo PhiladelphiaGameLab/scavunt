@@ -50,7 +50,7 @@ public class StoryBuilder {
                 0);
         //event 1: take picture task 1
         Map<String, Integer> event1PictureResources = new HashMap<String, Integer>();
-        event1PictureResources.put("imageView", R.id.take_picture_fragment_1);
+        event1PictureResources.put("imageKey", R.id.bitmapKey1);
         Task event1TakePicture = new Task("Take a picture",
                 Task.ActivityType.TAKE_PICTURE,
                 Task.ActivationType.IN_RANGE_ONLY,
@@ -59,7 +59,7 @@ public class StoryBuilder {
                 0);
         //event 1: take picture task 2
         Map<String, Integer> event1PictureResources2 = new HashMap<String, Integer>();
-        event1PictureResources.put("imageView", R.id.take_picture_fragment_2);
+        event1PictureResources.put("imageKey", R.id.bitmapKey2);
         Task event1TakePicture2 = new Task("Take a picture",
                 Task.ActivityType.TAKE_PICTURE,
                 Task.ActivationType.IN_RANGE_ONLY,

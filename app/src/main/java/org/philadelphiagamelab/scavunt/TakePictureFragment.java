@@ -1,12 +1,16 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.text.Layout;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +18,9 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import java.io.ByteArrayOutputStream;
+import java.security.Key;
 
 
 /**
@@ -26,30 +33,32 @@ import android.widget.LinearLayout;
  *
  */
 public class TakePictureFragment extends Fragment {
-    private static final String ARG_PARAM1 = "imageViewID";
+    private static final String ARG_PARAM1 = "bitmapKeyID";
     private static final String ARG_PARAM2 = "layoutResourceID";
 
-    private Integer imageViewID;
+    private Integer bitmapKeyID;
     private int layoutResourceID;
 
     private OnFragmentInteractionListener mListener;
-    ImageView imgFavorite;
     Boolean coloredPicture = true;
     Task toRepresent = null;
     ImageView thisImageView;
+    String savedPictures;
+    Bitmap userTokenPicture;
+    View view;
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param imageViewIDIn Parameter 1.
+     * @param bitmapKeyIDIn Parameter 1.
      * @param layoutResourceIDIn Parameter 2.
      * @return A new instance of fragment TakePhotoFragment.
      */
-    public static TakePictureFragment newInstance(int imageViewIDIn, int layoutResourceIDIn) {
+    public static TakePictureFragment newInstance(int bitmapKeyIDIn, int layoutResourceIDIn) {
         TakePictureFragment fragment = new TakePictureFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_PARAM1, imageViewIDIn);
+        args.putInt(ARG_PARAM1, bitmapKeyIDIn);
         args.putInt(ARG_PARAM2, layoutResourceIDIn);
         fragment.setArguments(args);
         return fragment;
@@ -61,11 +70,11 @@ public class TakePictureFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState != null){
-            imageViewID = savedInstanceState.getInt(ARG_PARAM1);
+            bitmapKeyID = savedInstanceState.getInt(ARG_PARAM1);
             layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
         }
         if (getArguments() != null) {
-            imageViewID = getArguments().getInt(ARG_PARAM1);
+            bitmapKeyID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }
     }
@@ -73,17 +82,20 @@ public class TakePictureFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(layoutResourceID, container, false);
+        view = inflater.inflate(layoutResourceID, container, false);
+        thisImageView = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
+        if (getImageBitmap(view.getContext()) !=null){
+            userTokenPicture = getImageBitmap(view.getContext());
+            thisImageView.setImageBitmap(userTokenPicture);
+        }
+
+/*
         FrameLayout fragmentLayout = (FrameLayout) view;
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT
         );
         layoutParams.setMargins(68, 68, 68, 68);
-        //imgFavorite = (ImageView)view.findViewById(R.id.imageView_takePictureFragment);
-
-
-
         // If a ImageView with ID has been created, just find it and make it visible
         if (view.findViewById(imageViewID) != null) {
             thisImageView = (ImageView) view.findViewById(imageViewID);
@@ -96,7 +108,7 @@ public class TakePictureFragment extends Fragment {
             fragmentLayout.addView(thisImageView,layoutParams);
             thisImageView.setVisibility(View.VISIBLE);
         }
-
+*/
 
 
         Button takeColoredPicture = (Button) view.findViewById(R.id.button_takeColorPicture);
@@ -142,12 +154,16 @@ public class TakePictureFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        Bitmap bp = (Bitmap) data.getExtras().get("data");
+        userTokenPicture = (Bitmap) data.getExtras().get("data");
+
         if(!coloredPicture) {
-            thisImageView.setImageBitmap(bitmapGrayOut(bp));
+            Bitmap grayOutedPicture = bitmapGrayOut(userTokenPicture);
+            thisImageView.setImageBitmap(grayOutedPicture);
+            saveImage(view.getContext(),grayOutedPicture);
         }
         else {
-            thisImageView.setImageBitmap(bp);
+            thisImageView.setImageBitmap(userTokenPicture);
+            saveImage(view.getContext(),userTokenPicture);
         }
     }
 
@@ -171,7 +187,7 @@ public class TakePictureFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(ARG_PARAM1, imageViewID);
+        outState.putInt(ARG_PARAM1, bitmapKeyID);
         outState.putInt(ARG_PARAM2, layoutResourceID);
 
         super.onSaveInstanceState(outState);
@@ -181,7 +197,7 @@ public class TakePictureFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        imageViewID = toRepresent.getResourceID("imageView");
+        bitmapKeyID = toRepresent.getResourceID("imageView");
     }
 
     /**
@@ -236,4 +252,33 @@ public class TakePictureFragment extends Fragment {
     }
 
 
+
+
+    public Bitmap getImageBitmap(Context context)
+    {
+        Bitmap bitmap = null;
+        SharedPreferences savedSession = context.getSharedPreferences(savedPictures, Context.MODE_PRIVATE);
+
+        String saveimage=savedSession.getString(bitmapKeyID.toString(), "");
+        if( !saveimage.equalsIgnoreCase("") ){
+            byte[] b = Base64.decode(saveimage, Base64.DEFAULT);
+            bitmap = BitmapFactory.decodeByteArray(b, 0, b.length);
+        }
+        return bitmap;
+    }
+
+    public boolean saveImage(Context context, Bitmap realImage)
+    {
+        SharedPreferences.Editor editor = context.getSharedPreferences(savedPictures, Context.MODE_PRIVATE).edit();
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        realImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] b = baos.toByteArray();
+
+        String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+        editor.putString("FacebookImage", encodedImage);
+        return editor.commit();
+    }
 }
+
