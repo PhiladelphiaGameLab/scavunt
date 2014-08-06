@@ -112,7 +112,7 @@ public class AudioFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        audioResourceID = toRepresent.getResourceID();
+        audioResourceID = toRepresent.getResourceID("audio");
     }
 
 

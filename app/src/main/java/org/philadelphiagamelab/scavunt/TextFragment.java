@@ -99,7 +99,7 @@ public class TextFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        stringResourceID = toRepresent.getResourceID();
+        stringResourceID = toRepresent.getResourceID("text");
     }
 
     //currently not used

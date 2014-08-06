@@ -2,6 +2,8 @@ package org.philadelphiagamelab.scavunt;
 
 import android.location.Location;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by aaronmsegal on 7/30/14.
@@ -15,32 +17,44 @@ public class StoryBuilder {
 
         clusters = new ArrayList<EventCluster>();
 
+        //event 1: video task 1
+        Map<String, Integer> event1VideoResources = new HashMap<String, Integer>();
+        event1VideoResources.put("video", R.raw.test_video);
         Task event1Video = new Task("video",
                 Task.ActivityType.RECEIVE_VIDEO,
                 Task.ActivationType.INSTANT,
-                R.raw.test_video,
+                event1VideoResources,
                 R.layout.video_default_fragment,
                 10000);
+        //event 1: text task 1
+        Map<String, Integer> event1TextResources = new HashMap<String, Integer>();
+        event1TextResources.put("text", R.string.testString);
         Task event1Text = new Task("text",
                 Task.ActivityType.RECEIVE_TEXT,
-                Task.ActivationType.IN_RANGE_ONCE,
-                R.string.testString,
+                Task.ActivationType.INSTANT,
+                event1TextResources,
                 R.layout.text_fragment_default,
                 0,
                 false);
+        //event 1: image task 1
+        Map<String, Integer> event1ImageResources = new HashMap<String, Integer>();
+        event1ImageResources.put("image", R.drawable.test_image);
         Task event1Image = new Task("image",
                 Task.ActivityType.RECEIVE_IMAGE,
                 Task.ActivationType.IN_RANGE_ONLY,
-                R.drawable.test_image,
+                event1ImageResources,
                 R.layout.image_fragment_default,
                 0);
+        //event 1: take picture task 1
+        Map<String, Integer> event1PictureResources = new HashMap<String, Integer>();
+        event1PictureResources.put("picture", R.drawable.test_image);
         Task event1TakePicture = new Task("Take a picture",
                 Task.ActivityType.TAKE_PICTURE,
                 Task.ActivationType.IN_RANGE_ONLY,
-                R.drawable.test_image,
+                event1PictureResources,
                 R.layout.take_picture_default_fragment,
                 0);
-
+        //Build event 1
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
         event1Tasks.add(event1Text);
@@ -51,12 +65,17 @@ public class StoryBuilder {
         event1.getLocation().setLatitude(39.952472);
         event1.getLocation().setLongitude(-75.165297);
 
+
+        //event 2: audio task 1
+        Map<String, Integer> event2AudioResources = new HashMap<String, Integer>();
+        event2AudioResources.put("audio", R.raw.space_cruise);
         Task event2Audio = new Task("audio",
                 Task.ActivityType.RECEIVE_AUDIO,
                 Task.ActivationType.INSTANT,
-                R.raw.space_cruise,
+                event2AudioResources,
                 R.layout.audio_default_fragment,
                 0);
+        //Build event 2
         ArrayList<Task> event2Tasks = new ArrayList<Task>();
         event2Tasks.add(event2Audio);
         ArrayList<Task> event2TasksToComplete = event2Tasks;
@@ -64,13 +83,18 @@ public class StoryBuilder {
         event2.getLocation().setLatitude(39.952730);
         event2.getLocation().setLongitude(-75.166932);
 
+
+        //event 3: text task 1
+        Map<String, Integer> event3TextResources = new HashMap<String, Integer>();
+        event3TextResources.put("text", R.string.testString);
         Task event3Text = new Task("text",
                 Task.ActivityType.RECEIVE_TEXT,
                 Task.ActivationType.INSTANT,
-                R.string.testString,
+                event3TextResources,
                 R.layout.text_fragment_default,
                 0,
                 false);
+        //Build event3
         ArrayList<Task> event3Tasks = new ArrayList<Task>();
         event3Tasks.add(event3Text);
         ArrayList<Task> event3TasksToComplete = event3Tasks;
@@ -78,16 +102,19 @@ public class StoryBuilder {
         event3.getLocation().setLatitude(39.951329);
         event3.getLocation().setLongitude(-75.167129);
 
+        //event 4: image task 1
+        Map<String, Integer> event4ImageResources = new HashMap<String, Integer>();
+        event4ImageResources.put("image", R.drawable.test_image);
         Task event4Image1 = new Task("image",
                 Task.ActivityType.RECEIVE_IMAGE,
                 Task.ActivationType.INSTANT,
-                R.drawable.test_image,
+                event4ImageResources,
                 R.layout.image_fragment_default,
                 0);
         Task event4Image2 = new Task("image",
                 Task.ActivityType.RECEIVE_IMAGE,
                 Task.ActivationType.INSTANT,
-                R.drawable.test_image,
+                event4ImageResources,
                 R.layout.image_fragment_default,
                 0);
         ArrayList<Task> event4Tasks = new ArrayList<Task>();

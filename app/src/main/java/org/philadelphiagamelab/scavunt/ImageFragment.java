@@ -109,7 +109,7 @@ public class ImageFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        imageResourceID = toRepresent.getResourceID();
+        imageResourceID = toRepresent.getResourceID("image");
     }
     /**
      * This interface must be implemented by activities that contain this

@@ -99,7 +99,7 @@ public class VideoFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
-        videoResourceID = toRepresent.getResourceID();
+        videoResourceID = toRepresent.getResourceID("video");
     }
     /**
      * This interface must be implemented by activities that contain this

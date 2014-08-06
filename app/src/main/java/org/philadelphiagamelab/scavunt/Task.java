@@ -1,10 +1,13 @@
 package org.philadelphiagamelab.scavunt;
 
 
+import android.util.Log;
+
+import java.util.Map;
+
 /**
  * Created by aaronmsegal on 7/28/14.
  *
- * TODO: change resourceID to an int[](or map?) to allow for multiple resources
  */
 public class Task {
 
@@ -20,29 +23,29 @@ public class Task {
     private String title;
     private ActivityType activityType;
     private ActivationType activationType;
+    private Map<String, Integer> resourceIDs;
     private int layoutID;
-    private int resourceID;
     private long delay;
     private boolean visible;
     private boolean complete;
 
-    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, int resourceIDIn, int layoutIDIn, long delayIn, boolean completeIn) {
+    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn, boolean completeIn) {
         this.title = titleIn;
         this.activityType = activityTypeIn;
         this.activationType = activationTypeIn;
         this.layoutID = layoutIDIn;
-        this.resourceID = resourceIDIn;
+        this.resourceIDs = resourceIDsIn;
         this.complete = completeIn;
         this.delay = delayIn;
         initializeVisibility();
     }
 
-    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, int resourceIDIn, int layoutIDIn, long delayIn) {
+    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn) {
         this.title = titleIn;
         this.activityType = activityTypeIn;
         this.activationType = activationTypeIn;
         this.layoutID = layoutIDIn;
-        this.resourceID = resourceIDIn;
+        this.resourceIDs = resourceIDsIn;
         this.complete = true;
         this.delay = delayIn;
         initializeVisibility();
@@ -97,15 +100,6 @@ public class Task {
         }
     }
 
-    public Task (String titleIn, ActivityType activityTypeIn, int resourceIDIn) {
-        this.title = titleIn;
-        this.activityType = activityTypeIn;
-        this.resourceID = resourceIDIn;
-        this.delay = 0;
-        this.visible = true;
-        this.complete = true;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -116,8 +110,8 @@ public class Task {
 
     public int getLayoutID() { return  layoutID; }
 
-    public int getResourceID() {
-        return resourceID;
+    public int getResourceID(String key) {
+        return resourceIDs.get(key);
     }
 
     public void setComplete (Boolean completeStatus) {
