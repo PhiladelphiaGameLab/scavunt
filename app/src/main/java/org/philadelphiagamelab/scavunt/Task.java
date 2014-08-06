@@ -3,6 +3,8 @@ package org.philadelphiagamelab.scavunt;
 
 /**
  * Created by aaronmsegal on 7/28/14.
+ *
+ * TODO: change resourceID to an int[](or map?) to allow for multiple resources
  */
 public class Task {
 
