@@ -514,6 +514,7 @@ public class MyActivity extends Activity implements
 
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_AUDIO){
             swapButton.setText(R.string.swap_to_list);
+            audioFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(audioFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
