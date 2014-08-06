@@ -8,10 +8,11 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Tap on the image to take a picture"
+        android:text="Tap on the screen to take a picture"
         android:textAlignment="center"/>
 
     <ImageView
+        android:layout_margin="32dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/imageView_takePictureFragment"
