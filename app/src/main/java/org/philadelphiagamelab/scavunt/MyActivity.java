@@ -25,6 +25,9 @@ import com.google.android.gms.location.LocationRequest;
 
 import java.util.ArrayList;
 
+//TODO: TakePictureFragment is broken and crashes onrecreate, it has been remove from this activity
+// but needs to be fixed and added back in
+
 public class MyActivity extends Activity implements
         ListFragment.OnFragmentInteractionListener,
         TextFragment.OnFragmentInteractionListener,
@@ -55,7 +58,7 @@ public class MyActivity extends Activity implements
     ImageFragment imageFragment1;
     AudioFragment audioFragment1;
     VideoFragment videoFragment1;
-    TakePictureFragment takePictureFragment1;
+    //TakePictureFragment takePictureFragment1;
 
     //test TextView for displaying closest location
     private TextView testDisplay;
@@ -110,7 +113,7 @@ public class MyActivity extends Activity implements
             imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
             audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
             videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
-            takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
+            //takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
 
             getFragmentManager()
                     .beginTransaction()
@@ -122,10 +125,8 @@ public class MyActivity extends Activity implements
                     .detach(audioFragment1)
                     .add(R.id.container_1,videoFragment1,"videoFragment1")
                     .detach(videoFragment1)
-                    .add(R.id.container_1,takePictureFragment1,"takePictureFragment")
-                    .detach(takePictureFragment1)
-
-
+                    //.add(R.id.container_1,takePictureFragment1,"takePictureFragment")
+                    //.detach(takePictureFragment1)
                     .add(R.id.container_1, listFragment, "listFragment1")
                     .detach(listFragment)
                     .add(R.id.container_1, mapFragment, "mapFragment1")
@@ -167,10 +168,12 @@ public class MyActivity extends Activity implements
                     fragmentTransaction.detach(videoFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
+                /*
                 else if(takePictureFragment1 != null && takePictureFragment1.isVisible()){
                     fragmentTransaction.detach(takePictureFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
+                */
                 fragmentTransaction.commit();
 
                 /*
@@ -533,6 +536,7 @@ public class MyActivity extends Activity implements
 
         //TEST CODE -- TAKE PICTURE
 
+        /*
         else if(task.getActivityType() == Task.ActivityType.TAKE_PICTURE){
             swapButton.setText(R.string.swap_to_list);
             takePictureFragment1.updateTask(task);
@@ -540,6 +544,7 @@ public class MyActivity extends Activity implements
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
+        */
 
         //END TEST CODE
     }

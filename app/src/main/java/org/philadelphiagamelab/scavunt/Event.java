@@ -5,6 +5,8 @@ import java.util.ArrayList;
 
 /**
  * Created by aaronmsegal on 7/28/14.
+ *
+ * TODO: Refactor constructors to single form for creation from database. Remove use of default range.
  */
 public class Event {
 

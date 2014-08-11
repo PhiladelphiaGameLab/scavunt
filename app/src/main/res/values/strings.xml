@@ -65,4 +65,8 @@
     <!-- Strings for textFragment -->
     <string name="testString">This is a test</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+        <!-- For new DEMO -->
+        <string name="to_15th_and_market">On to 15th and Market!</string>
+        <string name="to_city_hall">Now to City Hall</string>
+
 </resources>

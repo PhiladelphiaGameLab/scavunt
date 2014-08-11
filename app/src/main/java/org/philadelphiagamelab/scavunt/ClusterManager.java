@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 /**
  * Created by aaronmsegal on 7/28/14.
+ *
+ * TODO Change progression to linear, get rid of EventCluster's to activate
  */
 public final class ClusterManager {
 

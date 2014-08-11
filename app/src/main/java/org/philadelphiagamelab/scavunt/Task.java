@@ -8,6 +8,8 @@ import java.util.Map;
 /**
  * Created by aaronmsegal on 7/28/14.
  *
+ * TODO: Refactor constructors to single form for creation from database, add complete paramater
+ *
  */
 public class Task {
 

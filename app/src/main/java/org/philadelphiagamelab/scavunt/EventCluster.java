@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 /**
  * Created by aaronmsegal on 7/30/14.
+ *
+ * TODO: get rid of toActivate, progression will be linear and handled by clustermanager
  */
 public class EventCluster {
 
