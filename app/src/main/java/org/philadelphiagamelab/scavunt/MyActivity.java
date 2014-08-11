@@ -29,6 +29,8 @@ import java.util.ArrayList;
 //TODO: TakePictureFragment is broken and crashes onrecreate, it has been remove from this activity
 // but needs to be fixed and added back in
 
+//TODO: change onLocationChange change and associated updates to a service
+
 public class MyActivity extends Activity implements
         ListFragment.OnFragmentInteractionListener,
         TextFragment.OnFragmentInteractionListener,
@@ -395,10 +397,11 @@ public class MyActivity extends Activity implements
 
         //Toast Testing
         locationTestCounter += 1;
-        if (locationTestCounter >= 10){
+        if (locationTestCounter >= 2){
             Toast.makeText(this,location.getLatitude() + ":"+ location.getLongitude(),Toast.LENGTH_SHORT).show();
             locationTestCounter =0;
         }
+
 
         //For Testing Only
         ArrayList<Event> eventsWithMarkerLocations = ClusterManager.getVisibleEventsWithLocations();
