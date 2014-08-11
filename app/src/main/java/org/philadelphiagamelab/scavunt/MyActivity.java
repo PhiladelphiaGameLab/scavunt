@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -39,6 +40,8 @@ public class MyActivity extends Activity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
 
+
+    private  int locationTestCounter;
     // A request to connect to Location Services
     private LocationRequest mLocationRequest;
 
@@ -389,6 +392,13 @@ public class MyActivity extends Activity implements
      */
     @Override
     public void onLocationChanged(Location location) {
+
+        //Toast Testing
+        locationTestCounter += 1;
+        if (locationTestCounter >= 10){
+            Toast.makeText(this,location.getLatitude() + ":"+ location.getLongitude(),Toast.LENGTH_SHORT).show();
+            locationTestCounter =0;
+        }
 
         //For Testing Only
         ArrayList<Event> eventsWithMarkerLocations = ClusterManager.getVisibleEventsWithLocations();
