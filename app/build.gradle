@@ -20,6 +20,7 @@ android {
 }
 
 dependencies {
+    //compile 'com.google.android.gms:play-services:5.0.77'
     //compile 'com.google.android.gms:play-services:5.2.08'
     compile 'com.google.android.gms:play-services:5.0.89+'
 }
