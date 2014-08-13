@@ -91,9 +91,10 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        if(task.getActivityType() == Task.ActivityType.SERVICE_RECEIVE_AUDIO){
+        if(task.getActivityType() == Task.ActivityType.SERVICE_RECEIVE_AUDIO && !task.isComplete()){
             Intent intent = new Intent(convertView.getContext(), AudioService.class);
             convertView.getContext().startService(intent);
+            task.setComplete(true);
         }
 
 
