@@ -53,7 +53,7 @@ public class StoryBuilder {
                 event1AudioSourceResources,
                 R.layout.text_fragment_default,
                 0,
-                true);
+                false);
         //Build event 1
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
