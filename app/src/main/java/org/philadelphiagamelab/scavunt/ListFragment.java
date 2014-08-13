@@ -69,8 +69,8 @@ public class ListFragment extends Fragment {
         // Set OnItemClickListener so we can be notified on item clicks (NOT RIGHT NOW)
         //mListView.setOnItemClickListener(this);
 
-        Intent intent = new Intent(getActivity(), AudioService.class);
-        getActivity().startService(intent);
+        //Intent intent = new Intent(getActivity(), AudioService.class);
+        //getActivity().startService(intent);
 
         return view;
     }

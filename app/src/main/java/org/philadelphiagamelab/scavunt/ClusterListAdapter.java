@@ -1,5 +1,6 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,6 +90,11 @@ public class ClusterListAdapter extends BaseExpandableListAdapter {
                 ListFragment.onTaskClicked(task);
             }
         });
+
+        if(task.getActivityType() == Task.ActivityType.SERVICE_RECEIVE_AUDIO){
+            Intent intent = new Intent(convertView.getContext(), AudioService.class);
+            convertView.getContext().startService(intent);
+        }
 
 
         return convertView;

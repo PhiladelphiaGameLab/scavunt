@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 /**
  * Created by aaronmsegal on 7/31/14.
+ *
+ * TextFragment is a Task
+ * It displays a plain text in a separate fragment
+ *
+ *
  */
 public class TextFragment extends Fragment {
 
