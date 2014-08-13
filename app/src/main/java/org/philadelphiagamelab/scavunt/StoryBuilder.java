@@ -39,7 +39,7 @@ public class StoryBuilder {
         event1TextResources.put("text", R.string.to_15th_and_market);
         Task event1Text = new Task("Here we go!",
                 Task.ActivityType.RECEIVE_TEXT,
-                Task.ActivationType.INSTANT,
+                Task.ActivationType.IN_RANGE_ONCE,
                 event1TextResources,
                 R.layout.text_fragment_default,
                 0,

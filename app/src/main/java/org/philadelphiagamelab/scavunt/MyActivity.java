@@ -43,6 +43,8 @@ public class MyActivity extends Activity implements
         GooglePlayServicesClient.OnConnectionFailedListener {
 
 
+    private static Context context;
+
     private  int locationTestCounter;
     // A request to connect to Location Services
     private LocationRequest mLocationRequest;
@@ -74,6 +76,8 @@ public class MyActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        context = this;
 
         if( servicesConnected() ) {
 
@@ -554,5 +558,9 @@ public class MyActivity extends Activity implements
     @Override
     public void onFragmentInteraction(String id) {
 
+    }
+
+    public static Context getMyActivityContext(){
+        return context;
     }
 }
