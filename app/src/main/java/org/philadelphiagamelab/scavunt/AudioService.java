@@ -38,7 +38,7 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
         //audioID = intent.getStringExtra(Task.SOUND_RESOURCE);
         //Uri mySong = Uri.parse("android.resource://org.philadelphiagamelab.scavunt/"+R.raw.test_song);
 
-        audioID = R.raw.test_song;
+        audioID = R.raw.song1_short;
 
         AssetFileDescriptor assetFileDescriptor = this.getResources().openRawResourceFd(audioID);
 
@@ -71,9 +71,13 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onDestroy() {
         Toast.makeText(this, "Service Destroyed", Toast.LENGTH_LONG).show();
-        mPlayer.pause();
-        currentPos = mPlayer.getCurrentPosition();
-        mPlayer.release();
+        if(mPlayer != null) {
+            if (mPlayer.isPlaying()) {
+                mPlayer.pause();
+                currentPos = mPlayer.getCurrentPosition();
+            }
+            mPlayer.release();
+        }
     }
 
     @Override
@@ -85,7 +89,6 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onCompletion(MediaPlayer mp) {
         Toast.makeText(this, "Song finished",Toast.LENGTH_SHORT).show();
-        mPlayer.release();
         stopSelf();
     }
 
