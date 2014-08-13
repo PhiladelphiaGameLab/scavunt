@@ -36,6 +36,7 @@ public class Task {
     private boolean complete;
 
     private static int notificationCount = 1;
+    private boolean notificationSent;
     private static Notification.Builder taskNotificationBuilder;
 
     public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn, boolean completeIn) {
@@ -47,6 +48,7 @@ public class Task {
         this.complete = completeIn;
         this.delay = delayIn;
         initializeVisibility();
+        notificationSent = false;
     }
 
     public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn) {
@@ -58,12 +60,12 @@ public class Task {
         this.complete = true;
         this.delay = delayIn;
         initializeVisibility();
+        notificationSent = false;
     }
 
     private void initializeVisibility() {
         if( delay <= 0) {
             if( activationType == ActivationType.INSTANT) {
-                visible = true;
                 makeVisibleAndSendNotification();
             }
             else {;
@@ -88,7 +90,6 @@ public class Task {
         Runnable makeVisible = new Runnable() {
             @Override
             public void run() {
-                visible = true;
                 makeVisibleAndSendNotification();
             }
         };
@@ -100,7 +101,6 @@ public class Task {
         if(activationType != ActivationType.INSTANT) {
             if (parentEventInRange) {
                 if( delay <= 0) {
-                    visible = true;
                     makeVisibleAndSendNotification();
                 }
                 else {
@@ -137,30 +137,33 @@ public class Task {
         Intent intent = new Intent(context,MyActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
-        // Build notification
-        // Actions are just fake
-        if(taskNotificationBuilder == null) {
-            taskNotificationBuilder = new Notification.Builder(context)
-                    .setContentTitle("Please check your scavunt")
-                    .setContentText(message + ": " + title)
-                    .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentIntent(pendingIntent)
-                    .setAutoCancel(true)
-            //.addAction(R.drawable.ic_launcher, "Call", pIntent)
-            //.addAction(R.drawable.ic_launcher, "More", pIntent)
-            //.addAction(R.drawable.ic_launcher, "And more", pIntent)
-            ;
-        }
-        else{
-            taskNotificationBuilder
-                    .setContentText(message + ": " + title)
-                    .setNumber(++notificationCount);
-        }
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // hide the notification after its selected
-        //noti.flags |= Notification.FLAG_AUTO_CANCEL;
+        if(!notificationSent) {
+            // Build notification
+            // Actions are just fake
+            if (taskNotificationBuilder == null) {
+                taskNotificationBuilder = new Notification.Builder(context)
+                        .setContentTitle("Please check your scavunt")
+                        .setContentText(message + ": " + title)
+                        .setSmallIcon(R.drawable.ic_launcher)
+                        .setAutoCancel(true)
+                        //.setContentIntent(pendingIntent)
+                //.addAction(R.drawable.ic_launcher, "Call", pIntent)
+                //.addAction(R.drawable.ic_launcher, "More", pIntent)
+                //.addAction(R.drawable.ic_launcher, "And more", pIntent)
+                ;
+            } else {
+                taskNotificationBuilder
+                        .setContentText(message + ": " + title)
+                        .setNumber(++notificationCount);
+            }
+            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            // hide the notification after its selected
+            //noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        notificationManager.notify(0, taskNotificationBuilder.build());
+            notificationManager.notify(0, taskNotificationBuilder.build());
+
+            notificationSent = true;
+        }
     }
 
     public String getTitle() {
