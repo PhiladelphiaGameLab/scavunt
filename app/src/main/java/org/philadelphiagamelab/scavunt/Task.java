@@ -47,8 +47,8 @@ public class Task {
         this.resourceIDs = resourceIDsIn;
         this.complete = completeIn;
         this.delay = delayIn;
-        initializeVisibility();
-        notificationSent = false;
+        this.visible = false;
+        this.notificationSent = false;
     }
 
     public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn) {
@@ -59,16 +59,16 @@ public class Task {
         this.resourceIDs = resourceIDsIn;
         this.complete = true;
         this.delay = delayIn;
-        initializeVisibility();
-        notificationSent = false;
+        this.visible = false;
+        this.notificationSent = false;
     }
 
-    private void initializeVisibility() {
+    public void initializeVisibility() {
         if( delay <= 0) {
             if( activationType == ActivationType.INSTANT) {
                 makeVisibleAndSendNotification();
             }
-            else {;
+            else {
                 visible = false;
             }
         }

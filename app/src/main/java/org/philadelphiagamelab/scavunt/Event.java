@@ -148,7 +148,14 @@ public class Event {
 
     public void setVisible (Boolean activeStatus) {
         this.visible = activeStatus;
+
+        if(childrenTasks != null) {
+            for(int i = 0; i < childrenTasks.size(); i++ ) {
+                childrenTasks.get(i).initializeVisibility();
+            }
+        }
     }
+
     public boolean isVisible () {
         return visible;
     }
