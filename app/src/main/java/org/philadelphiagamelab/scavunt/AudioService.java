@@ -85,6 +85,7 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
     @Override
     public void onCompletion(MediaPlayer mp) {
         Toast.makeText(this, "Song finished",Toast.LENGTH_SHORT).show();
+        mPlayer.release();
         stopSelf();
     }
 

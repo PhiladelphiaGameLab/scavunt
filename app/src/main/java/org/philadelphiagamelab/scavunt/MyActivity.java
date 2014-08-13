@@ -198,6 +198,12 @@ public class MyActivity extends Activity implements
             // After disconnect() is called, the client is considered "dead".
             mLocationClient.disconnect();
         }
+
+        // TODO: Modify this, so the services stop properly
+        Intent stopMusicService = new Intent(this, AudioService.class);
+        stopService(stopMusicService);
+
+
         super.onStop();
     }
 
@@ -207,6 +213,10 @@ public class MyActivity extends Activity implements
      */
     @Override
     public void onPause() {
+
+        // TODO: Modify this, so the services stop properly
+        Intent stopMusicService = new Intent(this, AudioService.class);
+        stopService(stopMusicService);
 
         super.onPause();
     }
