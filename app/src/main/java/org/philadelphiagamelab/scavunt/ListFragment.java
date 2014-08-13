@@ -1,6 +1,8 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.ExpandableListView;
 public class ListFragment extends Fragment {
 
     private static OnFragmentInteractionListener mListener;
+    private static Context context;
 
     /**
      * The fragment's ListView.
@@ -54,6 +57,9 @@ public class ListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        context = getActivity();
+
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         // Set the adapter
@@ -62,6 +68,9 @@ public class ListFragment extends Fragment {
 
         // Set OnItemClickListener so we can be notified on item clicks (NOT RIGHT NOW)
         //mListView.setOnItemClickListener(this);
+
+        Intent intent = new Intent(getActivity(), AudioService.class);
+        getActivity().startService(intent);
 
         return view;
     }
@@ -91,6 +100,13 @@ public class ListFragment extends Fragment {
 
     public static void onTaskClicked(Task clicked) {
         mListener.onFragmentInteraction(clicked);
+
+        /*
+        if(clicked.getActivityType() == Task.ActivityType.SERVICE_RECEIVE_AUDIO) {
+            Intent intent = new Intent(context, AudioService.class);
+            context.startService(intent);
+        }
+        */
     }
 
     /**

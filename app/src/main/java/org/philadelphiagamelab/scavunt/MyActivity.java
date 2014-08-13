@@ -74,133 +74,115 @@ public class MyActivity extends Activity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my);
 
-        //Temporary TextView for testing
-        testDisplay = (TextView) findViewById(R.id.position_display);
+        if( servicesConnected() ) {
 
-        // Create a new global location parameters object
-        mLocationRequest = LocationRequest.create();
+            setContentView(R.layout.activity_my);
 
-        // Set the update interval and fastest interval
-        mLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
-        mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
+            //Temporary TextView for testing
+            testDisplay = (TextView) findViewById(R.id.position_display);
 
-        // Use high accuracy
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            // Create a new global location parameters object
+            mLocationRequest = LocationRequest.create();
 
-        // Open Shared Preferences
-        mPrefs = getSharedPreferences(LocationUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        // Get an editor
-        mEditor = mPrefs.edit();
+            // Set the update interval and fastest interval
+            mLocationRequest.setInterval(LocationUtils.UPDATE_INTERVAL_IN_MILLISECONDS);
+            mLocationRequest.setFastestInterval(LocationUtils.FAST_INTERVAL_CEILING_IN_MILLISECONDS);
+
+            // Use high accuracy
+            mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            // Open Shared Preferences
+            mPrefs = getSharedPreferences(LocationUtils.SHARED_PREFERENCES, Context.MODE_PRIVATE);
+            // Get an editor
+            mEditor = mPrefs.edit();
 
         /*
          * Create a new location client, using the enclosing class to
          * handle callbacks.
          */
-        mLocationClient = new LocationClient(this, this, this);
+            mLocationClient = new LocationClient(this, this, this);
 
-        //Sets up Map and List fragments
-        if (savedInstanceState == null) {
+            //Sets up Map and List fragments
+            if (savedInstanceState == null) {
 
-            ClusterManager.startUp();
+                ClusterManager.startUp();
 
-            mapFragment = MyMapFragment.newInstanace(
-                    LocationUtils.defaultLatitude,
-                    LocationUtils.defaultLongitude,
-                    LocationUtils.defaultZoom,
-                    LocationUtils.defaultMapType,
-                    ClusterManager.getVisibleEventsWithLocations());
+                mapFragment = MyMapFragment.newInstanace(
+                        LocationUtils.defaultLatitude,
+                        LocationUtils.defaultLongitude,
+                        LocationUtils.defaultZoom,
+                        LocationUtils.defaultMapType,
+                        ClusterManager.getVisibleEventsWithLocations());
 
-            listFragment = ListFragment.newInstance();
+                listFragment = ListFragment.newInstance();
 
-            textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
-            imageFragment1 = ImageFragment.newInstance( R.drawable.test_image, R.layout.image_fragment_default);
-            audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
-            videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
-            //takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
+                textFragment1 = TextFragment.newInstance(R.string.testString, R.layout.text_fragment_default);
+                imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.image_fragment_default);
+                audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
+                videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
+                //takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
 
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container_1, textFragment1, "textFragment1")
-                    .detach(textFragment1)
-                    .add(R.id.container_1, imageFragment1, "imageFragment1")
-                    .detach(imageFragment1)
-                    .add(R.id.container_1, audioFragment1, "audioFragment1")
-                    .detach(audioFragment1)
-                    .add(R.id.container_1,videoFragment1,"videoFragment1")
-                    .detach(videoFragment1)
-                    //.add(R.id.container_1,takePictureFragment1,"takePictureFragment")
-                    //.detach(takePictureFragment1)
-                    .add(R.id.container_1, listFragment, "listFragment1")
-                    .detach(listFragment)
-                    .add(R.id.container_1, mapFragment, "mapFragment1")
-                    .commit();
-        }
+                getFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.container_1, textFragment1, "textFragment1")
+                        .detach(textFragment1)
+                        .add(R.id.container_1, imageFragment1, "imageFragment1")
+                        .detach(imageFragment1)
+                        .add(R.id.container_1, audioFragment1, "audioFragment1")
+                        .detach(audioFragment1)
+                        .add(R.id.container_1, videoFragment1, "videoFragment1")
+                        .detach(videoFragment1)
+                                //.add(R.id.container_1,takePictureFragment1,"takePictureFragment")
+                                //.detach(takePictureFragment1)
+                        .add(R.id.container_1, listFragment, "listFragment1")
+                        .detach(listFragment)
+                        .add(R.id.container_1, mapFragment, "mapFragment1")
+                        .commit();
+            }
 
 
-        //Initialize Swap Button and create and assign listener
-        final Button button1 = (Button) findViewById(R.id.button_swap);
-        button1.setText(R.string.swap_to_list);
+            //Initialize Swap Button and create and assign listener
+            final Button button1 = (Button) findViewById(R.id.button_swap);
+            button1.setText(R.string.swap_to_list);
 
-        View.OnClickListener onClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            View.OnClickListener onClickListener = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                if(mapFragment != null && mapFragment.isVisible()) {
-                    fragmentTransaction.detach(mapFragment).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                else if(listFragment != null && listFragment.isVisible()) {
-                    fragmentTransaction.detach(listFragment).attach(mapFragment);
-                    button1.setText(R.string.swap_to_list);
+                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                    if (mapFragment != null && mapFragment.isVisible()) {
+                        fragmentTransaction.detach(mapFragment).attach(listFragment);
+                        button1.setText(R.string.swap_to_map);
+                    } else if (listFragment != null && listFragment.isVisible()) {
+                        fragmentTransaction.detach(listFragment).attach(mapFragment);
+                        button1.setText(R.string.swap_to_list);
 
-                }
-                else if(textFragment1 != null && textFragment1.isVisible()) {
-                    fragmentTransaction.detach(textFragment1).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                else if(imageFragment1 != null && imageFragment1.isVisible()){
-                    fragmentTransaction.detach(imageFragment1).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                else if(audioFragment1 != null && audioFragment1.isVisible()){
-                    fragmentTransaction.detach(audioFragment1).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                else if(videoFragment1 != null && videoFragment1.isVisible()){
-                    fragmentTransaction.detach(videoFragment1).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
+                    } else if (textFragment1 != null && textFragment1.isVisible()) {
+                        fragmentTransaction.detach(textFragment1).attach(listFragment);
+                        button1.setText(R.string.swap_to_map);
+                    } else if (imageFragment1 != null && imageFragment1.isVisible()) {
+                        fragmentTransaction.detach(imageFragment1).attach(listFragment);
+                        button1.setText(R.string.swap_to_map);
+                    } else if (audioFragment1 != null && audioFragment1.isVisible()) {
+                        fragmentTransaction.detach(audioFragment1).attach(listFragment);
+                        button1.setText(R.string.swap_to_map);
+                    } else if (videoFragment1 != null && videoFragment1.isVisible()) {
+                        fragmentTransaction.detach(videoFragment1).attach(listFragment);
+                        button1.setText(R.string.swap_to_map);
+                    }
                 /*
                 else if(takePictureFragment1 != null && takePictureFragment1.isVisible()){
                     fragmentTransaction.detach(takePictureFragment1).attach(listFragment);
                     button1.setText(R.string.swap_to_map);
                 }
                 */
-                fragmentTransaction.commit();
+                    fragmentTransaction.commit();
 
-                /*
-                MyMapFragment mapFragment =(MyMapFragment) getFragmentManager().findFragmentByTag("mapFragment1");
-                ListFragment listFragment =(ListFragment) getFragmentManager().findFragmentByTag("listFragment1");
-
-
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.addToBackStack(null);
-                if (mapFragment.isDetached()) {
-                    ft.detach(listFragment).attach(mapFragment);
-                    button1.setText(R.string.swap_to_list);
                 }
-                else if (listFragment.isDetached()) {
-                    ft.detach(mapFragment).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                ft.commit();
-                */
-            }
-        };
-        button1.setOnClickListener(onClickListener);
+            };
+            button1.setOnClickListener(onClickListener);
+        }
     }
 
     /*
@@ -211,13 +193,11 @@ public class MyActivity extends Activity implements
     public void onStop() {
 
         // If the client is connected
-        if (mLocationClient.isConnected()) {
+        if (mLocationClient != null && mLocationClient.isConnected()) {
             stopPeriodicUpdates();
+            // After disconnect() is called, the client is considered "dead".
+            mLocationClient.disconnect();
         }
-
-        // After disconnect() is called, the client is considered "dead".
-        mLocationClient.disconnect();
-
         super.onStop();
     }
 
@@ -227,11 +207,6 @@ public class MyActivity extends Activity implements
      */
     @Override
     public void onPause() {
-
-        // Probably Unneeded as updates will always be requested
-        // Save the current setting for updates
-        //mEditor.putBoolean(LocationUtils.KEY_UPDATES_REQUESTED, mUpdatesRequested);
-        //mEditor.commit();
 
         super.onPause();
     }
@@ -246,7 +221,10 @@ public class MyActivity extends Activity implements
          * Connect the client. Don't re-start any requests here;
          * instead, wait for onConnected()
          */
-        mLocationClient.connect();
+
+        if(mLocationClient != null) {
+            mLocationClient.connect();
+        }
 
     }
 
@@ -255,6 +233,7 @@ public class MyActivity extends Activity implements
      */
     @Override
     public void onResume() {
+
         super.onResume();
     }
 
