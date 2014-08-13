@@ -61,7 +61,7 @@ public class Task {
         if( delay <= 0) {
             if( activationType == ActivationType.INSTANT) {
                 visible = true;
-                sendNotification();
+                makeVisibleAndSendNotification();
             }
             else {;
                 visible = false;
@@ -86,7 +86,7 @@ public class Task {
             @Override
             public void run() {
                 visible = true;
-                sendNotification();
+                makeVisibleAndSendNotification();
             }
         };
 
@@ -98,7 +98,7 @@ public class Task {
             if (parentEventInRange) {
                 if( delay <= 0) {
                     visible = true;
-                    sendNotification();
+                    makeVisibleAndSendNotification();
                 }
                 else {
                     delayVisibility();
@@ -109,7 +109,26 @@ public class Task {
         }
     }
 
-    private void sendNotification() {
+    private void makeVisibleAndSendNotification(){
+        visible = true;
+        String messageNotification;
+
+        //Send notification base on the situation
+        if (activityType == ActivityType.SERVICE_RECEIVE_AUDIO){
+            messageNotification = "You have a new incoming call";
+            sendNotification(messageNotification);
+        }
+        else if (activityType == ActivityType.RECEIVE_AUDIO){
+            messageNotification = "You have a new voice mail";
+            sendNotification(messageNotification);
+        }
+        else if (activityType == ActivityType.RECEIVE_TEXT){
+            messageNotification = "You have a new text message";
+            sendNotification(messageNotification);
+        }
+    }
+
+    private void sendNotification(String message) {
         //Test: send a notification when a task is visible
         Context context = MyActivity.getMyActivityContext();
 
@@ -119,7 +138,7 @@ public class Task {
         // Build notification
         // Actions are just fake
         Notification noti = new Notification.Builder(context)
-                .setContentTitle("New message: "+title)
+                .setContentTitle(message +": "+title)
                 .setContentText("Please check your scavunt").setSmallIcon(R.drawable.ic_launcher)
                 .setContentIntent(pendingIntent)
                         //.addAction(R.drawable.ic_launcher, "Call", pIntent)
