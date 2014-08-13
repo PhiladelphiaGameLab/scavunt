@@ -35,6 +35,9 @@ public class Task {
     private boolean visible;
     private boolean complete;
 
+    private static int notificationCount = 1;
+    private static Notification.Builder taskNotificationBuilder;
+
     public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, Integer> resourceIDsIn, int layoutIDIn, long delayIn, boolean completeIn) {
         this.title = titleIn;
         this.activityType = activityTypeIn;
@@ -129,7 +132,6 @@ public class Task {
     }
 
     private void sendNotification(String message) {
-        //Test: send a notification when a task is visible
         Context context = MyActivity.getMyActivityContext();
 
         Intent intent = new Intent(context,MyActivity.class);
@@ -137,19 +139,28 @@ public class Task {
 
         // Build notification
         // Actions are just fake
-        Notification noti = new Notification.Builder(context)
-                .setContentTitle(message +": "+title)
-                .setContentText("Please check your scavunt").setSmallIcon(R.drawable.ic_launcher)
-                .setContentIntent(pendingIntent)
-                        //.addAction(R.drawable.ic_launcher, "Call", pIntent)
-                        //.addAction(R.drawable.ic_launcher, "More", pIntent)
-                        //.addAction(R.drawable.ic_launcher, "And more", pIntent)
-                .build();
+        if(taskNotificationBuilder == null) {
+            taskNotificationBuilder = new Notification.Builder(context)
+                    .setContentTitle("Please check your scavunt")
+                    .setContentText(message + ": " + title)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+            //.addAction(R.drawable.ic_launcher, "Call", pIntent)
+            //.addAction(R.drawable.ic_launcher, "More", pIntent)
+            //.addAction(R.drawable.ic_launcher, "And more", pIntent)
+            ;
+        }
+        else{
+            taskNotificationBuilder
+                    .setContentText(message + ": " + title)
+                    .setNumber(++notificationCount);
+        }
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         // hide the notification after its selected
-        noti.flags |= Notification.FLAG_AUTO_CANCEL;
+        //noti.flags |= Notification.FLAG_AUTO_CANCEL;
 
-        notificationManager.notify(0, noti);
+        notificationManager.notify(0, taskNotificationBuilder.build());
     }
 
     public String getTitle() {
