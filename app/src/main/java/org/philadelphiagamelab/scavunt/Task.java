@@ -134,8 +134,8 @@ public class Task {
     private void sendNotification(String message) {
         Context context = MyActivity.getMyActivityContext();
 
-        Intent intent = new Intent(context,MyActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        //Intent intent = new Intent(context,MyActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, new Intent(), PendingIntent.FLAG_CANCEL_CURRENT);
 
         if(!notificationSent) {
             // Build notification
@@ -146,7 +146,7 @@ public class Task {
                         .setContentText(message + ": " + title)
                         .setSmallIcon(R.drawable.ic_launcher)
                         .setAutoCancel(true)
-                        //.setContentIntent(pendingIntent)
+                        .setContentIntent(pendingIntent)
                 //.addAction(R.drawable.ic_launcher, "Call", pIntent)
                 //.addAction(R.drawable.ic_launcher, "More", pIntent)
                 //.addAction(R.drawable.ic_launcher, "And more", pIntent)
@@ -158,9 +158,10 @@ public class Task {
             }
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             // hide the notification after its selected
-            //noti.flags |= Notification.FLAG_AUTO_CANCEL;
+            Notification notification = taskNotificationBuilder.build();
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-            notificationManager.notify(0, taskNotificationBuilder.build());
+            notificationManager.notify(0, notification);
 
             notificationSent = true;
         }
