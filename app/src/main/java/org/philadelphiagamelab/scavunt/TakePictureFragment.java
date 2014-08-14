@@ -73,7 +73,7 @@ public class TakePictureFragment extends Fragment {
             bitmapKeyID = savedInstanceState.getInt(ARG_PARAM1);
             layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
         }
-        if (getArguments() != null) {
+        else if (getArguments() != null) {
             bitmapKeyID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }

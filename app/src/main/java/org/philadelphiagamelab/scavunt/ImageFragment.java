@@ -57,7 +57,7 @@ public class ImageFragment extends Fragment {
             imageResourceID = savedInstanceState.getInt(ARG_PARAM1);
             layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
         }
-        if (getArguments() != null) {
+        else if (getArguments() != null) {
             imageResourceID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }

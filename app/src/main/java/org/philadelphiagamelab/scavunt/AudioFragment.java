@@ -55,7 +55,7 @@ public class AudioFragment extends Fragment {
             audioResourceID = savedInstanceState.getInt(ARG_PARAM1);
             layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
         }
-        if (getArguments() != null) {
+        else if (getArguments() != null) {
             audioResourceID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }

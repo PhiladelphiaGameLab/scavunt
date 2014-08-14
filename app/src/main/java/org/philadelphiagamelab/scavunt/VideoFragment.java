@@ -51,7 +51,7 @@ public class VideoFragment extends Fragment {
             videoResourceID = savedInstanceState.getInt(ARG_PARAM1);
             layoutResourceID = savedInstanceState.getInt(ARG_PARAM2);
         }
-        if (getArguments() != null) {
+        else if (getArguments() != null) {
             videoResourceID = getArguments().getInt(ARG_PARAM1);
             layoutResourceID = getArguments().getInt(ARG_PARAM2);
         }

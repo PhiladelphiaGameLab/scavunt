@@ -67,8 +67,7 @@ public class MyActivity extends Activity implements
     ImageFragment imageFragment1;
     AudioFragment audioFragment1;
     VideoFragment videoFragment1;
-    Fragment currentFragment;
-    //TakePictureFragment takePictureFragment1;
+    TakePictureFragment takePictureFragment1;
 
     //test TextView for displaying closest location
     private TextView testDisplay;
@@ -128,7 +127,7 @@ public class MyActivity extends Activity implements
                 imageFragment1 = ImageFragment.newInstance(R.drawable.test_image, R.layout.image_fragment_default);
                 audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
                 videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
-                //takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
+                takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
 
                 getFragmentManager()
                         .beginTransaction()
@@ -140,56 +139,13 @@ public class MyActivity extends Activity implements
                         .detach(audioFragment1)
                         .add(R.id.container_1, videoFragment1, "videoFragment1")
                         .detach(videoFragment1)
-                                //.add(R.id.container_1,takePictureFragment1,"takePictureFragment")
-                                //.detach(takePictureFragment1)
+                        .add(R.id.container_1,takePictureFragment1,"takePictureFragment")
+                        .detach(takePictureFragment1)
                         .add(R.id.container_1, listFragment, "listFragment1")
                         .detach(listFragment)
                         .add(R.id.container_1, mapFragment, "mapFragment1")
                         .commit();
             }
-
-            //TODO: Remove this comment if currentFragment works
-            currentFragment = mapFragment;
-
-            /* ------------------- Aaron's old code for swapping between Map View and List View
-
-            //Initialize Swap Button and create and assign listener
-            final Button button1 = (Button) findViewById(R.id.button_swap);
-            button1.setText(R.string.swap_to_list);
-
-            View.OnClickListener onClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-                    if (mapFragment != null && mapFragment.isVisible()) {
-                        fragmentTransaction.detach(mapFragment).attach(listFragment);
-                        button1.setText(R.string.swap_to_map);
-                    } else if (listFragment != null && listFragment.isVisible()) {
-                        fragmentTransaction.detach(listFragment).attach(mapFragment);
-                        button1.setText(R.string.swap_to_list);
-
-                    } else if (textFragment1 != null && textFragment1.isVisible()) {
-                        fragmentTransaction.detach(textFragment1).attach(listFragment);
-                        button1.setText(R.string.swap_to_map);
-                    } else if (imageFragment1 != null && imageFragment1.isVisible()) {
-                        fragmentTransaction.detach(imageFragment1).attach(listFragment);
-                        button1.setText(R.string.swap_to_map);
-                    } else if (audioFragment1 != null && audioFragment1.isVisible()) {
-                        fragmentTransaction.detach(audioFragment1).attach(listFragment);
-                        button1.setText(R.string.swap_to_map);
-                    } else if (videoFragment1 != null && videoFragment1.isVisible()) {
-                        fragmentTransaction.detach(videoFragment1).attach(listFragment);
-                        button1.setText(R.string.swap_to_map);
-                    }
-
-                    fragmentTransaction.commit();
-
-                }
-            };
-
-            button1.setOnClickListener(onClickListener);
-            */
         }
     }
 
@@ -506,8 +462,9 @@ public class MyActivity extends Activity implements
         return super.onOptionsItemSelected(item);
     }
 */
-        public void onMapClicked(MenuItem menuItem) {
+    public void onMapClicked(MenuItem menuItem) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+            Fragment currentFragment = getCurrentFragment();
 
             if(currentFragment != mapFragment){
                 fragmentTransaction.detach(currentFragment).attach(mapFragment);
@@ -518,8 +475,9 @@ public class MyActivity extends Activity implements
 
         }
 
-        public void onTaskListClicked(MenuItem menuItem) {
-            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+    public void onTaskListClicked(MenuItem menuItem) {
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        Fragment currentFragment = getCurrentFragment();
 
             if(currentFragment != listFragment){
                 fragmentTransaction.detach(currentFragment).attach(listFragment);
@@ -530,68 +488,79 @@ public class MyActivity extends Activity implements
 
         }
 
+    public Fragment getCurrentFragment(){
+        Fragment tempCurrentFragment = null;
+        if(mapFragment.isVisible()){
+            tempCurrentFragment = mapFragment;
+        }
+        else if(listFragment.isVisible()){
+            tempCurrentFragment = listFragment;
+        }
+        else if(textFragment1.isVisible()){
+            tempCurrentFragment = textFragment1;
+        }
+        else if(audioFragment1.isVisible()){
+            tempCurrentFragment = audioFragment1;
+        }
+        else if(takePictureFragment1.isVisible()){
+            tempCurrentFragment = takePictureFragment1;
+        }
+        else if (imageFragment1.isVisible()){
+            tempCurrentFragment = imageFragment1;
+        }
+        else if(videoFragment1.isVisible()){
+            tempCurrentFragment = videoFragment1;
+        }
 
+        return tempCurrentFragment;
+    }
 
     @Override
     public void onFragmentInteraction(Task task) {
         //TEST CODE
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 
-        Button swapButton = (Button) findViewById(R.id.button_swap);
-
         if(task.getActivityType() == Task.ActivityType.RECEIVE_TEXT) {
-            swapButton.setText(R.string.swap_to_list);
             textFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(textFragment1);
-            currentFragment = textFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
         //TEST CODE -- IMAGEVIEW
-
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_IMAGE){
-            swapButton.setText(R.string.swap_to_list);
             imageFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(imageFragment1);
-            currentFragment = imageFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
         //TEST CODE -- AUDIOVIEW
-
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_AUDIO){
-            swapButton.setText(R.string.swap_to_list);
             audioFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(audioFragment1);
-            currentFragment = audioFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
         //TEST CODE -- VIDEOVIEW
-
         else if(task.getActivityType() == Task.ActivityType.RECEIVE_VIDEO){
-            swapButton.setText(R.string.swap_to_list);
             videoFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(videoFragment1);
-            currentFragment = videoFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
 
         //TEST CODE -- TAKE PICTURE
 
-        /*
+
         else if(task.getActivityType() == Task.ActivityType.TAKE_PICTURE){
-            swapButton.setText(R.string.swap_to_list);
             takePictureFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(takePictureFragment1);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
-        */
+
 
         //END TEST CODE
     }
