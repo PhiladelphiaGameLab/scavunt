@@ -1,5 +1,6 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
@@ -150,6 +151,7 @@ public class MyActivity extends Activity implements
             //TODO: Remove this comment if currentFragment works
             currentFragment = mapFragment;
 
+            /* ------------------- Aaron's old code for swapping between Map View and List View
 
             //Initialize Swap Button and create and assign listener
             final Button button1 = (Button) findViewById(R.id.button_swap);
@@ -180,17 +182,14 @@ public class MyActivity extends Activity implements
                         fragmentTransaction.detach(videoFragment1).attach(listFragment);
                         button1.setText(R.string.swap_to_map);
                     }
-                /*
-                else if(takePictureFragment1 != null && takePictureFragment1.isVisible()){
-                    fragmentTransaction.detach(takePictureFragment1).attach(listFragment);
-                    button1.setText(R.string.swap_to_map);
-                }
-                */
+
                     fragmentTransaction.commit();
 
                 }
             };
+
             button1.setOnClickListener(onClickListener);
+            */
         }
     }
 
@@ -487,6 +486,11 @@ public class MyActivity extends Activity implements
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.my, menu);
+
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setTitle("SCAVUNT");
+
         return true;
     }
 /*  --------------------- Commented out by Don, not needed
