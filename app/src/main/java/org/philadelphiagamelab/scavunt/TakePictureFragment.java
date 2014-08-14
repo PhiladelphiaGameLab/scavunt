@@ -189,7 +189,9 @@ public class TakePictureFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
-        thisImageView.setVisibility(View.INVISIBLE);
+        if(thisImageView != null) {
+            thisImageView.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override

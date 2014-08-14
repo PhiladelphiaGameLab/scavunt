@@ -490,25 +490,25 @@ public class MyActivity extends Activity implements
 
     public Fragment getCurrentFragment(){
         Fragment tempCurrentFragment = null;
-        if(mapFragment.isVisible()){
+        if(mapFragment != null && mapFragment.isVisible()){
             tempCurrentFragment = mapFragment;
         }
-        else if(listFragment.isVisible()){
+        else if(listFragment != null && listFragment.isVisible()){
             tempCurrentFragment = listFragment;
         }
-        else if(textFragment1.isVisible()){
+        else if(textFragment1 != null && textFragment1.isVisible()){
             tempCurrentFragment = textFragment1;
         }
-        else if(audioFragment1.isVisible()){
+        else if(audioFragment1 != null && audioFragment1.isVisible()){
             tempCurrentFragment = audioFragment1;
         }
-        else if(takePictureFragment1.isVisible()){
+        else if(takePictureFragment1 != null && takePictureFragment1.isVisible()){
             tempCurrentFragment = takePictureFragment1;
         }
-        else if (imageFragment1.isVisible()){
+        else if (imageFragment1!=null && imageFragment1.isVisible()){
             tempCurrentFragment = imageFragment1;
         }
-        else if(videoFragment1.isVisible()){
+        else if(videoFragment1 != null && videoFragment1.isVisible()){
             tempCurrentFragment = videoFragment1;
         }
 
