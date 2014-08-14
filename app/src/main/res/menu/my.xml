@@ -1,8 +1,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MyActivity" >
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+
+    <item android:id="@+id/action_map"
+        android:icon="@drawable/menu_map_icon"
+        android:title="Map"
         android:orderInCategory="100"
-        android:showAsAction="never" />
+        android:showAsAction="always"
+        android:onClick="onMapClicked"
+        />
+
+    <item android:id="@+id/action_task_checkList"
+        android:icon="@drawable/menu_task_list_icon"
+        android:title="Task CheckList"
+        android:orderInCategory="100"
+        android:showAsAction="always"
+        android:onClick="onTaskListClicked"
+        />
+
+
+
 </menu>

@@ -5,4 +5,21 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <!-- Customized theme for the main game -->
+    <style name="Theme.Holo.ActionBarOverlay" parent="android:style/Theme.Holo.Light.DarkActionBar">
+
+        <item name="android:panelColorBackground">#400906</item>
+        <item name="android:actionMenuTextColor">#400906</item>
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+    </style>
+
+    <!-- general styles for the action bar -->
+    <style name="MyActionBar"
+        parent="android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">#400906</item>
+        <item name="android:backgroundStacked">#400906</item>
+        <item name="android:backgroundSplit">#400906</item>
+    </style>
+
 </resources>

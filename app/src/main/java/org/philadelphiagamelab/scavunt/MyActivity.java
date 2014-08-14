@@ -2,6 +2,7 @@ package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
@@ -65,6 +66,7 @@ public class MyActivity extends Activity implements
     ImageFragment imageFragment1;
     AudioFragment audioFragment1;
     VideoFragment videoFragment1;
+    Fragment currentFragment;
     //TakePictureFragment takePictureFragment1;
 
     //test TextView for displaying closest location
@@ -145,6 +147,9 @@ public class MyActivity extends Activity implements
                         .commit();
             }
 
+            //TODO: Remove this comment if currentFragment works
+            currentFragment = mapFragment;
+
 
             //Initialize Swap Button and create and assign listener
             final Button button1 = (Button) findViewById(R.id.button_swap);
@@ -188,6 +193,8 @@ public class MyActivity extends Activity implements
             button1.setOnClickListener(onClickListener);
         }
     }
+
+
 
     /*
     * Called when the Activity is no longer visible at all.
@@ -482,7 +489,7 @@ public class MyActivity extends Activity implements
         getMenuInflater().inflate(R.menu.my, menu);
         return true;
     }
-
+/*  --------------------- Commented out by Don, not needed
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -494,6 +501,32 @@ public class MyActivity extends Activity implements
         }
         return super.onOptionsItemSelected(item);
     }
+*/
+        public void onMapClicked(MenuItem menuItem) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+            if(currentFragment != mapFragment){
+                fragmentTransaction.detach(currentFragment).attach(mapFragment);
+                currentFragment = mapFragment;
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+
+        }
+
+        public void onTaskListClicked(MenuItem menuItem) {
+            FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+            if(currentFragment != listFragment){
+                fragmentTransaction.detach(currentFragment).attach(listFragment);
+                currentFragment = listFragment;
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+
+        }
+
+
 
     @Override
     public void onFragmentInteraction(Task task) {
@@ -506,6 +539,7 @@ public class MyActivity extends Activity implements
             swapButton.setText(R.string.swap_to_list);
             textFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(textFragment1);
+            currentFragment = textFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -516,6 +550,7 @@ public class MyActivity extends Activity implements
             swapButton.setText(R.string.swap_to_list);
             imageFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(imageFragment1);
+            currentFragment = imageFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -526,6 +561,7 @@ public class MyActivity extends Activity implements
             swapButton.setText(R.string.swap_to_list);
             audioFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(audioFragment1);
+            currentFragment = audioFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
@@ -536,6 +572,7 @@ public class MyActivity extends Activity implements
             swapButton.setText(R.string.swap_to_list);
             videoFragment1.updateTask(task);
             fragmentTransaction.detach(listFragment).attach(videoFragment1);
+            currentFragment = videoFragment1;
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
