@@ -44,7 +44,7 @@ public class StoryBuilder {
                 R.layout.text_fragment_default,
                 0,
                 false);
-        //event 2: audio service
+        //event 1: audio service
         Map<String, Integer> event1AudioSourceResources = new HashMap<String, Integer>();
         event1AudioSourceResources.put("audio", R.raw.test_song);
         Task event1AudioService = new Task("Test",
@@ -54,11 +54,22 @@ public class StoryBuilder {
                 R.layout.text_fragment_default,
                 0,
                 false);
+        //event 1: Interactive Response TODO: (Don) I just made this and it could be not working
+        Map<String, Integer> event1InterActiveTextSourceResources = new HashMap<String, Integer>();
+        event1AudioSourceResources.put("audio", R.raw.test_song);
+        Task event1InterActiveText = new Task("Test",
+                Task.ActivityType.RECEIVE_AND_RESPONSE_TEXT,
+                Task.ActivationType.INSTANT,
+                event1InterActiveTextSourceResources,
+                R.layout.interactive_text_fragment,
+                0,
+                false);
         //Build event 1
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
         event1Tasks.add(event1Text);
         event1Tasks.add(event1AudioService);
+        event1Tasks.add(event1InterActiveText);
         ArrayList<Task> event1TasksToComplete = event1Tasks;
         Event event1 = new Event("The Philadelphia Game Lab", new Location("Dummy"), event1Tasks, event1TasksToComplete);
         event1.getLocation().setLatitude(39.951548);
