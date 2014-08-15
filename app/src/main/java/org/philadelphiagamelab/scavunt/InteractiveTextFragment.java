@@ -29,6 +29,7 @@ public class InteractiveTextFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    private Task toRepresent;
     private static final int delayTime = 3000;
 
     // TODO: Rename and change types of parameters
@@ -126,14 +127,14 @@ public class InteractiveTextFragment extends Fragment {
 
         return view;
     }
-
+/*
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
+*/
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -151,6 +152,12 @@ public class InteractiveTextFragment extends Fragment {
         mListener = null;
     }
 
+    public void updateTask(Task toRepresentIn) {
+        toRepresent = toRepresentIn;
+        //layoutResourceID = toRepresent.getLayoutID();
+        //stringResourceID = toRepresent.getResourceID("text");
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -163,7 +170,7 @@ public class InteractiveTextFragment extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onFragmentInteraction(String id);
     }
 
 }

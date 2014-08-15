@@ -40,6 +40,7 @@ public class MyActivity extends Activity implements
         AudioFragment.OnFragmentInteractionListener,
         VideoFragment.OnFragmentInteractionListener,
         TakePictureFragment.OnFragmentInteractionListener,
+        InteractiveTextFragment.OnFragmentInteractionListener,
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener {
@@ -68,6 +69,7 @@ public class MyActivity extends Activity implements
     AudioFragment audioFragment1;
     VideoFragment videoFragment1;
     TakePictureFragment takePictureFragment1;
+    InteractiveTextFragment interactiveTextFragment1;
 
     //test TextView for displaying closest location
     private TextView testDisplay;
@@ -128,6 +130,8 @@ public class MyActivity extends Activity implements
                 audioFragment1 = AudioFragment.newInstance(R.raw.test_song, R.layout.audio_default_fragment);
                 videoFragment1 = VideoFragment.newInstance(R.raw.test_video, R.layout.video_default_fragment);
                 takePictureFragment1 = TakePictureFragment.newInstance(R.id.bitmapKey1, R.layout.take_picture_default_fragment);
+                //TODO: This definition needs to do updated
+                interactiveTextFragment1 = InteractiveTextFragment.newInstance("S1", "S2");
 
                 getFragmentManager()
                         .beginTransaction()
@@ -143,6 +147,8 @@ public class MyActivity extends Activity implements
                         .detach(takePictureFragment1)
                         .add(R.id.container_1, listFragment, "listFragment1")
                         .detach(listFragment)
+                        .add(R.id.container_1, interactiveTextFragment1)
+                        .detach(interactiveTextFragment1)
                         .add(R.id.container_1, mapFragment, "mapFragment1")
                         .commit();
             }
@@ -516,6 +522,9 @@ public class MyActivity extends Activity implements
         else if(videoFragment1 != null && videoFragment1.isVisible()){
             tempCurrentFragment = videoFragment1;
         }
+        else if(interactiveTextFragment1 != null && interactiveTextFragment1.isVisible()){
+            tempCurrentFragment = videoFragment1;
+        }
 
         return tempCurrentFragment;
     }
@@ -566,6 +575,15 @@ public class MyActivity extends Activity implements
             fragmentTransaction.commit();
         }
 
+        //TEST CODE -- TAKE PICTURE
+
+
+        else if(task.getActivityType() == Task.ActivityType.RECEIVE_AND_RESPONSE_TEXT){
+            interactiveTextFragment1.updateTask(task);
+            fragmentTransaction.detach(listFragment).attach(interactiveTextFragment1);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
 
         //END TEST CODE
     }

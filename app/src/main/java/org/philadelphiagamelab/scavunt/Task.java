@@ -19,7 +19,7 @@ public class Task {
 
     public static enum ActivityType {
         RECEIVE_TEXT, RECEIVE_AUDIO, RECEIVE_VIDEO, RECEIVE_IMAGE, TAKE_PICTURE, RECORD_VIDEO,
-        RESPONSE_TEXT, SERVICE_RECEIVE_AUDIO
+        RESPONSE_TEXT, SERVICE_RECEIVE_AUDIO, RECEIVE_AND_RESPONSE_TEXT
     }
 
     public static enum ActivationType {
