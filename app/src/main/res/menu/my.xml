@@ -7,7 +7,7 @@
         android:title="Map"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:onClick="onMapClicked"
+
         />
 
     <item android:id="@+id/action_task_checkList"
@@ -15,7 +15,7 @@
         android:title="Task CheckList"
         android:orderInCategory="100"
         android:showAsAction="always"
-        android:onClick="onTaskListClicked"
+
         />
 
 

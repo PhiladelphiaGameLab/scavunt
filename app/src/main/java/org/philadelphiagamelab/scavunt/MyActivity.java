@@ -449,19 +449,24 @@ public class MyActivity extends Activity implements
 
         return true;
     }
-/*  --------------------- Commented out by Don, not needed
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_map) {
+            onMapClicked(item);
+            return true;
+        }
+        if (id == R.id.action_task_checkList) {
+            onTaskListClicked(item);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-*/
+
     public void onMapClicked(MenuItem menuItem) {
             FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
             Fragment currentFragment = getCurrentFragment();
