@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChooseGame">
+
+    <TextView
+        android:id="@+id/choose_game_instructions"
+        android:text="@string/choose_game_instructions"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:textSize="30sp"/>
+
+    <Button
+        android:id="@+id/test_game"
+        android:layout_width="match_parent"
+        android:layout_height="0sp"
+        android:layout_weight="5"
+        android:text="@string/test_game"
+        android:textSize="40sp"/>
+
+</LinearLayout>

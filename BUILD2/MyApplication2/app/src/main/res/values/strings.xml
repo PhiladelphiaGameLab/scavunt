@@ -2,7 +2,13 @@
 <resources>
 
     <string name="app_name">Scavunt</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
+    <string name="choose_game_instructions">Pick Game To Play</string>
+    <string name="test_game">Test Game</string>
+
+    <string name="loading">Loading…</string>
+    <string name="loading_complete">Loading Complete</string>
+    <string name="play_game">Play Game</string>
 
 </resources>
