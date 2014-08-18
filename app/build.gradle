@@ -5,7 +5,7 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.asegal.aaronmsegal.build2"
+        applicationId "org.philadelphiagamelab.scavunt"
         minSdkVersion 16
         targetSdkVersion 20
         versionCode 1
