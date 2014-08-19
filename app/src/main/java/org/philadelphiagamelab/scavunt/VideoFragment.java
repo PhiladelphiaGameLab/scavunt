@@ -1,6 +1,7 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 
@@ -20,7 +22,7 @@ import android.widget.VideoView;
  * create an instance of this fragment.
  *
  */
-public class VideoFragment extends Fragment {
+public class VideoFragment extends Fragment implements MediaPlayer.OnCompletionListener {
     private static final String ARG_PARAM1 = "videoResourceID";
     private static final String ARG_PARAM2 = "layoutResourceID";
 
@@ -101,6 +103,16 @@ public class VideoFragment extends Fragment {
         layoutResourceID = toRepresent.getLayoutID();
         videoResourceID = toRepresent.getResourceID("video");
     }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        Toast.makeText(getActivity(), "Audio finished", Toast.LENGTH_SHORT).show();
+        //Sets Task to complete once viewed once
+        if(toRepresent != null && !toRepresent.isComplete()) {
+            toRepresent.setComplete(true);
+        }
+    }
+
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated

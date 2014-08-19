@@ -7,7 +7,7 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.Toast;
 
 
 /**
@@ -19,7 +19,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  *
  */
-public class AudioFragment extends Fragment {
+public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "audioResourceID";
     private static final String ARG_PARAM2 = "layoutResourceID";
@@ -68,6 +68,7 @@ public class AudioFragment extends Fragment {
         View view = inflater.inflate(R.layout.audio_default_fragment, container, false);
 
         mPlayer = MediaPlayer.create(getActivity(), audioResourceID);
+        mPlayer.setOnCompletionListener(this);
         mPlayer.start();
 
         return view;
@@ -113,6 +114,15 @@ public class AudioFragment extends Fragment {
         toRepresent = toRepresentIn;
         layoutResourceID = toRepresent.getLayoutID();
         audioResourceID = toRepresent.getResourceID("audio");
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        Toast.makeText(getActivity(), "Audio finished", Toast.LENGTH_SHORT).show();
+        //Sets Task to complete once viewed once
+        if(toRepresent != null && !toRepresent.isComplete()) {
+            toRepresent.setComplete(true);
+        }
     }
 
 
