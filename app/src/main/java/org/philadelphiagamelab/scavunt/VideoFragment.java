@@ -68,6 +68,7 @@ public class VideoFragment extends Fragment implements MediaPlayer.OnCompletionL
         mVideoView.setVideoURI(Uri.parse("android.resource://" + getActivity().getPackageName() + "/" + videoResourceID));
         mVideoView.setMediaController(new MediaController(getActivity()));
         mVideoView.requestFocus();
+        mVideoView.setOnCompletionListener(this);
         mVideoView.start();
 
         return view;
@@ -106,7 +107,7 @@ public class VideoFragment extends Fragment implements MediaPlayer.OnCompletionL
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        Toast.makeText(getActivity(), "Audio finished", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "Video finished", Toast.LENGTH_SHORT).show();
         //Sets Task to complete once viewed once
         if(toRepresent != null && !toRepresent.isComplete()) {
             toRepresent.setComplete(true);

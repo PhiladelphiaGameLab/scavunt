@@ -33,13 +33,14 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event1VideoResources,
                 R.layout.video_default_fragment,
-                0);
+                0,
+                false);
         //event 1: text task 1:On to 15th and Market!
         Map<String, Integer> event1TextResources = new HashMap<String, Integer>();
         event1TextResources.put("text", R.string.to_15th_and_market);
         Task event1Text = new Task("Here we go!",
                 Task.ActivityType.RECEIVE_TEXT,
-                Task.ActivationType.IN_RANGE_ONCE,
+                Task.ActivationType.INSTANT,
                 event1TextResources,
                 R.layout.text_fragment_default,
                 0,
@@ -52,8 +53,7 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event1AudioSourceResources,
                 R.layout.text_fragment_default,
-                0,
-                false);
+                0);
         //event 1: Interactive Response TODO: (Don) I just made this and it could be not working
         Map<String, Integer> event1InterActiveTextSourceResources = new HashMap<String, Integer>();
         event1AudioSourceResources.put("audio", R.raw.test_song);
@@ -62,8 +62,7 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event1InterActiveTextSourceResources,
                 R.layout.interactive_text_fragment,
-                0,
-                false);
+                0);
         //Build event 1
         ArrayList<Task> event1Tasks = new ArrayList<Task>();
         event1Tasks.add(event1Video);
@@ -86,7 +85,8 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event2ImageResources,
                 R.layout.image_fragment_default,
-                0);
+                0,
+                false);
         //event 2: video task 1:The Drummer
         Map<String, Integer> event2VideoResources = new HashMap<String, Integer>();
         event2VideoResources.put("video", R.raw.drummer_on_15th_between_market_and_jfk);
@@ -95,16 +95,19 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event2VideoResources,
                 R.layout.video_default_fragment,
-                0);
+                0,
+                false);
         //event 2: audio task 1:Sameer at 15th and JFK
         Map<String, Integer> event2AudioResources = new HashMap<String, Integer>();
-        event2AudioResources.put("audio", R.raw.sameer_audio_15th_and_jfk);
+        //event2AudioResources.put("audio", R.raw.sameer_audio_15th_and_jfk);
+        event2AudioResources.put("audio", R.raw.song1_short);
         Task event2Audio = new Task("Sammer checks in",
                 Task.ActivityType.RECEIVE_AUDIO,
                 Task.ActivationType.INSTANT,
                 event2AudioResources,
                 R.layout.audio_default_fragment,
-                0);
+                0,
+                false);
         //event 2: text task1:On to City Hall!
         Map<String, Integer> event2TextResources = new HashMap<String, Integer>();
         event2TextResources.put("text", R.string.to_city_hall);

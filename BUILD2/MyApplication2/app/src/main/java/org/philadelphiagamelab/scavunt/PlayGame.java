@@ -3,6 +3,8 @@ package org.philadelphiagamelab.scavunt;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
@@ -18,6 +20,7 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.maps.MapFragment;
 
 import java.util.ArrayList;
 
@@ -37,6 +40,10 @@ public class PlayGame extends Activity implements
 
     // Fragments
     CustomMapFragment mapFragment;
+    EventListFragment eventListFragment;
+    // Fragment TAGS
+    private static final String MAP_TAG = "mapFragment";
+    private static final String LIST_TAG = "listFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +65,38 @@ public class PlayGame extends Activity implements
         */
         locationClient = new LocationClient(this, this, this);
 
+        ClusterManager.startUp();
+
+        FragmentManager fragmentManager = getFragmentManager();
+
+
+        eventListFragment = (EventListFragment) fragmentManager.findFragmentByTag(LIST_TAG);
+        if(eventListFragment == null) {
+            eventListFragment = EventListFragment.newInstance();
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.container_1, eventListFragment, LIST_TAG)
+                    .detach(eventListFragment)
+                    .commit();
+
+        }
+
+        mapFragment = (CustomMapFragment) fragmentManager.findFragmentByTag(MAP_TAG);
+        if (mapFragment == null) {
+            mapFragment = CustomMapFragment.newInstanace(
+                    LocationUtilities.defaultLatitude,
+                    LocationUtilities.defaultLongitude,
+                    LocationUtilities.defaultZoom,
+                    LocationUtilities.defaultMapType,
+                    ClusterManager.getVisibleEventsWithLocations());
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.container_1, mapFragment, MAP_TAG)
+                    .commit();
+        }
+
+
+        /*
         //Setup fragments
         if (savedInstanceState == null) {
 
@@ -70,12 +109,17 @@ public class PlayGame extends Activity implements
                     LocationUtilities.defaultMapType,
                     ClusterManager.getVisibleEventsWithLocations());
 
+            eventListFragment = EventListFragment.newInstance();
+
             getFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container_1, mapFragment, "mapFragment1")
+                    .add(R.id.container_1, eventListFragment, LIST_TAG)
+                    .detach(eventListFragment)
+                    .add(R.id.container_1, mapFragment, MAP_TAG)
                     .commit();
 
         }
+        */
 
         /* Server test code
         setContentView(R.layout.display_game);
@@ -369,13 +413,21 @@ public class PlayGame extends Activity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_map) {
-            //onMapClicked(item);
+            changeFragment(LIST_TAG, MAP_TAG);
             return true;
         }
         if (id == R.id.action_checkList) {
-            //onListClicked(item);
+            changeFragment(MAP_TAG, LIST_TAG);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void changeFragment(String toDetach, String toAttach) {
+        getFragmentManager()
+                .beginTransaction()
+                .attach(getFragmentManager().findFragmentByTag(toAttach))
+                .detach(getFragmentManager().findFragmentByTag(toDetach))
+                .commit();
     }
 }

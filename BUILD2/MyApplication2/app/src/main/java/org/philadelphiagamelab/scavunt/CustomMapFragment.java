@@ -48,15 +48,25 @@ public class CustomMapFragment extends MapFragment {
     }
 
     @Override
+    public void onCreate (Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        setRetainInstance(true);
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         View v = super.onCreateView(inflater, container, savedState);
 
+        /*
         if(savedState!= null) {
             lattitude = savedState.getDouble("Lat", LocationUtilities.defaultLatitude);
             longitude = savedState.getDouble("Lng", LocationUtilities.defaultLongitude);
             zoom = savedState.getFloat("Zoom", LocationUtilities.defaultZoom);
             mapType = LocationUtilities.defaultMapType;
         }
+        */
 
         initilizeMap();
 
@@ -95,27 +105,35 @@ public class CustomMapFragment extends MapFragment {
      * Calls clearMarkers and then adds new markers based on most current info.
      */
     public void updateMarkers() {
-        if (markers != null) {
-            clearMarkers();
-        }
-        markers = new ArrayList<Marker>();
-        for( int i = 0; i < eventsWithMarkers.size(); i++) {
-            // Get location for current marker
-            Location markerLocation = eventsWithMarkers.get(i).getLocation();
-            /**
-             * Add marker at the above location, setting title from the events title and snippet to
-             * event's inRange bool
-             * TODO: Change icon based on inRange
-             */
-            Marker temp = googleMap.addMarker(new MarkerOptions()
-                    .position( new LatLng( markerLocation.getLatitude(), markerLocation.getLongitude()))
-                    .title(eventsWithMarkers.get(i).getTitle())
-                    .snippet(Boolean.toString(eventsWithMarkers.get(i).isInRange())));
-                    //.icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
+        if (googleMap!=null) {
+            if (markers != null) {
+                clearMarkers();
+            }
+            markers = new ArrayList<Marker>();
+            for (int i = 0; i < eventsWithMarkers.size(); i++) {
+                // Get location for current marker
+                Location markerLocation = eventsWithMarkers.get(i).getLocation();
+                /**
+                 * Add marker at the above location, setting title from the events title and snippet to
+                 * event's inRange bool
+                 * TODO: Change icon based on inRange and progression?
+                 */
+                Marker temp = googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(markerLocation.getLatitude(), markerLocation.getLongitude()))
+                        .title(eventsWithMarkers.get(i).getTitle())
+                        .snippet(Boolean.toString(eventsWithMarkers.get(i).isInRange())));
+                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
 
-            markers.add(temp);
+                markers.add(temp);
+            }
         }
 
+    }
+
+    @Override
+    public void onDetach() {
+        lattitude = googleMap.getCameraPosition().target.latitude;
+        longitude = googleMap.getCameraPosition().target.longitude;
     }
 
     @Override
