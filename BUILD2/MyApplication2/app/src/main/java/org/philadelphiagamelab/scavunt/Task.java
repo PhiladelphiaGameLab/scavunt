@@ -109,7 +109,7 @@ public class Task {
 
     public void setComplete (Boolean completeStatus) {
         this.complete = completeStatus;
-        //TODO: ONLY COMMENTED OUT FOR SERVER TESTS!  When added back to the project uncomment line
+
         ClusterManager.checkProgression();
     }
 

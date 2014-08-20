@@ -2,7 +2,6 @@ package org.philadelphiagamelab.scavunt;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,22 +10,22 @@ import android.widget.TextView;
 /**
  * Created by aaronmsegal on 8/20/14.
  */
-public class TextFragment extends Fragment {
+public class ImageFragment extends Fragment {
 
-    private String title;
-    private String text;
     private Task toRepresent;
+    private String title;
+    private String imageURL;
 
     //default layout, TODO: allow for customized layouts
-    private int layoutResourceID = R.layout.receive_text;
+    private int layoutResourceID = R.layout.receive_image;
 
     //Factory Method
-    public static TextFragment newInstance() {
-        TextFragment textFragment = new TextFragment();
-        return textFragment;
+    public static ImageFragment newInstance() {
+        ImageFragment imageFragment = new ImageFragment();
+        return imageFragment;
     }
     //Required public constructor
-    public TextFragment() {}
+    public ImageFragment() {}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +43,9 @@ public class TextFragment extends Fragment {
         TextView titleView = (TextView) view.findViewById(R.id.text_title);
         titleView.setText(title);
 
+        //For testing only
         TextView textView = (TextView) view.findViewById(R.id.text_fragment_text_view);
-        textView.setMovementMethod(new ScrollingMovementMethod());
-        textView.setText(text);
+        textView.setText(imageURL);
 
         //Sets Task to complete when viewed at least once
         if(toRepresent != null && !toRepresent.isComplete()) {
@@ -60,6 +59,7 @@ public class TextFragment extends Fragment {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
         //TODO: setup some static final variables for the below in Server interface or LoadGame
-        text = toRepresent.getResourceURLS("text");
+        imageURL = toRepresent.getResourceURLS("image");
     }
+
 }

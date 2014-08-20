@@ -53,7 +53,8 @@ public class StoryBuilder {
                 Task.ActivationType.INSTANT,
                 event1AudioSourceResources,
                 R.layout.text_fragment_default,
-                0);
+                0,
+                false);
         //event 1: Interactive Response TODO: (Don) I just made this and it could be not working
         Map<String, Integer> event1InterActiveTextSourceResources = new HashMap<String, Integer>();
         event1AudioSourceResources.put("audio", R.raw.test_song);

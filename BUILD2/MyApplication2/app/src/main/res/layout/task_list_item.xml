@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/task_left_indent_padding"
-    android:paddingRight="0dp">
+    android:paddingRight="0dp"
+    android:drawSelectorOnTop="true">
 
     <TextView
         android:id="@+id/task_list_item_text"

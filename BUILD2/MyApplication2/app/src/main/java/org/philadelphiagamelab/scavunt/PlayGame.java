@@ -40,6 +40,7 @@ public class PlayGame extends Activity implements
     CustomMapFragment mapFragment;
     ClusterListFragment clusterListFragment;
     TextFragment textFragment;
+    ImageFragment imageFragment;
 
     // Fragment TAGS
     private static String activeFragmentTag;
@@ -78,6 +79,16 @@ public class PlayGame extends Activity implements
         ClusterManager.startUp();
 
         FragmentManager fragmentManager = getFragmentManager();
+
+        imageFragment = (ImageFragment) fragmentManager.findFragmentByTag(IMAGE_TAG);
+        if(imageFragment == null) {
+            imageFragment = ImageFragment.newInstance();
+            fragmentManager
+                    .beginTransaction()
+                    .add(imageFragment, IMAGE_TAG)
+                    .detach(imageFragment)
+                    .commit();
+        }
 
         textFragment = (TextFragment) fragmentManager.findFragmentByTag(TEXT_TAG);
         if(textFragment == null) {
@@ -446,35 +457,43 @@ public class PlayGame extends Activity implements
 
     public void changeFragment(String toDetach, String toAttach) {
 
-        if(toDetach.equals(activeFragmentTag)) {
-            getFragmentManager()
-                    .beginTransaction()
-                    .attach(getFragmentManager().findFragmentByTag(toAttach))
-                    .detach(getFragmentManager().findFragmentByTag(toDetach))
-                    .commit();
+        if(!toDetach.equals(toAttach)) {
+            if (toDetach.equals(activeFragmentTag)) {
+                getFragmentManager()
+                        .beginTransaction()
+                        .attach(getFragmentManager().findFragmentByTag(toAttach))
+                        .detach(getFragmentManager().findFragmentByTag(toDetach))
+                        .commit();
 
-            activeFragmentTag = toAttach;
+                activeFragmentTag = toAttach;
+            } else {
+                Log.e("SWAP FRAGMENT ERROR: ", activeFragmentTag + " is attached, not: " + toDetach);
+            }
         }
+        /*
         else {
-            Log.e ("SWAP FRAGMENT ERROR: ", activeFragmentTag + " is attached, not: " + toDetach);
+            Log.d("SWAP FRAGMENT MESSAGE: ", toAttach + " already attached");
         }
+        */
     }
 
     @Override
     public void onTaskListItemInteraction(Task clicked) {
         String newTag = null;
 
-        if(clicked.getActivityType() == Task.ActivityType.RECEIVE_TEXT) {
-            newTag = TEXT_TAG;
+        Task.ActivityType activityType = clicked.getActivityType();
 
+        if(activityType == Task.ActivityType.RECEIVE_TEXT) {
+            newTag = TEXT_TAG;
+            textFragment.updateTask(clicked);
+        }
+        else if(activityType == Task.ActivityType.RECEIVE_IMAGE) {
+            newTag = IMAGE_TAG;
+            textFragment.updateTask(clicked);
+        }
+
+        if(newTag != null) {
             changeFragment(LIST_TAG, newTag);
         }
-        /*
-        else if(clicked.getActivityType() == Task.ActivityType.RECEIVE_AUDIO) {
-            newTag = TEXT_TAG;
-        }
-        */
-
-        //
     }
 }
