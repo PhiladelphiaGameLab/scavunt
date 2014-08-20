@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by aaronmsegal on 7/30/14.
  *
- * TODO:
+ *
  */
 public class EventCluster {
 

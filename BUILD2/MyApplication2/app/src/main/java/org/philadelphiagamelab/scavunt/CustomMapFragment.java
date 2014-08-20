@@ -34,9 +34,12 @@ public class CustomMapFragment extends MapFragment {
         super();
     }
 
-    public static CustomMapFragment newInstanace(Double lattitudeIn, Double longitudeIn, Float zoomIn,
-                                             int mapTypeIn,
-                                             ArrayList<Event> eventsWithMarkersIn) {
+    public static CustomMapFragment newInstanace(
+            Double lattitudeIn,
+            Double longitudeIn,
+            Float zoomIn,
+            int mapTypeIn,
+            ArrayList<Event> eventsWithMarkersIn) {
         CustomMapFragment instance = new CustomMapFragment();
         instance.lattitude = lattitudeIn;
         instance.longitude = longitudeIn;
@@ -59,16 +62,9 @@ public class CustomMapFragment extends MapFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedState) {
         View v = super.onCreateView(inflater, container, savedState);
 
-        /*
-        if(savedState!= null) {
-            lattitude = savedState.getDouble("Lat", LocationUtilities.defaultLatitude);
-            longitude = savedState.getDouble("Lng", LocationUtilities.defaultLongitude);
-            zoom = savedState.getFloat("Zoom", LocationUtilities.defaultZoom);
-            mapType = LocationUtilities.defaultMapType;
+        if(googleMap == null) {
+            initilizeMap();
         }
-        */
-
-        initilizeMap();
 
         return v;
     }
@@ -127,24 +123,13 @@ public class CustomMapFragment extends MapFragment {
                 markers.add(temp);
             }
         }
-
     }
 
     @Override
     public void onDetach() {
-        lattitude = googleMap.getCameraPosition().target.latitude;
-        longitude = googleMap.getCameraPosition().target.longitude;
-    }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
+        //Where save should happen probably
 
-        if(googleMap != null) {
-            outState.putDouble("Lat", googleMap.getCameraPosition().target.latitude);
-            outState.putDouble("Lng", googleMap.getCameraPosition().target.longitude);
-            outState.putFloat("Zoom", googleMap.getCameraPosition().zoom);
-        }
-
-        super.onSaveInstanceState(outState);
+        super.onDetach();
     }
 }

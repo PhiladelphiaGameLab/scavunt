@@ -13,7 +13,7 @@ public class LocationUtilities {
     public static final Double defaultLatitude = 39.9514285d;
     public static final Double defaultLongitude = -75.1629362d;
     public static final Float defaultZoom = 12.5f;
-    public static final int defaultMapType = GoogleMap.MAP_TYPE_HYBRID;
+    public static final int defaultMapType = GoogleMap.MAP_TYPE_NORMAL;
 
     //in meters
     public static final Float activationRangeNormal = 40.0f;

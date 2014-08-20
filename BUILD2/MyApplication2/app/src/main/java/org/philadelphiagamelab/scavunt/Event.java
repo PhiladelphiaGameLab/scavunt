@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Created by aaronmsegal on 7/28/14.
  *
- * TODO:
+ *
  */
 public class Event {
 

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -20,8 +19,8 @@ public class EventListFragment extends Fragment {
     //List view created in fragment
     private ListView listView;
 
-    //Adapter TODO: make custom adapter
-    private ListAdapter adapter;
+    //Adapter
+    private ClusterListAdapter clusterListAdapter;
 
     //Factory method
     public static EventListFragment newInstance() {
@@ -36,16 +35,19 @@ public class EventListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRetainInstance(true);
+        clusterListAdapter = new ClusterListAdapter(getActivity().getLayoutInflater());
 
-        //TODO: fix this to use custom adapter:
-        // adapter = new Adapter() {};
+        setRetainInstance(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.event_list, container, false);
+        View view = inflater.inflate(R.layout.cluster_list, container, false);
+
+
+        listView = (ListView)view.findViewById(R.id.list);
+        listView.setAdapter(clusterListAdapter);
 
         return view;
     }

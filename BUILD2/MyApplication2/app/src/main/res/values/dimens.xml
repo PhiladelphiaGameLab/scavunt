@@ -2,4 +2,15 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+
+    <!-- List layout values: -->
+    <!-- Event item -->
+    <dimen name="event_list_item_text">30dp</dimen>
+    <dimen name="event_general_pading">20dp</dimen>
+    <!-- Task item -->
+    <dimen name="task_list_item_text">20dp</dimen>
+    <dimen name="task_left_indent_padding">50dp</dimen>
+    <dimen name="task_general_padding">15dp</dimen>
+
 </resources>
