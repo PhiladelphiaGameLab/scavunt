@@ -101,26 +101,34 @@ public class ClusterListAdapter extends BaseAdapter {
 
         //TODO: add code for background color
 
-        //if(convertView == null) {
-            convertView = inflater.inflate(R.layout.event_list_item, null);
-        //}
+        convertView = inflater.inflate(R.layout.event_list_item, null);
 
         TextView textView = (TextView)convertView.findViewById(R.id.event_list_item_text);
         textView.setText(toRepresent.getTitle());
 
+        //currently Events have no click listener, but this is where it should go if desired,
+        //follow form from tasks bellow and add onEventClicked function to ClusterListFragment
+
         return convertView;
     }
 
-    private View getTaskListView(Task toRepresent, View convertView) {
+    private View getTaskListView(final Task toRepresent, View convertView) {
 
         //TODO: add code for background color
 
-        //if(convertView == null) {
-            convertView = inflater.inflate(R.layout.task_list_item, null);
-        //}
+        convertView = inflater.inflate(R.layout.task_list_item, null);
 
         TextView textView = (TextView)convertView.findViewById(R.id.task_list_item_text);
         textView.setText(toRepresent.getTitle());
+
+        // When a task_list_item is clicked the interface of the containing ClusterListFragment is
+        // used to have the hosting PlayGame activity swap to the proper fragment
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ClusterListFragment.onTaskClicked(toRepresent);
+            }
+        });
 
         return convertView;
     }

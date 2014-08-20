@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- ClusterList -->
     <color name="event_red">#AD4B36</color>
     <color name="task_red">#713E33</color>
-
     <color name="event_green">#74FF8B</color>
     <color name="task_green">#6DBA6E</color>
-
     <color name="event_blue">#323ECC</color>
     <color name="task_blue">#4850B2</color>
+
+    <!-- TextFragment -->
+    <color name="textBackground">#E8E8DC</color>
 
 </resources>

@@ -3,7 +3,6 @@ package org.philadelphiagamelab.scavunt;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -20,14 +18,14 @@ import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.maps.MapFragment;
-
-import java.util.ArrayList;
 
 /**
  * Created by aaronmsegal on 8/18/14.
+ *
+ * TODO: check to enable  MyLocation Source
  */
 public class PlayGame extends Activity implements
+        ClusterListFragment.OnTaskListItemInteractionListener,
         com.google.android.gms.location.LocationListener,
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener{
@@ -40,10 +38,22 @@ public class PlayGame extends Activity implements
 
     // Fragments
     CustomMapFragment mapFragment;
-    EventListFragment eventListFragment;
+    ClusterListFragment clusterListFragment;
+    TextFragment textFragment;
+
     // Fragment TAGS
+    private static String activeFragmentTag;
     private static final String MAP_TAG = "mapFragment";
     private static final String LIST_TAG = "listFragment";
+    private static final String TEXT_TAG = "textFragment";
+    private static final String IMAGE_TAG = "imageFragment";
+    private static final String RESPONSE_TAG = "responseText";
+    private static final String SERVICE_AUDIO = "serviceAudioTag";
+    private static final String RECEIVE_AND_REPONSE = "receiveAndResponse";
+    private static final String AUDIO_TAG = "audioFragment";
+    private static final String VIDEO_TAG = "videoFragment";
+    private static final String TAKE_PICTURE_TAG = "takePictureFragment";
+    private static final String RECORD_VIDEO_TAG = "recordVideoFragment";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,14 +79,23 @@ public class PlayGame extends Activity implements
 
         FragmentManager fragmentManager = getFragmentManager();
 
-
-        eventListFragment = (EventListFragment) fragmentManager.findFragmentByTag(LIST_TAG);
-        if(eventListFragment == null) {
-            eventListFragment = EventListFragment.newInstance();
+        textFragment = (TextFragment) fragmentManager.findFragmentByTag(TEXT_TAG);
+        if(textFragment == null) {
+            textFragment = TextFragment.newInstance();
             fragmentManager
                     .beginTransaction()
-                    .add(R.id.container_1, eventListFragment, LIST_TAG)
-                    .detach(eventListFragment)
+                    .add(R.id.container_1, textFragment, TEXT_TAG)
+                    .detach(textFragment)
+                    .commit();
+        }
+
+        clusterListFragment = (ClusterListFragment) fragmentManager.findFragmentByTag(LIST_TAG);
+        if(clusterListFragment == null) {
+            clusterListFragment = ClusterListFragment.newInstance();
+            fragmentManager
+                    .beginTransaction()
+                    .add(R.id.container_1, clusterListFragment, LIST_TAG)
+                    .detach(clusterListFragment)
                     .commit();
 
         }
@@ -93,6 +112,8 @@ public class PlayGame extends Activity implements
                     .beginTransaction()
                     .add(R.id.container_1, mapFragment, MAP_TAG)
                     .commit();
+
+            activeFragmentTag = MAP_TAG;
         }
 
 
@@ -413,21 +434,47 @@ public class PlayGame extends Activity implements
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_map) {
-            changeFragment(LIST_TAG, MAP_TAG);
+            changeFragment(activeFragmentTag, MAP_TAG);
             return true;
         }
         if (id == R.id.action_checkList) {
-            changeFragment(MAP_TAG, LIST_TAG);
+            changeFragment(activeFragmentTag, LIST_TAG);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     public void changeFragment(String toDetach, String toAttach) {
-        getFragmentManager()
-                .beginTransaction()
-                .attach(getFragmentManager().findFragmentByTag(toAttach))
-                .detach(getFragmentManager().findFragmentByTag(toDetach))
-                .commit();
+
+        if(toDetach.equals(activeFragmentTag)) {
+            getFragmentManager()
+                    .beginTransaction()
+                    .attach(getFragmentManager().findFragmentByTag(toAttach))
+                    .detach(getFragmentManager().findFragmentByTag(toDetach))
+                    .commit();
+
+            activeFragmentTag = toAttach;
+        }
+        else {
+            Log.e ("SWAP FRAGMENT ERROR: ", activeFragmentTag + " is attached, not: " + toDetach);
+        }
+    }
+
+    @Override
+    public void onTaskListItemInteraction(Task clicked) {
+        String newTag = null;
+
+        if(clicked.getActivityType() == Task.ActivityType.RECEIVE_TEXT) {
+            newTag = TEXT_TAG;
+
+            changeFragment(LIST_TAG, newTag);
+        }
+        /*
+        else if(clicked.getActivityType() == Task.ActivityType.RECEIVE_AUDIO) {
+            newTag = TEXT_TAG;
+        }
+        */
+
+        //
     }
 }

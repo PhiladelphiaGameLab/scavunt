@@ -10,10 +10,13 @@ import java.util.Map;
  */
 public class Task {
 
+    //TODO: Implement other types, only text currently functioning
     public static enum ActivityType {
-        RECEIVE_TEXT, RECEIVE_AUDIO, RECEIVE_VIDEO, RECEIVE_IMAGE, TAKE_PICTURE, RECORD_VIDEO,
-        RESPONSE_TEXT
+        RECEIVE_TEXT,  RECEIVE_IMAGE,
+        RESPONSE_TEXT, SERVICE_RECEIVE_AUDIO, RECEIVE_AND_RESPONSE_TEXT,RECEIVE_AUDIO,
+        RECEIVE_VIDEO, TAKE_PICTURE, RECORD_VIDEO,
     }
+
 
     public static enum ActivationType {
         INSTANT, IN_RANGE_ONCE, IN_RANGE_ONLY
@@ -99,7 +102,7 @@ public class Task {
         return  resourceURLs.get(0);
     }
 
-    public String getResourceID(String key) {
+    public String getResourceURLS(String key) {
         //TODO: Add more control over which tasks have which resources and how they are got. Maybe more enums?
         return resourceURLs.get(key);
     }
@@ -107,7 +110,7 @@ public class Task {
     public void setComplete (Boolean completeStatus) {
         this.complete = completeStatus;
         //TODO: ONLY COMMENTED OUT FOR SERVER TESTS!  When added back to the project uncomment line
-        //ClusterManager.checkProgression();
+        ClusterManager.checkProgression();
     }
 
     public boolean isComplete() { return complete; }
