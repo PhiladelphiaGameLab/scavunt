@@ -1,6 +1,7 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -27,6 +28,7 @@ public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionL
     private Task toRepresent;
     private int audioResourceID;
     private int layoutResourceID;
+    private AudioManager audioManager;
 
     private MediaPlayer mPlayer;
     private OnFragmentInteractionListener mListener;
@@ -66,9 +68,13 @@ public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.audio_default_fragment, container, false);
-
         mPlayer = MediaPlayer.create(getActivity(), audioResourceID);
         mPlayer.setOnCompletionListener(this);
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+
+        audioManager = (AudioManager) getActivity().getSystemService(getActivity().AUDIO_SERVICE);
+        audioManager.setStreamSolo(AudioManager.STREAM_MUSIC,true);
+
         mPlayer.start();
 
         return view;
@@ -89,6 +95,7 @@ public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionL
     public void onPause(){
         super.onPause();
         mPlayer.pause();
+        audioManager.setStreamSolo(AudioManager.STREAM_MUSIC,false);
     }
 
     @Override
@@ -100,6 +107,7 @@ public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionL
         if (mPlayer != null) {
             mPlayer.pause();
         }
+        audioManager.setStreamSolo(AudioManager.STREAM_MUSIC,false);
     }
 
     @Override
@@ -123,6 +131,8 @@ public class AudioFragment extends Fragment implements MediaPlayer.OnCompletionL
         if(toRepresent != null && !toRepresent.isComplete()) {
             toRepresent.setComplete(true);
         }
+        //Cancel solo stream
+        audioManager.setStreamSolo(AudioManager.STREAM_MUSIC,false);
     }
 
 
