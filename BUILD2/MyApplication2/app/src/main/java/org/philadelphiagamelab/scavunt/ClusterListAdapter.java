@@ -1,5 +1,6 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 
+import java.util.ResourceBundle;
 import java.util.zip.Inflater;
 
 /**
@@ -99,12 +101,25 @@ public class ClusterListAdapter extends BaseAdapter {
 
     private View getEventListView(Event toRepresent, View convertView) {
 
-        //TODO: add code for background color
-
         convertView = inflater.inflate(R.layout.event_list_item, null);
 
         TextView textView = (TextView)convertView.findViewById(R.id.event_list_item_text);
         textView.setText(toRepresent.getTitle());
+
+        if(toRepresent.isComplete()) {
+            textView.setBackgroundColor(
+                    convertView.getContext().getResources().getColor(R.color.event_blue));
+        }
+        else {
+            if(toRepresent.isInRange()) {
+                textView.setBackgroundColor(
+                        convertView.getContext().getResources().getColor(R.color.event_green));
+            }
+            else {
+                textView.setBackgroundColor(
+                        convertView.getContext().getResources().getColor(R.color.event_red));
+            }
+        }
 
         //currently Events have no click listener, but this is where it should go if desired,
         //follow form from tasks bellow and add onEventClicked function to ClusterListFragment
@@ -114,12 +129,20 @@ public class ClusterListAdapter extends BaseAdapter {
 
     private View getTaskListView(final Task toRepresent, View convertView) {
 
-        //TODO: add code for background color
-
         convertView = inflater.inflate(R.layout.task_list_item, null);
 
         TextView textView = (TextView)convertView.findViewById(R.id.task_list_item_text);
         textView.setText(toRepresent.getTitle());
+
+        if(toRepresent.isComplete()) {
+            textView.setBackgroundColor(
+                    convertView.getContext().getResources().getColor(R.color.task_blue));
+        }
+        else {
+            textView.setBackgroundColor(
+                    convertView.getContext().getResources().getColor(R.color.task_green));
+        }
+
 
         // When a task_list_item is clicked the interface of the containing ClusterListFragment is
         // used to have the hosting PlayGame activity swap to the proper fragment

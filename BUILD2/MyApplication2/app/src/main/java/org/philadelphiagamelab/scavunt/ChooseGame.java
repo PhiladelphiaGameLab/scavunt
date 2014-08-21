@@ -13,7 +13,8 @@ import android.widget.Button;
 
 public class ChooseGame extends Activity {
 
-    private static final String TEST_GAME_NAME = "test";
+    //private static final String TEST_GAME_NAME = "test";
+    private static final String TEST_GAME_NAME = "AaronTest1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

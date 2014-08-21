@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -85,7 +86,7 @@ public class PlayGame extends Activity implements
             imageFragment = ImageFragment.newInstance();
             fragmentManager
                     .beginTransaction()
-                    .add(imageFragment, IMAGE_TAG)
+                    .add(R.id.container_1, imageFragment, IMAGE_TAG)
                     .detach(imageFragment)
                     .commit();
         }
@@ -127,6 +128,7 @@ public class PlayGame extends Activity implements
             activeFragmentTag = MAP_TAG;
         }
 
+        updateFragments();
 
         /*
         //Setup fragments
@@ -378,11 +380,9 @@ public class PlayGame extends Activity implements
         if(mapFragment != null) {
             mapFragment.updateMarkers();
         }
-        /*
-        if(listFragment != null) {
-            listFragment.updateList();
+        if(clusterListFragment != null) {
+            clusterListFragment.updateList();
         }
-        */
     }
 
     /**
@@ -482,6 +482,7 @@ public class PlayGame extends Activity implements
         String newTag = null;
 
         Task.ActivityType activityType = clicked.getActivityType();
+        Log.d("New Activity Type", activityType.toString());
 
         if(activityType == Task.ActivityType.RECEIVE_TEXT) {
             newTag = TEXT_TAG;
@@ -489,11 +490,14 @@ public class PlayGame extends Activity implements
         }
         else if(activityType == Task.ActivityType.RECEIVE_IMAGE) {
             newTag = IMAGE_TAG;
-            textFragment.updateTask(clicked);
+            imageFragment.updateTask(clicked);
         }
 
         if(newTag != null) {
             changeFragment(LIST_TAG, newTag);
+        }
+        else {
+            Log.d("crap", "crap");
         }
     }
 }

@@ -63,7 +63,8 @@ public class Event {
     public boolean updateInRange(Location userLocation) {
         // If event has no location or is in range set inRange to true
         // first check protects against null reference in second check
-        if(location == null || location.distanceTo(userLocation) < distance) {
+        //TODO:currently the server cannot return a null location, distance must be <=0
+        if(distance <=0 ||location == null || location.distanceTo(userLocation) < distance) {
             //update if not already in range
             if( !inRange ) {
                 inRange = true;

@@ -67,6 +67,7 @@ public class LoadGame extends Activity{
     private static final String TAG_TASK_TYPE = "task_type";
     private static final String TAG_TASK_NAME = "task_name";
     private static final String TAG_TASK_ACTIVITY_TYPE = "activity_type";
+    private static final String TAG_TASK_MUST_COMPLETE = "complete";
     private static final String TAG_TASK_DELAY = "delay";
     private static final String TAG_TASK_NUMBER_OF_MEDIA = "num_media";
     //Media
@@ -120,7 +121,7 @@ public class LoadGame extends Activity{
                 JSONObject gameJSON = gameArray.getJSONObject(0);
 
 
-                //Clusters TODO: first cluster in data base should be 0 not 1, then change below
+                //Clusters TODO: first cluster in data base should be 0 not 1, then change below (maybe not?)
                 int clusterCount = 1;
                 EventCluster currentCluster;
 
@@ -159,25 +160,25 @@ public class LoadGame extends Activity{
                         //ActivityType
                         Task.ActivityType activityType;
                         String activityTypeIn = taskJSON.getString(TAG_TASK_TYPE);
-                        if(activityTypeIn.contains("receive text")) {
+                        if(activityTypeIn.contains("receive_text")) {
                             activityType = Task.ActivityType.RECEIVE_TEXT;
                         }
-                        else if(activityTypeIn.contains("receive audio")) {
+                        else if(activityTypeIn.contains("receive_audio")) {
                             activityType = Task.ActivityType.RECEIVE_AUDIO;
                         }
-                        else if(activityTypeIn.contains("receive video")) {
+                        else if(activityTypeIn.contains("receive_video")) {
                             activityType = Task.ActivityType.RECEIVE_VIDEO;
                         }
-                        else if(activityTypeIn.contains("receive image")) {
+                        else if(activityTypeIn.contains("receive_image")) {
                             activityType = Task.ActivityType.RECEIVE_IMAGE;
                         }
-                        else if(activityTypeIn.contains("take picture")) {
+                        else if(activityTypeIn.contains("take_picture")) {
                             activityType = Task.ActivityType.TAKE_PICTURE;
                         }
-                        else if(activityTypeIn.contains("record video")) {
+                        else if(activityTypeIn.contains("record_video")) {
                             activityType = Task.ActivityType.RECORD_VIDEO;
                         }
-                        else if(activityTypeIn.contains("response text")) {
+                        else if(activityTypeIn.contains("response_text")) {
                             activityType = Task.ActivityType.RESPONSE_TEXT;
                         }
                         else {
@@ -190,23 +191,28 @@ public class LoadGame extends Activity{
                         if(activationTypeIn.contains("instant")) {
                             activationType = Task.ActivationType.INSTANT;
                         }
-                        else if(activationTypeIn.contains("in range once")) {
+                        else if(activationTypeIn.contains("in_range_once")) {
                             activationType =Task.ActivationType.IN_RANGE_ONCE;
                         }
-                        else if(activationTypeIn.contains("in range only")) {
+                        else if(activationTypeIn.contains("in_range_only")) {
                             activationType =Task.ActivationType.IN_RANGE_ONLY;
                         }
                         else {
                             activationType = Task.ActivationType.INSTANT;
                             Log.e("unrecognized activationType in task_activity_type:", activationTypeIn);
                         }
-                        //Build Task  TODO: get complete (last bool) from database when its is implemented
+
+                        //Complete
+                        //Task uses opposite for constructor, so non-required tasks start as
+                        //complete and required tasks start as not complete
+                        Boolean mustComplete = (taskJSON.getInt(TAG_TASK_MUST_COMPLETE) == 1);
+
                         Task newTask = new Task(taskJSON.getString(TAG_TASK_NAME),
                                 activityType,
                                 activationType,
                                 taskMedia,
                                 taskJSON.getInt(TAG_TASK_DELAY),
-                                true);
+                                !mustComplete);
                         //Add new task to event's ArrayList
                         eventTasks.add(newTask);
                     }

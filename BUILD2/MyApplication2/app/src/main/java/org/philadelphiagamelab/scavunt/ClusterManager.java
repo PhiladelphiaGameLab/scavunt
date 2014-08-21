@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by aaronmsegal on 7/28/14.
  *
- *
+ * TODO Change progression to linear, get rid of EventCluster's to activate
  */
 public final class ClusterManager {
 
@@ -23,16 +23,17 @@ public final class ClusterManager {
         visibleEvents = currentCluster.makeEventsVisible();
     }
 
+    //TODO:this logic is a mess CLEAN UP
     public static void checkProgression() {
-        if (currentCluster.isComplete() && clusters.get(++currentClusterIndex) != null) {
-            currentCluster = clusters.get(currentClusterIndex);
+        if (currentCluster.isComplete() && (currentClusterIndex + 1) < clusters.size()) {
+            currentCluster = clusters.get(++currentClusterIndex);
             ArrayList<Event> temp = currentCluster.makeEventsVisible();
             for(int i = 0; i < visibleEvents.size(); i++) {
                 temp.add(visibleEvents.get(i));
             }
             visibleEvents = temp;
         }
-        else {
+        else if (currentClusterIndex == clusters.size() - 1) {
             //story over
         }
     }

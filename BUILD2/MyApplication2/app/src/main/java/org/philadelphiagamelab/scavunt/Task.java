@@ -1,5 +1,8 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.text.Layout;
+import android.util.Log;
+
 import java.util.Map;
 
 /**
@@ -37,9 +40,12 @@ public class Task {
         this.resourceURLs = resourceURLsIn;
         this.complete = completeIn;
         this.delay = delayIn;
-        initializeVisibility();
+        this.visible = false;
+        //initializeVisibility();
+        Log.d("NEW TASK:", title+":"+activationType.toString());
     }
 
+    /*
     private void initializeVisibility() {
         if( delay <= 0) {
             if( activationType == ActivationType.INSTANT) {
@@ -58,6 +64,7 @@ public class Task {
             }
         }
     }
+    */
 
     private void delayVisibility() {
         visible = false;
@@ -68,6 +75,7 @@ public class Task {
             @Override
             public void run() {
                 visible = true;
+
             }
         };
 
@@ -75,6 +83,7 @@ public class Task {
     }
 
     public void updateVisibility( boolean parentEventInRange ) {
+        Log.d ("IN UPDATEVIS:", title);
         if(activationType != ActivationType.INSTANT) {
             if (parentEventInRange) {
                 if( delay <= 0) {
@@ -86,6 +95,9 @@ public class Task {
             } else if( activationType == ActivationType.IN_RANGE_ONLY) {
                 visible = false;
             }
+        }
+        else {
+            visible = true;
         }
     }
 

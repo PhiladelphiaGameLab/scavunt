@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 /**
  * Created by aaronmsegal on 8/19/14.
@@ -82,6 +83,7 @@ public class ClusterListFragment extends Fragment {
 
     public void updateList() {
         if(clusterListAdapter != null) {
+            //Toast.makeText(getActivity(), "data set changed", Toast.LENGTH_SHORT).show();
             clusterListAdapter.notifyDataSetChanged();
         }
     }

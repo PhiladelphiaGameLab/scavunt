@@ -2,6 +2,7 @@ package org.philadelphiagamelab.scavunt;
 
 import android.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,14 +39,19 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(layoutResourceID, container, false);
+        View view = inflater.inflate(R.layout.receive_image, container, false);
 
-        TextView titleView = (TextView) view.findViewById(R.id.text_title);
+        TextView titleView = (TextView) view.findViewById(R.id.image_title);
         titleView.setText(title);
 
         //For testing only
-        TextView textView = (TextView) view.findViewById(R.id.text_fragment_text_view);
+        TextView textView = (TextView) view.findViewById(R.id.image_resource_url);
+        //TODO: No resources in database yet, this is null
         textView.setText(imageURL);
+
+
+
+        Log.d("BUILDING IMAGE FRAG:", title + ":" + imageURL);
 
         //Sets Task to complete when viewed at least once
         if(toRepresent != null && !toRepresent.isComplete()) {
