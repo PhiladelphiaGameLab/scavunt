@@ -16,6 +16,7 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
     }
 
     private MediaPlayer mPlayer;
+    private AudioManager audioManager;
     private int currentPos;
     private int audioID;
 
@@ -43,7 +44,7 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
         AssetFileDescriptor assetFileDescriptor = this.getResources().openRawResourceFd(audioID);
 
         mPlayer =  new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mPlayer.setAudioStreamType(AudioManager.STREAM_NOTIFICATION);
         try {
             mPlayer.setDataSource(  assetFileDescriptor.getFileDescriptor(),
                                     assetFileDescriptor.getStartOffset(),
@@ -52,6 +53,10 @@ public class AudioService extends Service implements MediaPlayer.OnPreparedListe
             e.printStackTrace();
         }
         mPlayer.setOnPreparedListener(this);
+
+        audioManager = (AudioManager) getApplication().getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION,2,flags);
+
         // mPlayer.seekTo(currentPos);
         mPlayer.prepareAsync();
         //mPlayer.start();
