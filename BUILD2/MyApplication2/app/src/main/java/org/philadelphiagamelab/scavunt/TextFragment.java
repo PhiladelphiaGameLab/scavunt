@@ -60,7 +60,6 @@ public class TextFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        //TODO: setup some static final variables for the below in Server interface or LoadGame
         text = toRepresent.getResourceURLS("text");
     }
 }

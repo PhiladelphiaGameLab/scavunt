@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -44,10 +45,15 @@ public class ImageFragment extends Fragment {
         TextView titleView = (TextView) view.findViewById(R.id.image_title);
         titleView.setText(title);
 
+        ImageView imageView = (ImageView) view.findViewById(R.id.image);
+        // ImageLoader class instance
+        ImageLoader imgLoader = new ImageLoader(view.getContext());
+        imgLoader.DisplayImage(imageURL, imageView);
+
         //For testing only
         TextView textView = (TextView) view.findViewById(R.id.image_resource_url);
-        //TODO: No resources in database yet, this is null
         textView.setText(imageURL);
+
 
 
 

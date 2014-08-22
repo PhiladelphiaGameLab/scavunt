@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 //TODO: Create listView with list of active games and way to add new games with code,
 //TODO: ability to start/load game already on list
@@ -14,7 +15,7 @@ import android.widget.Button;
 public class ChooseGame extends Activity {
 
     //private static final String TEST_GAME_NAME = "test";
-    private static final String TEST_GAME_NAME = "AaronTest1";
+    //private static final String TEST_GAME_NAME = "THIS WILL WORK";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +27,14 @@ public class ChooseGame extends Activity {
             @Override
             public void onClick(View v) {
                 Intent loadGame = new Intent(getApplicationContext(), LoadGame.class);
+
+                EditText editText = (EditText)findViewById(R.id.game_to_load);
+                String gameName = editText.getText().toString();
+                loadGame.putExtra(LoadGame.PHP_TAG_GAME_NAME, gameName);
+
                 //Here LoadGame is told load game with name test
-                loadGame.putExtra(LoadGame.PHP_TAG_GAME_NAME, TEST_GAME_NAME);
+                //loadGame.putExtra(LoadGame.PHP_TAG_GAME_NAME, TEST_GAME_NAME);
+
                 startActivity(loadGame);
             }
         });
