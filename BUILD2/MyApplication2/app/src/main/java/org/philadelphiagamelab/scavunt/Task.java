@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public class Task {
 
-    //TODO: Implement other types, only text currently functioning
+    //TODO: Implement other types, only text and image currently functioning
     public static enum ActivityType {
         RECEIVE_TEXT,  RECEIVE_IMAGE,
         RESPONSE_TEXT, SERVICE_RECEIVE_AUDIO, RECEIVE_AND_RESPONSE_TEXT,RECEIVE_AUDIO,
@@ -41,33 +41,13 @@ public class Task {
         this.complete = completeIn;
         this.delay = delayIn;
         this.visible = false;
-        //initializeVisibility();
+        if(delay <=0 && activationType == ActivationType.INSTANT) {
+            visible = true;
+        }
         Log.d("NEW TASK:", title+":"+activationType.toString());
     }
 
-    /*
-    private void initializeVisibility() {
-        if( delay <= 0) {
-            if( activationType == ActivationType.INSTANT) {
-                visible = true;
-            }
-            else {;
-                visible = false;
-            }
-        }
-        else {
-            if( activationType == ActivationType.INSTANT) {
-                delayVisibility();
-            }
-            else {
-                visible = false;
-            }
-        }
-    }
-    */
-
     private void delayVisibility() {
-        visible = false;
 
         android.os.Handler handler = new android.os.Handler();
 
@@ -82,23 +62,30 @@ public class Task {
         handler.postDelayed(makeVisible, delay);
     }
 
-    public void updateVisibility( boolean parentEventInRange ) {
-        Log.d ("IN UPDATEVIS:", title);
+    public boolean updateVisibility(boolean parentEventInRnage) {
         if(activationType != ActivationType.INSTANT) {
-            if (parentEventInRange) {
-                if( delay <= 0) {
+            if(parentEventInRnage) {
+                if(delay <= 0) {
                     visible = true;
                 }
                 else {
                     delayVisibility();
                 }
-            } else if( activationType == ActivationType.IN_RANGE_ONLY) {
+            }
+            else if( activationType == ActivationType.IN_RANGE_ONLY) {
                 visible = false;
             }
         }
         else {
-            visible = true;
+            if(delay >= 0) {
+                delayVisibility();
+            }
+            else {
+                visible = true;
+            }
         }
+
+        return visible;
     }
 
     public String getTitle() {
@@ -109,10 +96,13 @@ public class Task {
         return activityType;
     }
 
+    /*
+    //wont be used until custom layouts allowed for
     public String getLayout() {
-        //TODO: Add code to only send layouts from types which have them, otherwise null/error
+        // Add code to only send layouts from types which have them, otherwise null/error
         return  resourceURLs.get(0);
     }
+    */
 
     public String getResourceURLS(String key) {
         //TODO: Add more control over which tasks have which resources and how they are got. Maybe more enums?

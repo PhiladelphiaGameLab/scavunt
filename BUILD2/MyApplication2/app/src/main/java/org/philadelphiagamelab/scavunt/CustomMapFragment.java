@@ -109,16 +109,28 @@ public class CustomMapFragment extends MapFragment {
             for (int i = 0; i < eventsWithMarkers.size(); i++) {
                 // Get location for current marker
                 Location markerLocation = eventsWithMarkers.get(i).getLocation();
+
                 /**
                  * Add marker at the above location, setting title from the events title and snippet to
                  * event's inRange bool
-                 * TODO: Change icon based on inRange and progression?
                  */
+                Float markerColor;
+                Event eventToMark = eventsWithMarkers.get(i);
+                //TODO: should complete events have a marker displayed?
+                if(eventToMark.isComplete()) {
+                    markerColor = BitmapDescriptorFactory.HUE_AZURE;
+                }
+                else if(eventToMark.isInRange()) {
+                    markerColor = BitmapDescriptorFactory.HUE_GREEN;
+                }
+                else {
+                    markerColor = BitmapDescriptorFactory.HUE_RED;
+                }
+
                 Marker temp = googleMap.addMarker(new MarkerOptions()
                         .position(new LatLng(markerLocation.getLatitude(), markerLocation.getLongitude()))
-                        .title(eventsWithMarkers.get(i).getTitle())
-                        .snippet(Boolean.toString(eventsWithMarkers.get(i).isInRange())));
-                //.icon(BitmapDescriptorFactory.fromResource(R.drawable.location_mark)));
+                        .title(eventToMark.getTitle())
+                        .icon(BitmapDescriptorFactory.defaultMarker(markerColor)));
 
                 markers.add(temp);
             }

@@ -1,7 +1,6 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.content.Context;
-
 import java.io.File;
 
 public class FileCache {

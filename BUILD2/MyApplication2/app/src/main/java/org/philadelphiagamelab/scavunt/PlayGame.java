@@ -77,6 +77,8 @@ public class PlayGame extends Activity implements
         */
         locationClient = new LocationClient(this, this, this);
 
+        //TODO: figure out if this is a problem, should maybe only be called the very first time a
+        // game is played, not on every onCreate
         ClusterManager.startUp();
 
         FragmentManager fragmentManager = getFragmentManager();
@@ -129,53 +131,6 @@ public class PlayGame extends Activity implements
         }
 
         updateFragments();
-
-        /*
-        //Setup fragments
-        if (savedInstanceState == null) {
-
-            ClusterManager.startUp();
-
-            mapFragment = CustomMapFragment.newInstanace(
-                    LocationUtilities.defaultLatitude,
-                    LocationUtilities.defaultLongitude,
-                    LocationUtilities.defaultZoom,
-                    LocationUtilities.defaultMapType,
-                    ClusterManager.getVisibleEventsWithLocations());
-
-            eventListFragment = EventListFragment.newInstance();
-
-            getFragmentManager()
-                    .beginTransaction()
-                    .add(R.id.container_1, eventListFragment, LIST_TAG)
-                    .detach(eventListFragment)
-                    .add(R.id.container_1, mapFragment, MAP_TAG)
-                    .commit();
-
-        }
-        */
-
-        /* Server test code
-        setContentView(R.layout.display_game);
-        ArrayList<EventCluster> clusters = GameHolder.getClusters();
-
-        String displayText = "";
-
-        for(int c = 0; c < clusters.size(); c++) {
-            displayText += "Cluster: " + clusters.get(c).getID() + "\n";
-
-            for(int e = 0; e < clusters.get(c).getAmountOfEvents(); e++) {
-                displayText += "\tEvent: " + clusters.get(c).getEvent(e).getTitle() + "\n";
-
-                for(int t = 0; t < clusters.get(c).getEvent(e).getNumberOfTasksVisible(); t++ ) {
-                    displayText += "\t\tTask: " + clusters.get(c).getEvent(e).getVisibleTask(t).getTitle() + "\n";
-                }
-            }
-        }
-
-        TextView displayGame = (TextView) findViewById(R.id.game_text_display);
-        displayGame.setText(displayText);
-        //*/
     }
 
     @Override
@@ -369,7 +324,6 @@ public class PlayGame extends Activity implements
         for(int i = 0; i < ClusterManager.getNumberOfEventsVisible(); i++) {
             ClusterManager.getVisibleEvent(i).updateInRange(location);
         }
-
         updateFragments();
     }
 

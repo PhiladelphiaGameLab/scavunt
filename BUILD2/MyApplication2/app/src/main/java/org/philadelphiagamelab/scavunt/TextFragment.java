@@ -17,6 +17,8 @@ public class TextFragment extends Fragment {
     private String text;
     private Task toRepresent;
 
+    public static final String TEXT_TAG = "text";
+
     //default layout, TODO: allow for customized layouts
     private int layoutResourceID = R.layout.receive_text;
 
@@ -46,7 +48,7 @@ public class TextFragment extends Fragment {
 
         TextView textView = (TextView) view.findViewById(R.id.text_fragment_text_view);
         textView.setMovementMethod(new ScrollingMovementMethod());
-        //TODO: No resources in database yet, this is null
+
         textView.setText(text);
 
         //Sets Task to complete when viewed at least once
@@ -60,6 +62,6 @@ public class TextFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        text = toRepresent.getResourceURLS("text");
+        text = toRepresent.getResourceURLS(TEXT_TAG);
     }
 }

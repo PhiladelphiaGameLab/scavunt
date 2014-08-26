@@ -18,6 +18,9 @@ public class ImageFragment extends Fragment {
     private String title;
     private String imageURL;
 
+    public static final String imageURLTag = "image";
+
+
     //default layout, TODO: allow for customized layouts
     private int layoutResourceID = R.layout.receive_image;
 
@@ -51,11 +54,8 @@ public class ImageFragment extends Fragment {
         imgLoader.DisplayImage(imageURL, imageView);
 
         //For testing only
-        TextView textView = (TextView) view.findViewById(R.id.image_resource_url);
-        textView.setText(imageURL);
-
-
-
+        //TextView textView = (TextView) view.findViewById(R.id.image_resource_url);
+        //textView.setText(imageURL);
 
         Log.d("BUILDING IMAGE FRAG:", title + ":" + imageURL);
 
@@ -70,8 +70,7 @@ public class ImageFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        //TODO: setup some static final variables for the below in Server interface or LoadGame
-        imageURL = toRepresent.getResourceURLS("image");
+        imageURL = toRepresent.getResourceURLS(imageURLTag);
     }
 
 }

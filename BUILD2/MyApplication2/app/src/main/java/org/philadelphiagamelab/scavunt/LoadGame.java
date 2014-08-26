@@ -50,6 +50,7 @@ public class LoadGame extends Activity{
     private static final String TAG_GAME_DESCRIPTION = "game_desc";
     private static final String TAG_GAME_USER_ID = "user_id";
     private static final String TAG_GAME_NUMBER_OF_EVENTS = "num_events";
+
     //Events
     private static final String TAG_EVENT_ARRAY_BASE = "event";
     private static final String TAG_EVENT_ID = "id";
@@ -60,6 +61,7 @@ public class LoadGame extends Activity{
     private static final String TAG_EVENT_NAME = "event_name";
     private static final String TAG_EVENT_DISTANCE = "distance";
     private static final String TAG_EVENT_NUMBER_OF_TASKS = "num_tasks";
+
     //Tasks
     private static final String TAG_TASK_ARRAY_BASE = "_task";
     private static final String TAG_TASK_ID = "id";
@@ -70,6 +72,7 @@ public class LoadGame extends Activity{
     private static final String TAG_TASK_MUST_COMPLETE = "complete";
     private static final String TAG_TASK_DELAY = "delay";
     private static final String TAG_TASK_NUMBER_OF_MEDIA = "num_media";
+
     //Media
     private static final String TAG_MEDIA_ARRAY_BASE = "_media";
     private static final String TAG_MEDIA_ID = "id";
@@ -215,6 +218,7 @@ public class LoadGame extends Activity{
                                 !mustComplete);
                         //Add new task to event's ArrayList
                         eventTasks.add(newTask);
+
                     }
                     Location newLocation = new Location("Dummy");
                     newLocation.setLatitude(eventJSON.getDouble(TAG_EVENT_LAT));

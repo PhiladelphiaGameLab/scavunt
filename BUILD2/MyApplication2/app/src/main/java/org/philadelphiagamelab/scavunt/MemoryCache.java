@@ -1,7 +1,6 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.graphics.Bitmap;
-
 import java.lang.ref.SoftReference;
 import java.util.Collections;
 import java.util.HashMap;
