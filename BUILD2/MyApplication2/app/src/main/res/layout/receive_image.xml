@@ -17,26 +17,11 @@
         android:layout_margin="@dimen/title_margin"
         android:background="@color/title_background"/>
 
-
-
     <ImageView
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="7"
         android:scaleType="centerInside"/>
-
-    <!-- For testing only -->
-    <!--
-    <TextView
-        android:id="@+id/image_resource_url"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:text="TEST:"
-        android:textSize="@dimen/title_text"
-        android:padding="@dimen/title_padding"
-        android:layout_margin="@dimen/title_margin"/>
-        -->
 
 </LinearLayout>

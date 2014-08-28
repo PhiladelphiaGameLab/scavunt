@@ -99,8 +99,12 @@ public class CustomMapFragment extends MapFragment {
 
     /**
      * Calls clearMarkers and then adds new markers based on most current info.
+     *
      */
     public void updateMarkers() {
+
+        eventsWithMarkers = ClusterManager.getVisibleEventsWithLocations();
+
         if (googleMap!=null) {
             if (markers != null) {
                 clearMarkers();

@@ -26,7 +26,7 @@ public class ImageFragment extends Fragment {
     public static final String imageFilePathTag = "image";
 
 
-    //default layout, TODO: allow for customized layouts
+    //default layout
     private int layoutResourceID = R.layout.receive_image;
 
     //Factory Method
@@ -48,7 +48,7 @@ public class ImageFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.receive_image, container, false);
+        View view = inflater.inflate(layoutResourceID, container, false);
 
         //Title
         TextView titleView = (TextView) view.findViewById(R.id.image_title);
