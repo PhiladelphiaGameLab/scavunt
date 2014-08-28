@@ -1,5 +1,7 @@
 package org.philadelphiagamelab.scavunt;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -14,20 +16,27 @@ public final class ClusterManager {
     private static ArrayList<Event> visibleEvents;
     private static int currentClusterIndex = 0;
 
-    //Run at start of game, gets story from story builder and sets events in first cluster visible
-    //Actually called from PlayGame onCreate,
+    public static void initializeClusters(ArrayList<EventCluster> clustersIn) {
+        clusters = clustersIn;
+    }
+
+    //Called from PlayGame onCreate, if initial run sets first cluster as current and visible
     public static void startUp() {
 
-        clusters = GameHolder.getClusters();
+        if(clusters != null) {
 
-        //TODO: add code to pull currentClusterIndex from local database when it exists
+            //TODO: add code to pull currentClusterIndex from local database when it exists
 
-        //This might not work, but if the index is not zero then visibleEvents should also
-        // already have some events stored inside
-        if(currentClusterIndex == 0) {
-            visibleEvents = new ArrayList<Event>();
-            currentCluster = clusters.get(currentClusterIndex);
-            visibleEvents.addAll(currentCluster.makeEventsVisible());
+            //This might not work, but if the index is not zero then visibleEvents should also
+            // already have some events stored inside
+            if (currentClusterIndex == 0) {
+                visibleEvents = new ArrayList<Event>();
+                currentCluster = clusters.get(currentClusterIndex);
+                visibleEvents.addAll(currentCluster.makeEventsVisible());
+            }
+        }
+        else {
+            Log.e ("ERROR", "clusters null");
         }
     }
 

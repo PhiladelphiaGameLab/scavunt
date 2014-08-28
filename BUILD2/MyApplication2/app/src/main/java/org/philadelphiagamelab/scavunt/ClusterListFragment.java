@@ -7,12 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.Toast;
 
 /**
  * Created by aaronmsegal on 8/19/14.
  *
- * TODO:Decide about interface need, so far no need
  */
 public class ClusterListFragment extends Fragment {
 

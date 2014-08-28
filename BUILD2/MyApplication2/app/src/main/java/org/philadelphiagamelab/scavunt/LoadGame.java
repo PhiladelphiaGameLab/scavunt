@@ -1,7 +1,11 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Activity;
+import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,10 +29,11 @@ import java.util.Map;
 /**
  * Created by aaronmsegal on 8/18/14.
  *
- * TODO: create logic and functionality to decided between loading game from local memory if entry
- * TODO: exists, or load from server and create local version
  *
- * TODO: Do something with game info?
+ * TODO: Do something with game info? yep will need to store in local SQLite db
+ *
+ * TODO: Add systems for game specific loading and playing , that will be easy right?
+ * TODO: Part of this will be logic to avoid downloading json once it is stored locally
  */
 public class LoadGame extends Activity{
 
@@ -36,8 +41,6 @@ public class LoadGame extends Activity{
 
     //URL
     private static final String URL = "http://wibblywobblytracker.com/scavunt_web/HuntServer.php";
-    //What should be queried for test:
-    //private static final String URL = "http://wibblywobblytracker.com/scavunt_web/HuntServer.php?gamename=test";
 
     //php game name tag
     public static final String PHP_TAG_GAME_NAME = "gamename";
@@ -80,6 +83,13 @@ public class LoadGame extends Activity{
     private static final String TAG_MEDIA_TYPE = "media_type";
     private static final String TAG_MEDIA_TASK_ID = "task_id";
     private static final String TAG_MEDIA_USER_ID = "user_id";
+    //end JSON node names
+
+    //Resource download tracking variables
+    private ArrayList<Long> toDownloadReferences;
+    private ArrayList<Long> downloadedReferences;
+    //Track if Json Parsed
+    Boolean clustersPopulated;
 
     private static String gameName;
     private static ArrayList<EventCluster> clusters;
@@ -93,6 +103,10 @@ public class LoadGame extends Activity{
         gameName = getIntent().getStringExtra(PHP_TAG_GAME_NAME);
 
         clusters = new ArrayList<EventCluster>();
+
+        toDownloadReferences = new ArrayList<Long>();
+        downloadedReferences = new ArrayList<Long>();
+        clustersPopulated = false;
 
         new LoadFromServer().execute();
     }
@@ -145,21 +159,6 @@ public class LoadGame extends Activity{
                         JSONArray newTaskArray = jsonObject.getJSONArray(taskArrayTag);
                         JSONObject taskJSON = newTaskArray.getJSONObject(0);
 
-
-                        //Media
-                        Map<String,String> taskMedia = new HashMap<String, String>();
-                        for( int r = 0; r < taskJSON.getInt(TAG_TASK_NUMBER_OF_MEDIA); r++) {
-
-                            String mediaArrayTag =
-                                    taskArrayTag + TAG_MEDIA_ARRAY_BASE + Integer.toString(r);
-                            JSONArray newMediaArray = jsonObject.getJSONArray(mediaArrayTag);
-                            JSONObject media = newMediaArray.getJSONObject(0);
-
-                            //Add media to task media map
-                            taskMedia.put(
-                                    media.getString(TAG_MEDIA_TYPE), media.getString(TAG_MEDIA_URL));
-                        }
-
                         //ActivityType
                         Task.ActivityType activityType;
                         String activityTypeIn = taskJSON.getString(TAG_TASK_TYPE);
@@ -205,9 +204,46 @@ public class LoadGame extends Activity{
                             Log.e("unrecognized activationType in task_activity_type:", activationTypeIn);
                         }
 
+                        //Media
+                        Map<String,String> taskMedia = new HashMap<String, String>();
+                        for( int r = 0; r < taskJSON.getInt(TAG_TASK_NUMBER_OF_MEDIA); r++) {
+
+                            String mediaArrayTag =
+                                taskArrayTag + TAG_MEDIA_ARRAY_BASE + Integer.toString(r);
+                            JSONArray newMediaArray = jsonObject.getJSONArray(mediaArrayTag);
+                            JSONObject media = newMediaArray.getJSONObject(0);
+
+                            String mediaFile;
+
+                            //If media type requires resource download
+                            if(!media.getString(TAG_MEDIA_TYPE).equals("text")) {
+                                String mediaName = mediaNameFromURL(media.getString(TAG_MEDIA_URL));
+
+                                //Start download and get reference
+                                //returns null if file already in local storage
+                                Long downloadReference = DownloadManagerUtility.useDownloadManager(
+                                        media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
+
+                                if (downloadReference != null) {
+                                    toDownloadReferences.add(downloadReference);
+                                }
+
+                                mediaFile = DownloadManagerUtility.getFilePath(
+                                        media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
+                            }
+                            //or if it can just be parsed from json
+                            else {
+                                mediaFile = media.getString(TAG_MEDIA_URL);
+                            }
+
+                            //Add media tag and file path/string resource to task's media map
+                            taskMedia.put(
+                                media.getString(TAG_MEDIA_TYPE), mediaFile);
+                        }
+
                         //Complete
-                        //Task uses opposite for constructor, so non-required tasks start as
-                        //complete and required tasks start as not complete
+                        //Task uses opposite of mustComplete for constructor, so non-required tasks
+                        //start as complete and required tasks start as not complete
                         Boolean mustComplete = (taskJSON.getInt(TAG_TASK_MUST_COMPLETE) == 1);
 
                         Task newTask = new Task(taskJSON.getString(TAG_TASK_NAME),
@@ -252,36 +288,90 @@ public class LoadGame extends Activity{
             return null;
         }
 
-        @Override
+        // broadcast listener for downloads, include check for if all resources already loaded
         protected void onPostExecute(String file_url) {
             super.onPostExecute(file_url);
 
-            GameHolder.setClusters(clusters);
+            ClusterManager.initializeClusters(clusters);
+            clustersPopulated = true;
 
-            LinearLayout container = (LinearLayout) findViewById(R.id.button_holder);
-
-            //set the properties for button
-            Button startButton = new Button(getApplicationContext());
-            startButton.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.MATCH_PARENT));
-            startButton.setText("Start Game");
-            startButton.setTextSize(40.0f);
-            //Start Game
-            startButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), PlayGame.class);
-                    startActivity(intent);
-                }
-            });
-
-            TextView status = (TextView) findViewById(R.id.status);
-            status.setText("Done Loading.");
-
-            container.addView(startButton);
-
+            if(gameIsLoaded()) {
+                activatePlayButton();
+            }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Filter and receiver for detecting download complete
+        IntentFilter filter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        registerReceiver(downloadReceiver, filter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        unregisterReceiver(downloadReceiver);
+
+    }
+
+    private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            Long referenceID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+
+            downloadedReferences.add(referenceID);
+
+            if(gameIsLoaded()) {
+                activatePlayButton();
+            }
+        }
+    };
+
+    private boolean gameIsLoaded() {
+        if(downloadedReferences.containsAll(toDownloadReferences) && clustersPopulated){
+            return true;
+        }
+        return false;
+    }
+
+    private String mediaNameFromURL(String urlIn) {
+        if (urlIn == null || urlIn.length() == 0) {
+            return urlIn;
+        }
+        int lastSlash = urlIn.lastIndexOf("/");
+        if (lastSlash == -1 || lastSlash == (urlIn.length() - 1)) {
+            return "";
+        }
+        return urlIn.substring(lastSlash + 1);
+    }
+
+    private void activatePlayButton() {
+        LinearLayout container = (LinearLayout) findViewById(R.id.button_holder);
+
+        //set the properties for button
+        Button startButton = new Button(getApplicationContext());
+        startButton.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT));
+        startButton.setText("Start Game");
+        startButton.setTextSize(40.0f);
+        //Start Game
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), PlayGame.class);
+                startActivity(intent);
+            }
+        });
+
+
+        TextView status = (TextView) findViewById(R.id.status);
+        status.setText("Done Loading.");
+
+        container.addView(startButton);
     }
 
 

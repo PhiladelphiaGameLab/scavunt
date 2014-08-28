@@ -62,6 +62,6 @@ public class TextFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        text = toRepresent.getResourceURLS(TEXT_TAG);
+        text = toRepresent.getResource(TEXT_TAG);
     }
 }

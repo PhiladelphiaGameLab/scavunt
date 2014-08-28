@@ -1,14 +1,11 @@
 package org.philadelphiagamelab.scavunt;
 
-import android.text.Layout;
 import android.util.Log;
 
 import java.util.Map;
 
 /**
  * Created by aaronmsegal on 7/28/14.
- *
- * TODO: Look at bellow todos. Make class/classes to parse resources from urls
  *
  */
 public class Task {
@@ -28,16 +25,16 @@ public class Task {
     private String title;
     private ActivityType activityType;
     private ActivationType activationType;
-    private Map<String, String> resourceURLs;
+    private Map<String, String> resources;
     private long delay;
     private boolean visible;
     private boolean complete;
 
-    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, String> resourceURLsIn, long delayIn, boolean completeIn) {
+    public Task (String titleIn, ActivityType activityTypeIn, ActivationType activationTypeIn, Map<String, String> resourcesIn, long delayIn, boolean completeIn) {
         this.title = titleIn;
         this.activityType = activityTypeIn;
         this.activationType = activationTypeIn;
-        this.resourceURLs = resourceURLsIn;
+        this.resources = resourcesIn;
         this.complete = completeIn;
         this.delay = delayIn;
         this.visible = false;
@@ -96,17 +93,9 @@ public class Task {
         return activityType;
     }
 
-    /*
-    //wont be used until custom layouts allowed for
-    public String getLayout() {
-        // Add code to only send layouts from types which have them, otherwise null/error
-        return  resourceURLs.get(0);
-    }
-    */
-
-    public String getResourceURLS(String key) {
+    public String getResource(String key) {
         //TODO: Add more control over which tasks have which resources and how they are got. Maybe more enums?
-        return resourceURLs.get(key);
+        return resources.get(key);
     }
 
     public void setComplete (Boolean completeStatus) {

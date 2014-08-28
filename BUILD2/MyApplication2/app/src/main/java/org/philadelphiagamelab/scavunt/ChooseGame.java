@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 //TODO: Create listView with list of active games and way to add new games with code,
-//TODO: ability to start/load game already on list
+//TODO: ability to start/load game already on list  Need to store some info in local DB
 
 public class ChooseGame extends Activity {
 

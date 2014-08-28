@@ -1,13 +1,18 @@
 package org.philadelphiagamelab.scavunt;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
 
 /**
  * Created by aaronmsegal on 8/20/14.
@@ -16,9 +21,9 @@ public class ImageFragment extends Fragment {
 
     private Task toRepresent;
     private String title;
-    private String imageURL;
+    private String imageFilePath;
 
-    public static final String imageURLTag = "image";
+    public static final String imageFilePathTag = "image";
 
 
     //default layout, TODO: allow for customized layouts
@@ -45,19 +50,23 @@ public class ImageFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.receive_image, container, false);
 
+        //Title
         TextView titleView = (TextView) view.findViewById(R.id.image_title);
         titleView.setText(title);
 
-        ImageView imageView = (ImageView) view.findViewById(R.id.image);
-        // ImageLoader class instance
-        ImageLoader imgLoader = new ImageLoader(view.getContext());
-        imgLoader.DisplayImage(imageURL, imageView);
 
-        //For testing only
-        //TextView textView = (TextView) view.findViewById(R.id.image_resource_url);
-        //textView.setText(imageURL);
+        //Image
+        File imageFile = new File(imageFilePath);
+        if(imageFile.exists()){
 
-        Log.d("BUILDING IMAGE FRAG:", title + ":" + imageURL);
+            Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
+
+            ImageView imageView = (ImageView) view.findViewById(R.id.image);
+            imageView.setImageBitmap(bitmap);
+        }
+        else {
+            Log.e("File not found: ", imageFile.getAbsolutePath());
+        }
 
         //Sets Task to complete when viewed at least once
         if(toRepresent != null && !toRepresent.isComplete()) {
@@ -70,7 +79,7 @@ public class ImageFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        imageURL = toRepresent.getResourceURLS(imageURLTag);
+        imageFilePath = toRepresent.getResource(imageFilePathTag);
     }
 
 }

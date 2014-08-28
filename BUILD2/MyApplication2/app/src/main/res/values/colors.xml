@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- General -->>
+    <color name="light_grey">#E6E5E8</color>
+
     <!-- ClusterList -->
     <color name="event_red">#AD4B36</color>
     <color name="task_red">#713E33</color>
@@ -9,7 +12,10 @@
     <color name="event_blue">#323ECC</color>
     <color name="task_blue">#4850B2</color>
 
+    <!-- Media Fragments General -->>
+    <color name="title_background">#E6E5E8</color>
+
     <!-- TextFragment -->
-    <color name="textBackground">#E8E8DC</color>
+    <color name="text_background">#FFFFFF</color>
 
 </resources>
