@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.ErrorDialogFragment;
@@ -42,6 +41,8 @@ public class PlayGame extends Activity implements
     ClusterListFragment clusterListFragment;
     TextFragment textFragment;
     ImageFragment imageFragment;
+    VideoFragment videoFragment;
+    AudioFragment audioFragment;
 
     // Fragment TAGS
     private static String activeFragmentTag;
@@ -77,11 +78,27 @@ public class PlayGame extends Activity implements
         */
         locationClient = new LocationClient(this, this, this);
 
-        //TODO: figure out if this is a problem, should maybe only be called the very first time a
-        // game is played, not on every onCreate
-        ClusterManager.startUp();
+        ClusterManager.activityOnCreate();
 
         FragmentManager fragmentManager = getFragmentManager();
+
+        audioFragment = (AudioFragment) fragmentManager.findFragmentByTag(AUDIO_TAG);
+        if(audioFragment == null) {
+            audioFragment = AudioFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .add(R.id.container_1, audioFragment, AUDIO_TAG)
+                    .detach(audioFragment)
+                    .commit();
+        }
+
+        videoFragment = (VideoFragment) fragmentManager.findFragmentByTag(VIDEO_TAG);
+        if(videoFragment == null) {
+            videoFragment = VideoFragment.newInstance();
+            fragmentManager.beginTransaction()
+                    .add(R.id.container_1, videoFragment, VIDEO_TAG)
+                    .detach(videoFragment)
+                    .commit();
+        }
 
         imageFragment = (ImageFragment) fragmentManager.findFragmentByTag(IMAGE_TAG);
         if(imageFragment == null) {
@@ -135,7 +152,6 @@ public class PlayGame extends Activity implements
 
     @Override
     public void onStop() {
-
         // If the client is connected
         if (locationClient != null && locationClient.isConnected()) {
             stopPeriodicUpdates();
@@ -143,36 +159,19 @@ public class PlayGame extends Activity implements
             locationClient.disconnect();
         }
 
-        /*
-        // TODO: Modify this, so the services stop properly
-        Intent stopMusicService = new Intent(this, AudioService.class);
-        stopService(stopMusicService);
-        */
-
-
         super.onStop();
     }
 
     @Override
     public void onPause() {
-
-        /*
-        // TODO: Modify this, so the services stop properly
-        Intent stopMusicService = new Intent(this, AudioService.class);
-        stopService(stopMusicService);
-        */
-
         super.onPause();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        /*
-         * Connect the client. Don't re-start any requests here;
-         * instead, wait for onConnected()
-         */
 
+        // Connect the client. Don't re-start any requests here, wait for onConnected()
         if(locationClient != null) {
             locationClient.connect();
         }
@@ -387,7 +386,9 @@ public class PlayGame extends Activity implements
         getMenuInflater().inflate(R.menu.main, menu);
 
         ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowHomeEnabled(false);
+        if(actionBar != null) {
+            actionBar.setDisplayShowHomeEnabled(false);
+        }
 
         return true;
     }
@@ -426,7 +427,7 @@ public class PlayGame extends Activity implements
         }
         /*
         else {
-            Log.d("SWAP FRAGMENT MESSAGE: ", toAttach + " already attached");
+            Log.e("SWAP FRAGMENT MESSAGE: ", toAttach + " already attached");
         }
         */
     }
@@ -436,7 +437,7 @@ public class PlayGame extends Activity implements
         String newTag = null;
 
         Task.ActivityType activityType = clicked.getActivityType();
-        Log.d("New Activity Type", activityType.toString());
+        Log.d("New Activity Type: ", activityType.toString());
 
         if(activityType == Task.ActivityType.RECEIVE_TEXT) {
             newTag = TEXT_TAG;
@@ -445,6 +446,14 @@ public class PlayGame extends Activity implements
         else if(activityType == Task.ActivityType.RECEIVE_IMAGE) {
             newTag = IMAGE_TAG;
             imageFragment.updateTask(clicked);
+        }
+        else if(activityType == Task.ActivityType.RECEIVE_VIDEO) {
+            newTag = VIDEO_TAG;
+            videoFragment.updateTask(clicked);
+        }
+        else if(activityType == Task.ActivityType.RECEIVE_AUDIO) {
+            newTag = AUDIO_TAG;
+            audioFragment.updateTask(clicked);
         }
 
         if(newTag != null) {

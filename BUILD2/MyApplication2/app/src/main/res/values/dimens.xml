@@ -13,11 +13,11 @@
     <dimen name="task_general_padding">15dp</dimen>
 
     <!-- Task Fragment Layout Value -->
-    <dimen name="title_text">30dp</dimen>
+    <dimen name="title_text">25dp</dimen>
     <dimen name="title_margin">4dp</dimen>
     <dimen name="title_padding">10dp</dimen>
     <!-- Text -->
-    <dimen name="receive_text">25dp</dimen>
+    <dimen name="receive_text">20dp</dimen>
     <dimen name="receive_text_margin">2dp</dimen>
     <dimen name="receive_text_padding">10dp</dimen>
 

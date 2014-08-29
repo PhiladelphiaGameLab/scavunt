@@ -21,7 +21,7 @@ public final class ClusterManager {
     }
 
     //Called from PlayGame onCreate, if initial run sets first cluster as current and visible
-    public static void startUp() {
+    public static void activityOnCreate() {
 
         if(clusters != null) {
 

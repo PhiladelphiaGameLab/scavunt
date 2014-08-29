@@ -4,10 +4,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
 
     <TextView
-        android:id="@+id/image_title"
+        android:id="@+id/video_title"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -17,11 +18,11 @@
         android:layout_margin="@dimen/title_margin"
         android:background="@color/title_background"/>
 
-    <ImageView
-        android:id="@+id/image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="9"
-        android:scaleType="centerInside"/>
+    <VideoView
+        android:id="@+id/displayVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

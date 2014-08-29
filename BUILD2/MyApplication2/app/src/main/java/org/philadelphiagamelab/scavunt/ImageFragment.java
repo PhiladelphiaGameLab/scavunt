@@ -4,7 +4,6 @@ import android.app.Fragment;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +18,11 @@ import java.io.File;
  */
 public class ImageFragment extends Fragment {
 
+    public static final String IMAGE_FILEPATH_TAG = "image";
+
     private Task toRepresent;
     private String title;
     private String imageFilePath;
-
-    public static final String imageFilePathTag = "image";
-
 
     //default layout
     private int layoutResourceID = R.layout.receive_image;
@@ -43,6 +41,8 @@ public class ImageFragment extends Fragment {
 
         setRetainInstance(true);
     }
+
+    //TODO: Maybe move some stuff out of onCreateView and into onCreate for better performance?
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -79,7 +79,7 @@ public class ImageFragment extends Fragment {
     public void updateTask(Task toRepresentIn) {
         toRepresent = toRepresentIn;
         title = toRepresent.getTitle();
-        imageFilePath = toRepresent.getResource(imageFilePathTag);
+        imageFilePath = toRepresent.getResource(IMAGE_FILEPATH_TAG);
     }
 
 }
