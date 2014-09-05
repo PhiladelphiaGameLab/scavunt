@@ -89,6 +89,7 @@ public class LoadGame extends Activity{
     private ArrayList<Long> toDownloadReferences;
     private ArrayList<Long> downloadedReferences;
     //Track if Json Parsed
+    Boolean gameExists;
     Boolean clustersPopulated;
 
     private static String gameName;
@@ -106,6 +107,7 @@ public class LoadGame extends Activity{
 
         toDownloadReferences = new ArrayList<Long>();
         downloadedReferences = new ArrayList<Long>();
+        gameExists = false;
         clustersPopulated = false;
 
         new LoadFromServer().execute();
@@ -125,166 +127,166 @@ public class LoadGame extends Activity{
         protected String doInBackground(String... strings) {
 
             // Building Parameters
-            List<NameValuePair> paramaters = new ArrayList<NameValuePair>();
-            paramaters.add(new BasicNameValuePair(PHP_TAG_GAME_NAME, gameName));
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+            parameters.add(new BasicNameValuePair(PHP_TAG_GAME_NAME, gameName));
 
             // getting JSON string from URL
-            JSONObject jsonObject = serverInterface.makeHttpRequest(URL, ServerInterface.Method.GET, paramaters);
+            JSONObject jsonObject = serverInterface.makeHttpRequest(URL, ServerInterface.Method.GET, parameters);
 
-            Log.d("Game JSON String: ", jsonObject.toString());
-            try {
-                //Game
-                JSONArray gameArray = jsonObject.getJSONArray(TAG_GAME_ARRAY);
-                JSONObject gameJSON = gameArray.getJSONObject(0);
+            if(jsonObject != null) {
+
+                gameExists = true;
+
+                try {
+
+                    Log.d("Game JSON String: ", jsonObject.toString());
+                    //Game
+                    JSONArray gameArray = jsonObject.getJSONArray(TAG_GAME_ARRAY);
+                    JSONObject gameJSON = gameArray.getJSONObject(0);
 
 
-                //Clusters TODO: first cluster in data base should be 0 not 1, then change below (maybe not?)
-                int clusterCount = 1;
-                EventCluster currentCluster;
+                    //Clusters TODO: first cluster in data base should be 0 not 1, then change below (maybe not?)
+                    int clusterCount = 1;
+                    EventCluster currentCluster;
 
-                //Events
-                ArrayList<Event> clusterEvents = new ArrayList<Event>();
-                for( int e = 0; e < gameJSON.getInt(TAG_GAME_NUMBER_OF_EVENTS); e++) {
+                    //Events
+                    ArrayList<Event> clusterEvents = new ArrayList<Event>();
+                    for (int e = 0; e < gameJSON.getInt(TAG_GAME_NUMBER_OF_EVENTS); e++) {
 
-                    String eventArrayTag = TAG_EVENT_ARRAY_BASE + Integer.toString(e);
-                    JSONArray newEventArray = jsonObject.getJSONArray(eventArrayTag);
-                    JSONObject eventJSON = newEventArray.getJSONObject(0);
+                        String eventArrayTag = TAG_EVENT_ARRAY_BASE + Integer.toString(e);
+                        JSONArray newEventArray = jsonObject.getJSONArray(eventArrayTag);
+                        JSONObject eventJSON = newEventArray.getJSONObject(0);
 
-                    //Tasks
-                    ArrayList<Task> eventTasks = new ArrayList<Task>();
-                    for( int t = 0; t < eventJSON.getInt(TAG_EVENT_NUMBER_OF_TASKS); t++ ) {
+                        //Tasks
+                        ArrayList<Task> eventTasks = new ArrayList<Task>();
+                        for (int t = 0; t < eventJSON.getInt(TAG_EVENT_NUMBER_OF_TASKS); t++) {
 
-                        String taskArrayTag =
-                                eventArrayTag + TAG_TASK_ARRAY_BASE + Integer.toString(t);
-                        JSONArray newTaskArray = jsonObject.getJSONArray(taskArrayTag);
-                        JSONObject taskJSON = newTaskArray.getJSONObject(0);
+                            String taskArrayTag =
+                                    eventArrayTag + TAG_TASK_ARRAY_BASE + Integer.toString(t);
+                            JSONArray newTaskArray = jsonObject.getJSONArray(taskArrayTag);
+                            JSONObject taskJSON = newTaskArray.getJSONObject(0);
 
-                        //ActivityType
-                        Task.ActivityType activityType;
-                        String activityTypeIn = taskJSON.getString(TAG_TASK_TYPE);
-                        if(activityTypeIn.contains("receive_text")) {
-                            activityType = Task.ActivityType.RECEIVE_TEXT;
-                        }
-                        else if(activityTypeIn.contains("receive_audio")) {
-                            activityType = Task.ActivityType.RECEIVE_AUDIO;
-                        }
-                        else if(activityTypeIn.contains("receive_video")) {
-                            activityType = Task.ActivityType.RECEIVE_VIDEO;
-                        }
-                        else if(activityTypeIn.contains("receive_image")) {
-                            activityType = Task.ActivityType.RECEIVE_IMAGE;
-                        }
-                        else if(activityTypeIn.contains("take_picture")) {
-                            activityType = Task.ActivityType.TAKE_PICTURE;
-                        }
-                        else if(activityTypeIn.contains("record_video")) {
-                            activityType = Task.ActivityType.RECORD_VIDEO;
-                        }
-                        else if(activityTypeIn.contains("response_text")) {
-                            activityType = Task.ActivityType.RESPONSE_TEXT;
-                        }
-                        else {
-                            activityType = Task.ActivityType.RECEIVE_TEXT;
-                            Log.e("Unrecognized activityType in task_type:", activityTypeIn);
-                        }
-                        //ActivationType
-                        Task.ActivationType activationType;
-                        String activationTypeIn = taskJSON.getString(TAG_TASK_ACTIVITY_TYPE);
-                        if(activationTypeIn.contains("instant")) {
-                            activationType = Task.ActivationType.INSTANT;
-                        }
-                        else if(activationTypeIn.contains("in_range_once")) {
-                            activationType =Task.ActivationType.IN_RANGE_ONCE;
-                        }
-                        else if(activationTypeIn.contains("in_range_only")) {
-                            activationType =Task.ActivationType.IN_RANGE_ONLY;
-                        }
-                        else {
-                            activationType = Task.ActivationType.INSTANT;
-                            Log.e("unrecognized activationType in task_activity_type:", activationTypeIn);
-                        }
+                            //ActivityType
+                            Task.ActivityType activityType;
+                            String activityTypeIn = taskJSON.getString(TAG_TASK_TYPE);
+                            if (activityTypeIn.contains("receive_text")) {
+                                activityType = Task.ActivityType.RECEIVE_TEXT;
+                            } else if (activityTypeIn.contains("receive_audio")) {
+                                activityType = Task.ActivityType.RECEIVE_AUDIO;
+                            } else if (activityTypeIn.contains("receive_video")) {
+                                activityType = Task.ActivityType.RECEIVE_VIDEO;
+                            } else if (activityTypeIn.contains("receive_image")) {
+                                activityType = Task.ActivityType.RECEIVE_IMAGE;
+                            } else if (activityTypeIn.contains("take_picture")) {
+                                activityType = Task.ActivityType.TAKE_PICTURE;
+                            } else if (activityTypeIn.contains("record_video")) {
+                                activityType = Task.ActivityType.RECORD_VIDEO;
+                            } else if (activityTypeIn.contains("response_text")) {
+                                activityType = Task.ActivityType.RESPONSE_TEXT;
+                            } else {
+                                activityType = Task.ActivityType.RECEIVE_TEXT;
+                                Log.e("Unrecognized activityType in task_type:", activityTypeIn);
+                            }
+                            //ActivationType
+                            Task.ActivationType activationType;
+                            String activationTypeIn = taskJSON.getString(TAG_TASK_ACTIVITY_TYPE);
+                            if (activationTypeIn.contains("instant")) {
+                                activationType = Task.ActivationType.INSTANT;
+                            } else if (activationTypeIn.contains("in_range_once")) {
+                                activationType = Task.ActivationType.IN_RANGE_ONCE;
+                            } else if (activationTypeIn.contains("in_range_only")) {
+                                activationType = Task.ActivationType.IN_RANGE_ONLY;
+                            } else {
+                                activationType = Task.ActivationType.INSTANT;
+                                Log.e("unrecognized activationType in task_activity_type:", activationTypeIn);
+                            }
 
-                        //Media
-                        Map<String,String> taskMedia = new HashMap<String, String>();
-                        for( int r = 0; r < taskJSON.getInt(TAG_TASK_NUMBER_OF_MEDIA); r++) {
+                            //Media
+                            Map<String, String> taskMedia = new HashMap<String, String>();
+                            for (int r = 0; r < taskJSON.getInt(TAG_TASK_NUMBER_OF_MEDIA); r++) {
 
-                            String mediaArrayTag =
-                                taskArrayTag + TAG_MEDIA_ARRAY_BASE + Integer.toString(r);
-                            JSONArray newMediaArray = jsonObject.getJSONArray(mediaArrayTag);
-                            JSONObject media = newMediaArray.getJSONObject(0);
+                                String mediaArrayTag =
+                                        taskArrayTag + TAG_MEDIA_ARRAY_BASE + Integer.toString(r);
+                                JSONArray newMediaArray = jsonObject.getJSONArray(mediaArrayTag);
+                                JSONObject media = newMediaArray.getJSONObject(0);
 
-                            String mediaFile;
+                                String mediaFile;
 
-                            //If media type requires resource download
-                            if(!media.getString(TAG_MEDIA_TYPE).equals("text")) {
-                                String mediaName = mediaNameFromURL(media.getString(TAG_MEDIA_URL));
+                                //If media type requires resource download
+                                if (!media.getString(TAG_MEDIA_TYPE).equals("text")) {
+                                    String mediaName = mediaNameFromURL(media.getString(TAG_MEDIA_URL));
 
-                                //Start download and get reference
-                                //returns null if file already in local storage
-                                Long downloadReference = DownloadManagerUtility.useDownloadManager(
-                                        media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
+                                    //Start download and get reference
+                                    //returns null if file already in local storage
+                                    Long downloadReference = DownloadManagerUtility.useDownloadManager(
+                                            media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
 
-                                if (downloadReference != null) {
-                                    toDownloadReferences.add(downloadReference);
+                                    if (downloadReference != null) {
+                                        toDownloadReferences.add(downloadReference);
+                                    }
+
+                                    mediaFile = DownloadManagerUtility.getFilePath(
+                                            media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
+                                }
+                                //or if it can just be parsed from json
+                                else {
+                                    mediaFile = media.getString(TAG_MEDIA_URL);
                                 }
 
-                                mediaFile = DownloadManagerUtility.getFilePath(
-                                        media.getString(TAG_MEDIA_URL), mediaName, LoadGame.this);
-                            }
-                            //or if it can just be parsed from json
-                            else {
-                                mediaFile = media.getString(TAG_MEDIA_URL);
+                                //Add media tag and file path/string resource to task's media map
+                                taskMedia.put(
+                                        media.getString(TAG_MEDIA_TYPE), mediaFile);
                             }
 
-                            //Add media tag and file path/string resource to task's media map
-                            taskMedia.put(
-                                media.getString(TAG_MEDIA_TYPE), mediaFile);
+                            //Complete
+                            //Task uses opposite of mustComplete for constructor, so non-required tasks
+                            //start as complete and required tasks start as not complete
+                            Boolean mustComplete = (taskJSON.getInt(TAG_TASK_MUST_COMPLETE) == 1);
+
+                            Task newTask = new Task(taskJSON.getString(TAG_TASK_NAME),
+                                    activityType,
+                                    activationType,
+                                    taskMedia,
+                                    taskJSON.getInt(TAG_TASK_DELAY),
+                                    !mustComplete);
+                            //Add new task to event's ArrayList
+                            eventTasks.add(newTask);
+
+                        }
+                        Location newLocation = new Location("Dummy");
+                        newLocation.setLatitude(eventJSON.getDouble(TAG_EVENT_LAT));
+                        newLocation.setLongitude(eventJSON.getDouble(TAG_EVENT_LOG));
+
+                        //Build Event
+                        Event newEvent = new Event(eventJSON.getString(TAG_EVENT_NAME),
+                                newLocation,
+                                (float) eventJSON.getDouble(TAG_EVENT_DISTANCE),
+                                eventTasks);
+
+                        // If current event if from the next cluster, build currentCluster,
+                        // add currentCluster to clusters ArrayList and reset ArrayList of events
+                        if (eventJSON.getInt(TAG_EVENT_CLUSTER) > clusterCount) {
+                            currentCluster = new EventCluster(clusterCount, clusterEvents);
+                            clusters.add(currentCluster);
+                            clusterEvents = new ArrayList<Event>();
+                            clusterCount++;
                         }
 
-                        //Complete
-                        //Task uses opposite of mustComplete for constructor, so non-required tasks
-                        //start as complete and required tasks start as not complete
-                        Boolean mustComplete = (taskJSON.getInt(TAG_TASK_MUST_COMPLETE) == 1);
-
-                        Task newTask = new Task(taskJSON.getString(TAG_TASK_NAME),
-                                activityType,
-                                activationType,
-                                taskMedia,
-                                taskJSON.getInt(TAG_TASK_DELAY),
-                                !mustComplete);
-                        //Add new task to event's ArrayList
-                        eventTasks.add(newTask);
-
+                        //add event to clusterEvents
+                        clusterEvents.add(newEvent);
                     }
-                    Location newLocation = new Location("Dummy");
-                    newLocation.setLatitude(eventJSON.getDouble(TAG_EVENT_LAT));
-                    newLocation.setLongitude(eventJSON.getDouble(TAG_EVENT_LOG));
+                    //create last cluster of events and add to clusters
+                    currentCluster = new EventCluster(clusterCount, clusterEvents);
+                    clusters.add(currentCluster);
 
-                    //Build Event
-                    Event newEvent = new Event( eventJSON.getString(TAG_EVENT_NAME),
-                            newLocation,
-                            (float) eventJSON.getDouble(TAG_EVENT_DISTANCE),
-                            eventTasks);
 
-                    // If current event if from the next cluster, build currentCluster,
-                    // add currentCluster to clusters ArrayList and reset ArrayList of events
-                    if(eventJSON.getInt(TAG_EVENT_CLUSTER) > clusterCount) {
-                        currentCluster = new EventCluster(clusterCount, clusterEvents);
-                        clusters.add(currentCluster);
-                        clusterEvents = new ArrayList<Event>();
-                        clusterCount++;
-                    }
 
-                    //add event to clusterEvents
-                    clusterEvents.add(newEvent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-                //create last cluster of events and add to clusters
-                currentCluster = new EventCluster(clusterCount, clusterEvents);
-                clusters.add(currentCluster);
+
             }
-            catch (JSONException e) {
-                e.printStackTrace();
-            }
+
             return null;
         }
 
@@ -292,11 +294,17 @@ public class LoadGame extends Activity{
         protected void onPostExecute(String file_url) {
             super.onPostExecute(file_url);
 
-            ClusterManager.initializeClusters(clusters);
-            clustersPopulated = true;
+            if (gameExists) {
+                ClusterManager.initializeClusters(clusters);
+                clustersPopulated = true;
 
-            if(gameIsLoaded()) {
-                activatePlayButton();
+                if(gameIsLoaded()) {
+                    activatePlayButton();
+                }
+            }
+            else {
+                TextView status = (TextView) findViewById(R.id.status);
+                status.setText("Game with given name does not exist.");
             }
         }
     }
